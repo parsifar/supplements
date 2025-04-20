@@ -1,0 +1,12 @@
+/*
+ Theme Name:   SuppPick
+ Theme URI:    https://parsifar.com/
+ Description:  A child theme of Astra
+ Author:       Ali Parsifar
+ Author URI:   https://parsifar.com
+ Template:     astra
+ Version:      1.0.0
+*/
+
+/* Import parent theme styles */
+@import url("../astra/style.css");
