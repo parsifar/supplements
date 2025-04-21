@@ -89,3 +89,16 @@ function filter_supplement_query( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'filter_supplement_query' );
+
+
+
+/**
+ * Resolve the price query precision issue
+ */
+function cast_decimal_precision( $array ) {
+
+	$array['where'] = str_replace( 'DECIMAL', 'DECIMAL(10,2)', $array['where'] );
+
+	return $array;
+}
+add_filter( 'get_meta_sql', 'cast_decimal_precision' );

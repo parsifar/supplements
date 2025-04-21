@@ -1,0 +1,17 @@
+{
+  "name": "supp-pick",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "watch": "npm run watch-css",
+    "build-css": "sass src/scss/style.scss dist/style.css --no-source-map --style=compressed",
+    "watch-css": "sass --watch src/scss/style.scss:dist/style.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "sass": "^1.86.3"
+  }
+}

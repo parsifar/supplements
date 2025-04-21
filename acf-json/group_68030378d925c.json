@@ -221,7 +221,7 @@
             "max": "",
             "allow_in_bindings": 0,
             "placeholder": "",
-            "step": "0.001",
+            "step": "0.01",
             "prepend": "",
             "append": ""
         },
@@ -267,5 +267,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1745179794
+    "modified": 1745207410
 }
