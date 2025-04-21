@@ -203,7 +203,7 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 								</label>
 
 								<?php if ( $affiliate = get_field( 'affiliate_url' ) ) : ?>
-									<a href="<?php echo esc_url( $affiliate ); ?>" class="btn-primary small" target="_blank" rel="nofollow noopener">Buy Now</a>
+									<a href="<?php echo esc_url( $affiliate ); ?>" class="btn-primary small" target="_blank" rel="nofollow noopener">Buy on Amazon</a>
 								<?php endif; ?>
 							</div>
 						</article>

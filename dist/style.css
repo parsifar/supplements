@@ -1,3 +1,7 @@
+p {
+  margin-bottom: 1rem;
+}
+
 .supplements-layout {
   display: flex;
   gap: 2rem;
@@ -273,6 +277,157 @@
 .no-results {
   text-align: center;
   color: #6b7280;
+}
+
+.single-supplement-container {
+  background-color: #fff;
+  flex-grow: 1;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.supplement-article {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.supplement-header {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .supplement-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.supplement-meta .supplement-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+.supplement-meta .supplement-brand,
+.supplement-meta .supplement-category {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #065f46;
+}
+
+.supplement-thumbnail {
+  flex-basis: 200px;
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.supplement-thumbnail .thumbnail-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.supplement-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.supplement-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.supplement-details .ingredient-breakdown .ingredient-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+}
+.supplement-details .ingredient-breakdown .ingredient-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.supplement-details .ingredient-breakdown .ingredient-table th {
+  text-align: left;
+  background-color: #f9fafb;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.supplement-details .ingredient-breakdown .ingredient-table td {
+  padding: 0.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+.supplement-details .ingredient-breakdown .ingredient-table .ingredient-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+.supplement-details .ingredient-breakdown .ingredient-table .ingredient-link:hover {
+  text-decoration: underline;
+}
+.supplement-details .ingredient-breakdown .ingredient-table .text-muted {
+  color: #9ca3af;
+  font-style: italic;
+}
+.supplement-details .taxonomy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.supplement-details .taxonomy-list .taxonomy-label {
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: capitalize;
+}
+.supplement-details .taxonomy-list .taxonomy-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.affiliate-wrapper {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+.affiliate-wrapper .affiliate-button {
+  display: inline-block;
+  background-color: #2563eb;
+  color: #fff;
+  font-size: 0.875rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.affiliate-wrapper .affiliate-button:hover {
+  background-color: #1d4ed8;
 }
 
 /*# sourceMappingURL=style.css.map */
