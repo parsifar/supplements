@@ -2,6 +2,10 @@ p {
   margin-bottom: 1rem;
 }
 
+table {
+  margin: 0;
+}
+
 .supplements-layout {
   display: flex;
   gap: 2rem;
@@ -431,8 +435,8 @@ p {
 }
 
 .compare {
-  max-width: 100%;
-  padding: 2rem;
+  flex-grow: 1;
+  padding-block: 2rem;
   margin: 0 auto;
 }
 .compare__no-items {
@@ -458,17 +462,34 @@ p {
   table-layout: auto;
 }
 .compare__table th, .compare__table td {
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 1px solid #eee;
   vertical-align: middle;
 }
 .compare__attribute-header, .compare__attribute {
+  text-align: left;
   background-color: #fafafa;
   font-weight: 600;
   white-space: nowrap;
   position: sticky;
   left: 0;
   z-index: 1;
+}
+.compare__ingredient-heading-row {
+  background-color: #eef1f6;
+  font-weight: 600;
+}
+.compare__ingredient-heading-row td {
+  padding: 0.75rem;
+}
+.compare .sticky-left {
+  position: sticky;
+  left: 0;
+  background-color: #eef1f6;
+  z-index: 2;
+}
+.compare__ingredient-heading-spacer {
+  background-color: #eef1f6;
 }
 .compare__product-header-content {
   display: flex;
@@ -479,6 +500,7 @@ p {
 .compare__product-link {
   color: #0056b3;
   text-decoration: none;
+  text-align: left;
 }
 .compare__product-link:hover {
   text-decoration: underline;
@@ -497,7 +519,6 @@ p {
   object-fit: contain;
   background: #fff;
   padding: 4px;
-  border: 1px solid #ccc;
 }
 .compare__image-placeholder {
   width: 80px;
@@ -534,7 +555,7 @@ p {
   z-index: 10;
 }
 .compare__highlight {
-  background: #e6f7e6;
+  background: #ebf8eb;
   font-weight: bold;
 }
 .compare__buy-btn {
@@ -548,6 +569,9 @@ p {
 }
 .compare__buy-btn:hover {
   background: #0056b3;
+}
+.compare tr.compare__ingredient-row td {
+  padding-block: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

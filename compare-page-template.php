@@ -155,8 +155,16 @@ uasort(
 			<?php endforeach; ?>
 		</tr>
 
+		<tr>
+			<td class="compare__attribute">Amazon Rating</td>
+			<?php foreach ( $query->posts as $post ) : ?>
+			<td><?php echo esc_html( get_field( 'amazon_rating', $post->ID ) ?: '—' ); ?></td>
+			<?php endforeach; ?>
+		</tr>
+
 		<tr class="compare__ingredient-heading-row">
-			<td colspan="<?php echo count( $query->posts ) + 1; ?>">Ingredients</td>
+			<td class="compare__attribute compare__ingredient-heading sticky-left">Ingredients</td>
+			<td class="compare__ingredient-heading-spacer" colspan="<?php echo count( $query->posts ); ?>"></td>
 		</tr>
 
 		<?php
@@ -164,26 +172,27 @@ uasort(
 			$doses    = array_column( $data['products'], 'amount' );
 			$max_dose = max( $doses );
 			?>
-			<tr>
-			<td class="compare__attribute compare__ingredient-name">
-				<span class="compare__tooltip">
-				<a href="<?php echo get_permalink( $ingredient_id ); ?>" class="compare__product-link">
-					<?php echo esc_html( $data['name'] ); ?>
-				</a>
-				<span class="compare__tooltip-content">
-					<?php echo esc_html( get_the_excerpt( $ingredient_id ) ?: 'No description available' ); ?>
-				</span>
-				</span>
-			</td>
-			<?php
-			foreach ( $query->posts as $post ) :
-				$dose            = $data['products'][ $post->ID ] ?? null;
-				$highlight_class = ( $dose && $dose['amount'] == $max_dose ) ? 'compare__highlight' : '';
-				?>
-				<td class="<?php echo $highlight_class; ?>">
-				<?php echo $dose ? esc_html( "{$dose['amount']} {$dose['unit']}" ) : '—'; ?>
+			<tr class="compare__ingredient-row">
+				<td class="compare__attribute compare__ingredient-name">
+					<span class="compare__tooltip">
+					<a href="<?php echo get_permalink( $ingredient_id ); ?>" class="compare__product-link">
+						<?php echo esc_html( $data['name'] ); ?>
+					</a>
+					<span class="compare__tooltip-content">
+						<?php echo esc_html( get_the_excerpt( $ingredient_id ) ?: 'No description available' ); ?>
+					</span>
+					</span>
 				</td>
-			<?php endforeach; ?>
+
+				<?php
+				foreach ( $query->posts as $post ) :
+					$dose            = $data['products'][ $post->ID ] ?? null;
+					$highlight_class = ( $dose && $dose['amount'] == $max_dose ) ? 'compare__highlight' : '';
+					?>
+					<td class="<?php echo $highlight_class; ?>">
+					<?php echo $dose ? esc_html( "{$dose['amount']} {$dose['unit']}" ) : '—'; ?>
+					</td>
+				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
 
@@ -195,7 +204,7 @@ uasort(
 				?>
 			<td>
 				<?php if ( $url ) : ?>
-				<a href="<?php echo esc_url( $url ); ?>" class="compare__buy-btn">Buy Now</a>
+				<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="compare__buy-btn">Buy on Amazon</a>
 				<?php else : ?>
 				—
 				<?php endif; ?>
@@ -208,6 +217,33 @@ uasort(
 </div>
 
 <script>
+	const urlParams = new URLSearchParams(window.location.search);
+	let activeIds = urlParams.get('ids');
+
+	// If the URL doesn't contain ?ids=, try to get it from the cookie
+	if (!activeIds) {
+	const cookieValue = document.cookie
+		.split('; ')
+		.find(row => row.startsWith('compare_supplements='));
+
+	if (cookieValue) {
+		activeIds = cookieValue.split('=')[1];
+		if (activeIds) {
+		// Update the URL without reloading the page
+		urlParams.set('ids', activeIds);
+		const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+		window.history.replaceState({}, '', newUrl);
+		}
+	}
+	}
+
+	// If we have active IDs (either from URL or cookie), store them
+	if (activeIds) {
+	localStorage.setItem('compare_ids', activeIds);
+	document.cookie = 'compare_supplements=' + activeIds + ';path=/;max-age=31536000';
+	}
+
+	// Remove supplement functionality
 	document.querySelectorAll('.compare__remove-btn').forEach(btn => {
 	btn.addEventListener('click', function () {
 		const id = this.getAttribute('data-id');
@@ -222,12 +258,6 @@ uasort(
 	});
 	});
 
-	const urlParams = new URLSearchParams(window.location.search);
-	const activeIds = urlParams.get('ids');
-	if (activeIds) {
-	localStorage.setItem('compare_ids', activeIds);
-	document.cookie = 'compare_supplements=' + activeIds + ';path=/;max-age=31536000';
-	}
 </script>
 
 <?php get_footer(); ?>

@@ -1,6 +1,6 @@
 .compare {
-  max-width: 100%;
-  padding: 2rem;
+  flex-grow: 1;
+  padding-block: 2rem;
   margin: 0 auto;
 
   &__no-items {
@@ -31,19 +31,40 @@
 
   &__table th,
   &__table td {
-    padding: 0.75rem;
+    padding: 0.5rem;
     border: 1px solid #eee;
     vertical-align: middle;
   }
 
   &__attribute-header,
   &__attribute {
+    text-align: left;
     background-color: #fafafa;
     font-weight: 600;
     white-space: nowrap;
     position: sticky;
     left: 0;
     z-index: 1;
+  }
+
+  &__ingredient-heading-row {
+    background-color: #eef1f6;
+    font-weight: 600;
+
+    td {
+      padding: 0.75rem;
+    }
+  }
+
+  .sticky-left {
+    position: sticky;
+    left: 0;
+    background-color: #eef1f6;
+    z-index: 2;
+  }
+
+  &__ingredient-heading-spacer {
+    background-color: #eef1f6;
   }
 
   &__product-header-content {
@@ -56,6 +77,7 @@
   &__product-link {
     color: #0056b3;
     text-decoration: none;
+    text-align: left;
 
     &:hover {
       text-decoration: underline;
@@ -77,7 +99,6 @@
     object-fit: contain;
     background: #fff;
     padding: 4px;
-    border: 1px solid #ccc;
   }
 
   &__image-placeholder {
@@ -120,7 +141,7 @@
   }
 
   &__highlight {
-    background: #e6f7e6;
+    background: #ebf8eb;
     font-weight: bold;
   }
 
@@ -135,6 +156,12 @@
 
     &:hover {
       background: #0056b3;
+    }
+  }
+
+  tr.compare__ingredient-row {
+    td {
+      padding-block: 0;
     }
   }
 }
