@@ -382,6 +382,9 @@ input[type=range]:focus::-moz-range-track {
 .supplement-card .badge.supplement-category-badge {
   background: #d8e5ff;
 }
+.supplement-card .rating-bar {
+  margin-top: auto;
+}
 .supplement-card .card-footer {
   padding: 1rem;
   border-top: 1px solid #e5e7eb;
@@ -394,6 +397,79 @@ input[type=range]:focus::-moz-range-track {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.rating-bar .bar-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.rating-bar .bar-wrapper {
+  position: relative;
+  flex-grow: 1;
+}
+.rating-bar .bar-bg {
+  position: relative;
+  width: 100%;
+  height: 16px;
+  background-color: #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.rating-bar .bar-bg .bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #a7f3d0, #34d399, #10b981, #059669, #047857);
+  border-radius: 8px 0 0 8px;
+  transition: width 0.6s ease;
+}
+.rating-bar .bar-bg .bar-ticks {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  width: 100%;
+  padding-top: 6px;
+}
+.rating-bar .bar-bg .bar-ticks .segment {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 14.2857%;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+.rating-bar .bar-bg .bar-ticks .segment::after {
+  content: "";
+  position: absolute;
+  top: -22px;
+  right: 0;
+  height: 22px;
+  width: 2px;
+  background: #ffffff;
+}
+.rating-bar .bar-bg .bar-ticks .segment::before {
+  content: attr(data-label);
+  position: absolute;
+  top: 4px;
+  right: 0;
+  transform: translateX(50%);
+}
+.rating-bar .bar-bg .bar-ticks .segment.last {
+  width: 42.8571%;
+}
+.rating-bar .bar-bg .bar-ticks .segment.last::after {
+  display: none;
 }
 
 .supplements-filter-form {
