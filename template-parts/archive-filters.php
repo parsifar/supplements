@@ -87,8 +87,8 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 			<option value="price_desc" <?php selected( $_GET['sort'] ?? '', 'price_desc' ); ?>>Price: High to Low</option>
 			<option value="pps_asc" <?php selected( $_GET['sort'] ?? '', 'pps_asc' ); ?>>Price per serving: Low to High</option>
 			<option value="pps_desc" <?php selected( $_GET['sort'] ?? '', 'pps_desc' ); ?>>Price per serving: High to Low</option>
-			<option value="name_asc" <?php selected( $_GET['sort'] ?? '', 'name_asc' ); ?>>Name: A–Z</option>
-			<option value="name_desc" <?php selected( $_GET['sort'] ?? '', 'name_desc' ); ?>>Name: Z–A</option>
+			<option value="rating_asc" <?php selected( $_GET['sort'] ?? '', 'rating_asc' ); ?>>Rating: Low to High</option>
+			<option value="rating_desc" <?php selected( $_GET['sort'] ?? '', 'rating_desc' ); ?>>Rating: High to Low</option>
 		</select>
 	</div>
 
