@@ -78,6 +78,16 @@ function filter_supplement_query( $query ) {
 			$query->set( 'meta_key', 'price' );
 			$query->set( 'order', 'DESC' );
 			break;
+		case 'pps_asc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'price_per_serving' );
+			$query->set( 'order', 'ASC' );
+			break;
+		case 'pps_desc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'price_per_serving' );
+			$query->set( 'order', 'DESC' );
+			break;
 		case 'name_asc':
 			$query->set( 'orderby', 'title' );
 			$query->set( 'order', 'ASC' );
