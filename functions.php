@@ -61,6 +61,15 @@ function filter_supplement_query( $query ) {
 		);
 	}
 
+	if ( ! empty( $_GET['min_rating'] ) ) {
+		$meta_query[] = array(
+			'key'     => 'amazon_rating',
+			'value'   => floatval( $_GET['min_rating'] ),
+			'compare' => '>=',
+			'type'    => 'DECIMAL',
+		);
+	}
+
 	if ( ! empty( $meta_query ) ) {
 		$query->set( 'meta_query', $meta_query );
 	}

@@ -29,6 +29,8 @@ $pps_limit    = $max_pps_post ? floatval( get_post_meta( $max_pps_post[0], 'pric
 $current_price = isset( $_GET['max_price'] ) ? floatval( $_GET['max_price'] ) : $price_limit;
 $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps_limit;
 
+$current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] ) : 1;
+
 ?>
 <form method="GET" class="supplements-filter-form">
 	<?php
@@ -77,6 +79,13 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 			Max Price Per Serving ($<span id="ppsValue"><?php echo esc_html( $current_pps ); ?></span>)
 		</label>
 		<input type="range" name="max_pps" id="max_pps" min="0" max="<?php echo esc_attr( $pps_limit ); ?>" step="0.01" value="<?php echo esc_attr( $current_pps ); ?>" class="filter-range" oninput="document.getElementById('ppsValue').textContent = this.value">
+	</div>
+
+	<div class="filter-group">
+		<label for="min_rating" class="filter-label">
+			Min Average Rating (<span id="ratingValue"><?php echo esc_html( $current_rating ); ?></span> out of 5)
+		</label>
+		<input type="range" name="min_rating" id="min_rating" min="1" max="5" step="0.1" value="<?php echo esc_attr( $current_rating ); ?>" class="filter-range" oninput="document.getElementById('ratingValue').textContent = this.value">
 	</div>
 
 	<div class="filter-group select-wrapper">
