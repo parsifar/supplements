@@ -1,0 +1,10 @@
+@use "../base/variables" as *;
+
+.tag {
+  background-color: $color-light;
+  color: $color-gray;
+  font-size: $font-size-sm;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  padding: $spacing-xs $spacing-sm;
+}

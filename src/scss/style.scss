@@ -1,6 +1,15 @@
 @use "base/variables" as *;
 @use "base/mixins";
+@use "base/typography";
+@use "base/utilities";
 @use "base/base";
+
+@use "components/buttons";
+@use "components/cards";
+@use "components/filters";
+@use "components/tags";
+@use "components/pagination";
+
 @use "templates/archive-supplement";
 @use "templates/single-supplement";
 @use "templates/compare-page";

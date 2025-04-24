@@ -1,0 +1,103 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+@use "../base/typography" as *;
+
+.supplement-card {
+  @include card;
+
+  &:hover {
+    .supplement-thumbnail {
+      transform: scale(1.05);
+    }
+  }
+
+  .card-link {
+    @include flex-column;
+    height: 100%;
+  }
+
+  .image-wrapper {
+    background: white;
+    padding: 1rem;
+    overflow: hidden;
+    @include flex-center;
+  }
+
+  .supplement-thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform $transition-time;
+  }
+
+  .card-content {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: $spacing-md;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .content-header {
+    display: flex;
+    gap: 10px;
+    color: $body-text-color;
+
+    .title-col {
+      flex-grow: 1;
+      .brand {
+        color: $color-primary;
+      }
+      .supplement-title {
+        margin-bottom: 0;
+      }
+    }
+    .price-col {
+      @include flex-column;
+      align-items: flex-end;
+
+      .price {
+        margin-bottom: 0;
+      }
+
+      .price-per-serving {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .ingredients-list {
+    font-size: $font-size-sm;
+  }
+
+  .badge {
+    @include badge;
+
+    &.certification-badge {
+      background: #d1fae5;
+    }
+
+    &.supplement-category-badge {
+      background: $color-light-blue;
+    }
+  }
+
+  .card-footer {
+    padding: 1rem;
+    border-top: 1px solid $color-border;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .compare-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+}

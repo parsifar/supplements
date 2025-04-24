@@ -1,0 +1,19 @@
+@use "variables" as *;
+
+.text-sm {
+  font-size: $font-size-sm;
+}
+.text-lg {
+  font-size: $font-size-lg;
+}
+.text-gray {
+  color: $color-gray;
+}
+
+.mb-4 {
+  margin-bottom: $spacing-md;
+}
+.px-4 {
+  padding-left: $spacing-md;
+  padding-right: $spacing-md;
+}

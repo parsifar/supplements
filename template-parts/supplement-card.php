@@ -9,62 +9,78 @@
 		</div>
 
 		<div class="card-content">
-			<h2 class="supplement-title"><?php the_title(); ?></h2>
-			<p class="supplement-excerpt"><?php echo wp_trim_words( get_the_excerpt(), 18 ); ?></p>
 
-			<?php
-			$brand = get_the_terms( get_the_ID(), 'brand' );
-			if ( ! empty( $brand ) && ! is_wp_error( $brand ) ) {
-				echo '<span class="badge badge-brand">Brand: ' . esc_html( $brand[0]->name ) . '</span>';
-			}
-			$category = get_the_terms( get_the_ID(), 'supplement-category' );
-			if ( ! empty( $category ) && ! is_wp_error( $category ) ) {
-				echo '<span class="badge badge-category">Category: ' . esc_html( $category[0]->name ) . '</span>';
-			}
+			<div class="content-header">
+				<div class="title-col">
+					
+					<?php
+					$brand = get_the_terms( get_the_ID(), 'brand' );
+					if ( ! empty( $brand ) && ! is_wp_error( $brand ) ) {
+						echo '<span class="brand h6">' . esc_html( $brand[0]->name ) . '</span>';
+					}
+					?>
 
-			foreach ( array( 'certification', 'dietary-tag', 'product-form' ) as $tax ) {
-				$terms = get_the_terms( get_the_ID(), $tax );
-				if ( $terms && ! is_wp_error( $terms ) ) {
-					echo '<div class="badge-group">';
-					foreach ( $terms as $term ) {
-						echo '<span class="badge badge-neutral">' . esc_html( $term->name ) . '</span>';
+					<h2 class="supplement-title h4"><?php the_title(); ?></h2>
+
+				</div>
+				
+				<?php
+				$price = get_field( 'price' );
+				$pps   = get_field( 'price_per_serving' );
+
+				if ( $price || $pps ) {
+					echo '<div class="price-col">';
+					if ( $price ) {
+						echo '<span class="price h4">$' . number_format( $price, 2 ) . '</span>';
+					}
+					if ( $pps ) {
+						echo '<span class="price-per-serving text-tiny">$' . number_format( $pps, 2 ) . '/serving</span>';
 					}
 					echo '</div>';
 				}
-			}
+				?>
 
-			$servings = get_field( 'servings_per_container' );
-			if ( $servings ) {
-				echo '<p class="supplement-info"><strong>Servings:</strong> ' . esc_html( $servings ) . '</p>';
-			}
+			</div>
+			
+			
 
+			<?php
 			$ingredients = get_field( 'ingredients' );
 			if ( $ingredients ) {
-				echo '<p class="supplement-info"><strong>Ingredients:</strong> ';
+				echo '<p class="ingredients-list"><strong>Key Ingredients:</strong> ';
 				echo implode(
 					', ',
 					array_map(
-						fn( $i ) => '<a href="' . get_permalink( $i ) . '" class="ingredient-link">' . get_the_title( $i ) . '</a>',
+						fn( $i ) => '<span  class="ingredient-item">' . get_the_title( $i ) . '</span>',
 						$ingredients
 					)
 				);
 				echo '</p>';
 			}
+			?>
+			
+			<div class="badges">
+				<?php
 
-			$price = get_field( 'price' );
-			$pps   = get_field( 'price_per_serving' );
+				foreach ( array( 'supplement-category', 'certification', 'dietary-tag', 'product-form' ) as $tax ) {
+					$terms = get_the_terms( get_the_ID(), $tax );
+					if ( $terms && ! is_wp_error( $terms ) ) {
 
-			if ( $price || $pps ) {
-				echo '<div class="pricing">';
-				if ( $price ) {
-					echo '<p class="supplement-info"><strong>Price:</strong> $' . number_format( $price, 2 ) . '</p>';
+						foreach ( $terms as $term ) {
+							echo '<span class="badge ' . $tax . '-badge">' . esc_html( $term->name ) . '</span>';
+						}
+					}
 				}
-				if ( $pps ) {
-					echo '<p class="supplement-info"><strong>Price/Serving:</strong> $' . number_format( $pps, 2 ) . '</p>';
-				}
-				echo '</div>';
+				?>
+			</div>
+			<?php
+
+			$servings = get_field( 'servings_per_container' );
+			if ( $servings ) {
+				echo '<p class="servings">' . esc_html( $servings ) . ' servings</p>';
 			}
 			?>
+			
 		</div>
 	</a>
 
@@ -75,7 +91,7 @@
 		</label>
 
 		<?php if ( $affiliate = get_field( 'affiliate_url' ) ) : ?>
-			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn-primary small" target="_blank" rel="nofollow noopener">Buy on Amazon</a>
+			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn-primary small" target="_blank" rel="nofollow noopener">See on Amazon</a>
 		<?php endif; ?>
 	</div>
 </article>

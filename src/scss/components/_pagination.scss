@@ -1,0 +1,21 @@
+@use "../base/variables" as *;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-lg;
+
+  button {
+    border: 1px solid $color-border;
+    padding: $spacing-sm $spacing-md;
+    background: white;
+    border-radius: $radius;
+    cursor: pointer;
+
+    &.active {
+      background-color: $color-primary;
+      color: white;
+    }
+  }
+}

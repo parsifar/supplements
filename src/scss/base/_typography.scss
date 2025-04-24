@@ -1,0 +1,143 @@
+@use "variables" as *;
+
+body {
+  font-family: $font-body;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $body-text-color;
+}
+
+// Headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: $font-heading;
+  font-weight: 700;
+  color: $heading-text-color;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+h1,
+.h1 {
+  font-size: 2.5rem;
+  @media (max-width: $breakpoint-md) {
+    font-size: 2rem;
+  }
+}
+
+h2,
+.h2 {
+  font-size: 2rem;
+  @media (max-width: $breakpoint-md) {
+    font-size: 1.75rem;
+  }
+}
+
+h3,
+.h3 {
+  font-size: 1.5rem;
+}
+
+h4,
+.h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+h5,
+.h5 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+h6,
+.h6 {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+@mixin heading-style($level) {
+  font-family: $font-heading;
+  font-weight: 700;
+  color: $heading-text-color;
+  line-height: 1.25;
+
+  @if $level == 1 {
+    font-size: 2.5rem;
+    @media (max-width: $breakpoint-md) {
+      font-size: 2rem;
+    }
+  } @else if $level == 2 {
+    font-size: 2rem;
+    @media (max-width: $breakpoint-md) {
+      font-size: 1.75rem;
+    }
+  } @else if $level == 3 {
+    font-size: 1.5rem;
+  } @else if $level == 4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  } @else if $level == 5 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  } @else if $level == 6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+}
+
+// Paragraph
+p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: $body-text-color;
+}
+
+// Utility classes
+.text-tiny {
+  font-size: 0.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.5rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.text-center {
+  text-align: center;
+}

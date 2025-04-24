@@ -1,1 +1,35 @@
-$primary-color: rgb(89, 217, 39);
+$color-primary: #2563eb;
+$color-secondary: #4b5563;
+$color-light-blue: #d8e5ff;
+$color-light: #f9fafb;
+$color-dark: #111827;
+$color-border: #e5e7eb;
+$color-gray: #6b7280;
+$color-gray-light: #eaeaea;
+$color-success: #10b981;
+
+$body-text-color: $color-dark;
+$heading-text-color: $color-dark;
+
+$font-base: "Inter", sans-serif;
+$font-body: $font-base;
+$font-heading: $font-base;
+
+$font-size-base: 1rem;
+$font-size-tiny: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-lg: 1.125rem;
+
+$radius: 0.5rem;
+
+$shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-lg: 0 4px 14px rgba(0, 0, 0, 0.1);
+
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+
+$transition-time: 0.2s;
+
+$breakpoint-md: 768px;

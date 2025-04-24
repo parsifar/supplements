@@ -1,0 +1,19 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+@use "sass:color";
+
+.btn-primary {
+  @include flex-center;
+  background-color: $color-primary;
+  color: white;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius;
+  font-weight: 600;
+  @include transition(background-color 0.2s);
+
+  &:hover,
+  &:focus {
+    background-color: color.adjust($color-primary, $lightness: -10%);
+    color: white;
+  }
+}

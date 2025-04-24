@@ -1,0 +1,47 @@
+@use "variables" as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin card {
+  background-color: white;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-link {
+    text-decoration: none;
+  }
+}
+
+@mixin badge {
+  display: inline-block;
+  font-size: $font-size-tiny;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  margin-right: 0.25rem;
+  margin-bottom: 0.5rem;
+  background: $color-gray-light;
+  color: $color-secondary;
+}
+
+@mixin transition($props...) {
+  transition: $props;
+}

@@ -1,0 +1,19 @@
+@use "../base/variables" as *;
+
+.filters {
+  border-right: 1px solid $color-border;
+  padding: $spacing-lg;
+
+  .filter-group {
+    margin-bottom: $spacing-lg;
+  }
+
+  label {
+    display: block;
+    margin-bottom: $spacing-xs;
+  }
+
+  input[type="checkbox"] {
+    margin-right: $spacing-xs;
+  }
+}
