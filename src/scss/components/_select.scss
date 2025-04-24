@@ -1,0 +1,46 @@
+@use "../base/variables" as *;
+
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid $color-border;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: $body-text-color;
+    cursor: pointer;
+
+    // Remove focus outline and add a custom one
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+    }
+
+    // Disabled state
+    &:disabled {
+      background-color: #f5f5f5;
+      color: #999;
+      cursor: not-allowed;
+    }
+  }
+
+  // Custom arrow using a pseudo element
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    pointer-events: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid $color-secondary;
+  }
+}

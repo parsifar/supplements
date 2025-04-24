@@ -1,19 +1,37 @@
 @use "../base/variables" as *;
+@use "../base/mixins" as *;
+@use "../base/typography" as *;
 
-.filters {
-  border-right: 1px solid $color-border;
-  padding: $spacing-lg;
+.supplements-filter-form {
+  @include flex-column;
+  gap: $spacing-lg;
 
   .filter-group {
-    margin-bottom: $spacing-lg;
+    @include flex-column;
+    gap: $spacing-sm;
   }
 
-  label {
-    display: block;
-    margin-bottom: $spacing-xs;
+  .filter-label {
+    @include heading-style(6);
+    color: $color-secondary;
   }
 
-  input[type="checkbox"] {
-    margin-right: $spacing-xs;
+  .filter-range {
+    width: 100%;
+  }
+
+  .filter-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .reset-link {
+    @include heading-style(6);
+    color: $color-secondary;
+    &:hover {
+      color: $color-primary;
+    }
   }
 }

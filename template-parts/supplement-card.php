@@ -91,7 +91,7 @@
 		</label>
 
 		<?php if ( $affiliate = get_field( 'affiliate_url' ) ) : ?>
-			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn-primary small" target="_blank" rel="nofollow noopener">See on Amazon</a>
+			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn btn-primary small" target="_blank" rel="nofollow noopener">See on Amazon</a>
 		<?php endif; ?>
 	</div>
 </article>

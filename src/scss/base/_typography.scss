@@ -3,7 +3,7 @@
 body {
   font-family: $font-body;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: $line-height-base;
   color: $body-text-color;
 }
 

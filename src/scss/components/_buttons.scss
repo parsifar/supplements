@@ -2,18 +2,38 @@
 @use "../base/mixins" as *;
 @use "sass:color";
 
-.btn-primary {
+.btn {
   @include flex-center;
-  background-color: $color-primary;
-  color: white;
   padding: $spacing-sm $spacing-md;
   border-radius: $radius;
+  font-size: 1rem;
   font-weight: 600;
+  line-height: $line-height-base;
   @include transition(background-color 0.2s);
+
+  &.small {
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+.btn-primary {
+  background-color: $color-primary;
+  color: white;
 
   &:hover,
   &:focus {
     background-color: color.adjust($color-primary, $lightness: -10%);
+    color: white;
+  }
+}
+
+.btn-secondary {
+  background-color: $color-secondary;
+  color: white;
+
+  &:hover,
+  &:focus {
+    background-color: color.adjust($color-secondary, $lightness: -10%);
     color: white;
   }
 }

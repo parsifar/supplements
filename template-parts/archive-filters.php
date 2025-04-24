@@ -49,7 +49,7 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 		);
 		if ( ! empty( $terms ) ) :
 			?>
-		<div class="filter-group">
+		<div class="filter-group select-wrapper">
 			<label for="<?php echo esc_attr( $taxonomy ); ?>" class="filter-label"><?php echo esc_html( $label ); ?></label>
 			<select name="<?php echo esc_attr( $taxonomy ); ?>" id="<?php echo esc_attr( $taxonomy ); ?>" class="filter-select">
 				<option value="">All <?php echo esc_html( $label ); ?></option>
@@ -79,7 +79,7 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 		<input type="range" name="max_pps" id="max_pps" min="0" max="<?php echo esc_attr( $pps_limit ); ?>" step="0.01" value="<?php echo esc_attr( $current_pps ); ?>" class="filter-range" oninput="document.getElementById('ppsValue').textContent = this.value">
 	</div>
 
-	<div class="filter-group">
+	<div class="filter-group select-wrapper">
 		<label for="sort" class="filter-label">Sort By</label>
 		<select name="sort" id="sort" class="filter-select">
 			<option value="">Default</option>
@@ -91,7 +91,7 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 	</div>
 
 	<div class="filter-actions">
-		<button type="submit" class="btn-primary">Apply Filters</button>
+		<button type="submit" class="btn btn-secondary small">Apply Filters</button>
 		<a href="<?php echo get_post_type_archive_link( 'supplement' ); ?>" class="reset-link">Reset Filters</a>
 	</div>
 </form>
