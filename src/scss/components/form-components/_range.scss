@@ -1,0 +1,101 @@
+@use "../../base/variables" as *;
+@use "sass:color";
+
+$range-track-height: 10px;
+$range-track-color: white;
+$range-track-focus-color: $color-light-blue;
+$range-track-border-color: $color-border;
+$range-thumb-size: 20px;
+$range-color: $color-primary;
+
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: $range-thumb-size;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+
+  // Track
+  &::-webkit-slider-runnable-track {
+    height: $range-track-height;
+    background: $range-track-color;
+    border-radius: $range-track-height;
+    box-shadow: none;
+    border: 1px solid $range-track-border-color;
+  }
+
+  &::-moz-range-track {
+    height: $range-track-height;
+    background: $range-track-color;
+    border-radius: $range-track-height;
+    box-shadow: none;
+    border: 1px solid $range-track-border-color;
+  }
+
+  &::-ms-track {
+    height: $range-track-height;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+
+  // Thumb
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    margin-top: calc(($range-track-height - $range-thumb-size) / 2);
+    height: $range-thumb-size;
+    width: $range-thumb-size;
+    background: $range-color;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+  }
+
+  &::-moz-range-thumb {
+    height: $range-thumb-size;
+    width: $range-thumb-size;
+    background: $range-color;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+  }
+
+  &::-ms-thumb {
+    height: $range-thumb-size;
+    width: $range-thumb-size;
+    background: $range-color;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  }
+
+  // Focus styles
+  &:focus {
+    outline: none;
+    border: none;
+
+    &::-webkit-slider-thumb {
+      background: color.adjust($range-color, $lightness: -10%);
+    }
+
+    &::-moz-range-thumb {
+      background: color.adjust($range-color, $lightness: -10%);
+    }
+
+    &::-ms-thumb {
+      background: color.adjust($range-color, $lightness: -10%);
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: $range-track-focus-color;
+    }
+
+    &::-moz-range-track {
+      background: $range-track-focus-color;
+    }
+  }
+}

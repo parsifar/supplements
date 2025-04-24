@@ -5,7 +5,8 @@
 @use "base/base";
 
 @use "components/buttons";
-@use "components/select";
+@use "components/form-components/select";
+@use "components/form-components/range";
 @use "components/cards";
 @use "components/filters";
 @use "components/tags";
