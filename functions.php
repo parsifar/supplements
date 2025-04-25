@@ -12,20 +12,30 @@ function astra_child_enqueue_styles() {
 
 
 function filter_supplement_query( $query ) {
-	if ( is_admin() || ! $query->is_main_query() || ! is_post_type_archive( 'supplement' ) ) {
+	if ( is_admin() || ! $query->is_main_query() || ( ! is_post_type_archive( 'supplement' ) && ! is_tax( 'supplement-category' ) ) ) {
 		return;
 	}
 
 	// Taxonomy filters.
-	$taxonomies = array( 'brand', 'certification', 'dietary-tag', 'product-form', 'supplement-category' );
-	$tax_query  = array();
+
+	// Check if we're on a taxonomy archive for 'supplement-category'.
+	if ( is_tax( 'supplement-category' ) ) {
+		// Skip 'supplement-category' taxonomy filter
+		$taxonomies = array( 'brand', 'certification', 'dietary-tag', 'product-form' );
+
+	} else {
+		// Include 'supplement-category' on main archive pages
+		$taxonomies = array( 'brand', 'certification', 'dietary-tag', 'product-form', 'supplement-category' );
+	}
+
+	$tax_query = array();
 
 	foreach ( $taxonomies as $taxonomy ) {
-		if ( ! empty( $_GET[ $taxonomy ] ) ) {
+		if ( ! empty( $_GET[ 'selected_' . $taxonomy ] ) ) {
 			$tax_query[] = array(
 				'taxonomy' => $taxonomy,
 				'field'    => 'slug',
-				'terms'    => sanitize_text_field( $_GET[ $taxonomy ] ),
+				'terms'    => sanitize_text_field( $_GET[ 'selected_' . $taxonomy ] ),
 			);
 		}
 	}

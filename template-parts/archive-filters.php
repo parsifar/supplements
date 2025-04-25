@@ -42,6 +42,11 @@ $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] )
 		'product-form'        => 'Product Form',
 	);
 
+	// Remove 'supplement-category' if we're on a category archive page.
+	if ( is_tax( 'supplement-category' ) ) {
+		unset( $taxonomies['supplement-category'] );
+	}
+
 	foreach ( $taxonomies as $taxonomy => $label ) :
 		$terms = get_terms(
 			array(
@@ -49,14 +54,15 @@ $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] )
 				'hide_empty' => true,
 			)
 		);
-		if ( ! empty( $terms ) ) :
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
 			?>
 		<div class="filter-group select-wrapper">
 			<label for="<?php echo esc_attr( $taxonomy ); ?>" class="filter-label"><?php echo esc_html( $label ); ?></label>
-			<select name="<?php echo esc_attr( $taxonomy ); ?>" id="<?php echo esc_attr( $taxonomy ); ?>" class="filter-select">
+			<select name="<?php echo 'selected_' . esc_attr( $taxonomy ); ?>" id="<?php echo esc_attr( $taxonomy ); ?>" class="filter-select">
 				<option value="">All <?php echo esc_html( $label ); ?></option>
 				<?php foreach ( $terms as $term ) : ?>
-					<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $_GET[ $taxonomy ] ?? '', $term->slug ); ?>>
+					<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $_GET[ 'selected_' . $taxonomy ] ?? '', $term->slug ); ?>>
 						<?php echo esc_html( $term->name ); ?>
 					</option>
 				<?php endforeach; ?>
@@ -101,8 +107,19 @@ $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] )
 		</select>
 	</div>
 
+	<?php
+	// Check if we're on the category archive page.
+	if ( is_tax( 'supplement-category' ) ) {
+		// On category archive, reset filters but keep the category in the URL.
+		$reset_url = remove_query_arg( array( 'selected_brand', 'selected_certification', 'selected_dietary-tag', 'selected_product-form', 'max_price', 'max_pps', 'min_rating', 'sort' ) );
+	} else {
+		// On the main archive page, just go to the main supplement archive.
+		$reset_url = get_post_type_archive_link( 'supplement' );
+	}
+	?>
+
 	<div class="filter-actions">
 		<button type="submit" class="btn btn-secondary small">Apply Filters</button>
-		<a href="<?php echo get_post_type_archive_link( 'supplement' ); ?>" class="reset-link">Reset Filters</a>
+		<a href="<?php echo esc_url( $reset_url ); ?>" class="reset-link">Reset Filters</a>
 	</div>
 </form>
