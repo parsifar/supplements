@@ -5,8 +5,13 @@
 <main class="supplements-main">
 
 	<header class="supplements-header">
-		<h1 class="archive-title"><?php post_type_archive_title(); ?></h1>
-		<p class="archive-subtitle">Browse all supplements</p>
+		<?php if ( is_tax( 'supplement-category' ) ) : ?>
+			<h1 class="archive-title"><?php single_term_title(); ?></h1>
+			<p class="archive-subtitle">Browse supplements in this category</p>
+		<?php else : ?>
+			<h1 class="archive-title"><?php post_type_archive_title(); ?></h1>
+			<p class="archive-subtitle">Browse all supplements</p>
+		<?php endif; ?>
 	</header>
 
 	<!-- MOBILE FILTER TOGGLE BUTTON -->
