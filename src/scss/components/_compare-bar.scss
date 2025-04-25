@@ -1,0 +1,15 @@
+@use "../base/variables" as *;
+
+.compare-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: none;
+  z-index: 50;
+}
+
+.compare-link {
+  padding: 1rem;
+  border-radius: 0;
+}

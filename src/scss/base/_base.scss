@@ -1,6 +1,13 @@
 @use "variables" as *;
 
 // Astra resets
+body.ast-separate-container,
+body.ast-plain-container {
+  background-color: $color-light;
+}
+.site-content .ast-container {
+  display: block;
+}
 p {
   margin-bottom: 1rem;
 }

@@ -15,8 +15,8 @@
 	</header>
 
 	<!-- MOBILE FILTER TOGGLE BUTTON -->
-	<button class="mobile-filter-toggle" onclick="document.querySelector('.filters-sidebar').classList.toggle('open')">
-		Filter Results
+	<button class="mobile-filter-toggle btn btn-primary" onclick="document.querySelector('.filters-sidebar').classList.toggle('open')">
+		Show Filter
 	</button>
 
 	<div class="supplements-layout">
@@ -62,7 +62,7 @@
 </main>
 
 <div id="compare-bar" class="compare-bar">
-	<a id="compare-link" href="#" class="compare-link">Compare (<span id="compare-count">0</span>)</a>
+	<a id="compare-link" href="#" class="compare-link btn btn-primary">Compare (<span id="compare-count">0</span>)</a>
 </div>
 
 <script>
