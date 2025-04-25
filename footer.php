@@ -33,13 +33,13 @@
 <div id="compare-bar" class="compare-bar" style="display:none;">
 	<p id="compare-message" class="compare-message">0 products selected for comparison</p>
 	<div class="compare-controls">
-		<button id="toggle-compare-list" class="toggle-btn">Show selected products</button>
-		<button id="remove-all" class="remove-all-btn">Remove All</button>
+		<a id="compare-link" href="#" class="compare-link btn btn-primary">Compare selected products</a>
+		<button id="toggle-compare-list" class="toggle-btn btn btn-secondary small">Show selected products</button>
+		<button id="remove-all" class="remove-all-btn btn btn-secondary small">Remove All</button>
 	</div>
 	<div id="compare-list-wrapper" class="compare-list-wrapper">
 		<ul id="compare-list" class="compare-list"></ul>
 	</div>
-	<a id="compare-link" href="#" class="compare-link btn btn-primary">Compare</a>
 </div>
 
 
