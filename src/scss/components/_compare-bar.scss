@@ -5,11 +5,78 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  display: none;
-  z-index: 50;
-}
-
-.compare-link {
+  background: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
-  border-radius: 0;
+  z-index: 1000;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  .compare-message {
+    margin: 0 0 0.5rem;
+    font-weight: bold;
+  }
+
+  .compare-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .toggle-btn,
+  .remove-all-btn {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #eee;
+    border-radius: 5px;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
+  .compare-list-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .compare-list-wrapper.open {
+    max-height: 200px; // or higher depending on needs
+  }
+
+  .compare-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+
+    li {
+      background: #f2f2f2;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      position: relative;
+
+      button {
+        background: none;
+        border: none;
+        color: red;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .compare-link {
+    display: inline-block;
+  }
 }

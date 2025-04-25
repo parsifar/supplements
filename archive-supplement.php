@@ -61,40 +61,40 @@
 	</div>
 </main>
 
-<div id="compare-bar" class="compare-bar">
+<!-- <div id="compare-bar" class="compare-bar">
 	<a id="compare-link" href="#" class="compare-link btn btn-primary">Compare (<span id="compare-count">0</span>)</a>
-</div>
+</div> -->
 
 <script>
-	const maxCompare = 4;
-	const compareBar = document.getElementById('compare-bar');
-	const compareLink = document.getElementById('compare-link');
-	const compareCount = document.getElementById('compare-count');
-	const checkboxes = document.querySelectorAll('.compare-checkbox');
-	let selectedIds = [];
+	// const maxCompare = 4;
+	// const compareBar = document.getElementById('compare-bar');
+	// const compareLink = document.getElementById('compare-link');
+	// const compareCount = document.getElementById('compare-count');
+	// const checkboxes = document.querySelectorAll('.compare-checkbox');
+	// let selectedIds = [];
 
-	function updateUI() {
-		compareCount.textContent = selectedIds.length;
-		compareBar.style.display = selectedIds.length > 0 ? 'block' : 'none';
-		compareLink.href = `/compare/?ids=${selectedIds.join(',')}`;
-	}
+	// function updateUI() {
+	// 	compareCount.textContent = selectedIds.length;
+	// 	compareBar.style.display = selectedIds.length > 0 ? 'block' : 'none';
+	// 	compareLink.href = `/compare/?ids=${selectedIds.join(',')}`;
+	// }
 
-	checkboxes.forEach(box => {
-		box.addEventListener('change', () => {
-			const id = box.value;
-			if (box.checked) {
-				if (selectedIds.length < maxCompare) {
-					selectedIds.push(id);
-				} else {
-					box.checked = false;
-					alert(`You can only compare up to ${maxCompare} supplements.`);
-				}
-			} else {
-				selectedIds = selectedIds.filter(i => i !== id);
-			}
-			updateUI();
-		});
-	});
+	// checkboxes.forEach(box => {
+	// 	box.addEventListener('change', () => {
+	// 		const id = box.value;
+	// 		if (box.checked) {
+	// 			if (selectedIds.length < maxCompare) {
+	// 				selectedIds.push(id);
+	// 			} else {
+	// 				box.checked = false;
+	// 				alert(`You can only compare up to ${maxCompare} supplements.`);
+	// 			}
+	// 		} else {
+	// 			selectedIds = selectedIds.filter(i => i !== id);
+	// 		}
+	// 		updateUI();
+	// 	});
+	// });
 </script>
 
 <?php get_footer(); ?>

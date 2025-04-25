@@ -114,7 +114,7 @@
 
 	<div class="card-footer">
 		<label class="compare-checkbox-label">
-			<input type="checkbox" class="compare-checkbox" value="<?php the_ID(); ?>">
+			<input type="checkbox" class="compare-checkbox" value="<?php the_ID(); ?>" data-title="<?php the_title_attribute(); ?>">
 			Compare
 		</label>
 
