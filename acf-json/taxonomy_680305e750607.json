@@ -7,7 +7,7 @@
     "object_type": [
         "supplement"
     ],
-    "advanced_configuration": 0,
+    "advanced_configuration": 1,
     "import_source": "",
     "import_date": "",
     "labels": {
@@ -45,7 +45,7 @@
         "assign_terms": "edit_posts"
     },
     "public": 1,
-    "publicly_queryable": 1,
+    "publicly_queryable": 0,
     "hierarchical": 0,
     "show_ui": 1,
     "show_in_menu": 1,
@@ -62,7 +62,7 @@
         "with_front": "1",
         "rewrite_hierarchical": "0"
     },
-    "query_var": "post_type_key",
+    "query_var": "taxonomy_key",
     "query_var_name": "",
     "default_term": {
         "default_term_enabled": "0"
@@ -71,5 +71,5 @@
     "meta_box": "default",
     "meta_box_cb": "",
     "meta_box_sanitize_cb": "",
-    "modified": 1745170091
+    "modified": 1745546165
 }
