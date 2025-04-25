@@ -563,6 +563,53 @@ input[type=range]:focus::-moz-range-track {
   color: white;
 }
 
+.site-footer {
+  background-color: #111827;
+  color: #fff;
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
+}
+.site-footer .footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+.site-footer .footer-logo a {
+  display: inline-block;
+}
+.site-footer .footer-logo a img {
+  max-height: 60px;
+  width: auto;
+}
+.site-footer .footer-logo a .site-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.site-footer .footer-nav ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.site-footer .footer-nav ul li a {
+  text-decoration: none;
+  color: white;
+}
+.site-footer .footer-nav ul li a:hover {
+  text-decoration: underline;
+}
+.site-footer .footer-copy {
+  flex-basis: 100%;
+  text-align: center;
+  margin-top: 1rem;
+  color: #eee;
+}
+
 .supplements-layout {
   display: flex;
   gap: 2rem;
