@@ -105,6 +105,16 @@ p {
   color: $body-text-color;
 }
 
+.inline-link {
+  display: inline-block;
+  color: $color-primary;
+  font-weight: 600;
+
+  &:hover {
+    color: $body-text-color;
+  }
+}
+
 // Utility classes
 .text-tiny {
   font-size: 0.75rem;
