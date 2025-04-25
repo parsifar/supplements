@@ -109,7 +109,7 @@
 				alert(`You can only compare up to ${maxCompare} products.`);
 			}
 		} else {
-			selectedIds = selectedIds.filter(i => i !== id);
+			selectedIds = selectedIds.filter(i => i !== String(id));
 			localStorage.removeItem(`compareTitle-${id}`);
 		}
 		saveState();
@@ -122,8 +122,9 @@
 	});
 
 	removeAllBtn.addEventListener('click', () => {
+		const oldIds = [...selectedIds]; // clone before clearing
 		selectedIds = [];
-		selectedIds.forEach(id => localStorage.removeItem(`compareTitle-${id}`));
+		oldIds.forEach(id => localStorage.removeItem(`compareTitle-${id}`));
 		saveState();
 		updateUI();
 		updateCheckboxes();

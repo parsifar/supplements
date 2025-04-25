@@ -2,11 +2,10 @@
 /* Template Name: Compare Page */
 get_header();
 
+
 function get_selected_ids() {
 	if ( isset( $_GET['ids'] ) ) {
 		return array_filter( array_map( 'absint', explode( ',', $_GET['ids'] ) ) );
-	} elseif ( isset( $_COOKIE['compare_supplements'] ) ) {
-		return array_filter( array_map( 'absint', explode( ',', $_COOKIE['compare_supplements'] ) ) );
 	}
 	return array();
 }
@@ -27,7 +26,14 @@ $query = new WP_Query(
 	)
 );
 
-echo "<script>localStorage.setItem('compare_ids', '" . implode( ',', $ids ) . "');</script>";
+// Sync localStorage with URL on page load
+echo '<script>localStorage.setItem("compareIds", ' . json_encode( json_encode( array_map( 'strval', $ids ) ) ) . ');</script>';
+
+
+
+
+
+
 
 $ingredient_map = array();
 foreach ( $query->posts as $post ) {
@@ -217,47 +223,41 @@ uasort(
 </div>
 
 <script>
+	// Sync localStorage -> URL (if user navigated here directly)
+	const localIds = localStorage.getItem('compareIds');
 	const urlParams = new URLSearchParams(window.location.search);
-	let activeIds = urlParams.get('ids');
+	let urlIds = urlParams.get('ids');
 
-	// If the URL doesn't contain ?ids=, try to get it from the cookie
-	if (!activeIds) {
-	const cookieValue = document.cookie
-		.split('; ')
-		.find(row => row.startsWith('compare_supplements='));
-
-	if (cookieValue) {
-		activeIds = cookieValue.split('=')[1];
-		if (activeIds) {
-		// Update the URL without reloading the page
-		urlParams.set('ids', activeIds);
+	// Only set the URL if there's no existing `ids` parameter and if `localIds` is available
+	if (!urlIds && localIds) {
+		const idsArray = JSON.parse(localIds);  // Parse the local storage value to get an array
+		urlParams.set('ids', idsArray.join(',')); // Join the array into a comma-separated string for the URL
 		const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-		window.history.replaceState({}, '', newUrl);
-		}
-	}
+		window.history.replaceState({}, '', newUrl); // Update the URL without refreshing the page
 	}
 
-	// If we have active IDs (either from URL or cookie), store them
-	if (activeIds) {
-	localStorage.setItem('compare_ids', activeIds);
-	document.cookie = 'compare_supplements=' + activeIds + ';path=/;max-age=31536000';
-	}
 
-	// Remove supplement functionality
+	// Remove a product from comparison
 	document.querySelectorAll('.compare__remove-btn').forEach(btn => {
-	btn.addEventListener('click', function () {
+		btn.addEventListener('click', function () {
 		const id = this.getAttribute('data-id');
-		const params = new URLSearchParams(window.location.search);
-		const ids = (params.get('ids') || '').split(',').map(Number).filter(n => n && n !== parseInt(id));
-		localStorage.setItem('compare_ids', ids.join(','));
+		let ids = JSON.parse(localStorage.getItem('compareIds') || '[]').filter(n => n !== id);
+
+		localStorage.setItem('compareIds', JSON.stringify(ids));
+
+		// Clean up title
+		localStorage.removeItem(`compareTitle-${id}`);
+
 		if (ids.length) {
-		window.location.search = '?ids=' + ids.join(',');
+			window.location.search = '?ids=' + ids.join(',');
 		} else {
-		window.location.href = window.location.pathname;
+			window.location.href = window.location.pathname;
 		}
 	});
-	});
 
+	});
 </script>
+
+
 
 <?php get_footer(); ?>
