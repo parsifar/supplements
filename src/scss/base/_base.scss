@@ -15,3 +15,11 @@ p {
 table {
   margin: 0;
 }
+
+button {
+  box-shadow: none;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius;
+  font-size: 1rem;
+  font-weight: 600;
+}

@@ -159,6 +159,14 @@ table {
   margin: 0;
 }
 
+button {
+  box-shadow: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 .btn {
   display: flex;
   align-items: center;
@@ -966,96 +974,95 @@ body.single-supplement .ingredient-breakdown .ingredient-table .text-muted {
 body.page-template-compare-page-template #compare-bar {
   bottom: -100%;
 }
-
-.compare {
-  flex-grow: 1;
+body.page-template-compare-page-template .compare {
   padding-block: 2rem;
-  margin: 0 auto;
 }
-.compare__no-items {
+body.page-template-compare-page-template .compare__no-items {
   text-align: center;
-  padding: 2rem;
-  color: #666;
+  padding: 4rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  font-size: 2rem;
 }
-.compare__title {
+@media (max-width: 768px) {
+  body.page-template-compare-page-template .compare__no-items {
+    font-size: 1.75rem;
+  }
+}
+body.page-template-compare-page-template .compare__title {
   font-size: 1.75rem;
-  font-weight: bold;
   margin-bottom: 2rem;
 }
-.compare__table-wrapper {
+body.page-template-compare-page-template .compare__table-wrapper {
   overflow-x: auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
   background: #fff;
 }
-.compare__table {
+body.page-template-compare-page-template .compare__table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
   table-layout: auto;
 }
-.compare__table th, .compare__table td {
+body.page-template-compare-page-template .compare__table th, body.page-template-compare-page-template .compare__table td {
   padding: 0.5rem;
-  border: 1px solid #eee;
+  border: 1px solid #e5e7eb;
   vertical-align: middle;
 }
-.compare__attribute-header, .compare__attribute {
+body.page-template-compare-page-template .compare__attribute-header, body.page-template-compare-page-template .compare__attribute {
   text-align: left;
-  background-color: #fafafa;
+  background-color: #f9fafb;
   font-weight: 600;
   white-space: nowrap;
   position: sticky;
   left: 0;
   z-index: 1;
 }
-.compare__ingredient-heading-row {
-  background-color: #eef1f6;
+body.page-template-compare-page-template .compare__ingredient-heading-row {
+  background-color: #f9fafb;
   font-weight: 600;
 }
-.compare__ingredient-heading-row td {
+body.page-template-compare-page-template .compare__ingredient-heading-row td {
   padding: 0.75rem;
 }
-.compare .sticky-left {
+body.page-template-compare-page-template .compare .sticky-left {
   position: sticky;
   left: 0;
-  background-color: #eef1f6;
-  z-index: 2;
+  background-color: #f9fafb;
 }
-.compare__ingredient-heading-spacer {
-  background-color: #eef1f6;
+body.page-template-compare-page-template .compare__ingredient-heading-spacer {
+  background-color: #f9fafb;
 }
-.compare__product-header-content {
+body.page-template-compare-page-template .compare__product-header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
 }
-.compare__product-link {
-  color: #0056b3;
-  text-decoration: none;
+body.page-template-compare-page-template .compare__product-link {
+  font-size: 1.125rem;
   text-align: left;
 }
-.compare__product-link:hover {
-  text-decoration: underline;
-}
-.compare__remove-btn {
+body.page-template-compare-page-template .compare__remove-btn {
   font-size: 0.75rem;
-  color: #d00;
-  text-decoration: underline;
   background: none;
-  border: none;
   cursor: pointer;
 }
-.compare__product-image {
-  width: 80px;
-  height: 80px;
+body.page-template-compare-page-template .compare__remove-btn:hover {
+  color: #ef4444;
+  text-decoration: underline;
+}
+body.page-template-compare-page-template .compare__product-image {
+  width: 100px;
+  height: 100px;
   object-fit: contain;
-  background: #fff;
   padding: 4px;
 }
-.compare__image-placeholder {
-  width: 80px;
-  height: 80px;
+body.page-template-compare-page-template .compare__image-placeholder {
+  width: 100px;
+  height: 100px;
   background: #f0f0f0;
   display: flex;
   align-items: center;
@@ -1063,48 +1070,17 @@ body.page-template-compare-page-template #compare-bar {
   color: #bbb;
   font-size: 0.75rem;
 }
-.compare__ingredient-heading-row {
-  background: #f8f8f8;
+body.page-template-compare-page-template .compare__ingredient-row td {
+  padding-block: 0.25rem;
+}
+body.page-template-compare-page-template .compare__highlight {
+  background: #eaf3ea;
+  color: #0c865e;
   font-weight: bold;
 }
-.compare__tooltip {
-  position: relative;
-}
-.compare__tooltip:hover .compare__tooltip-content {
-  display: block;
-}
-.compare__tooltip-content {
-  display: none;
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  background: #000;
-  color: #fff;
-  padding: 0.5rem;
-  font-size: 0.75rem;
-  width: 250px;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  z-index: 10;
-}
-.compare__highlight {
-  background: #ebf8eb;
-  font-weight: bold;
-}
-.compare__buy-btn {
-  background: #007bff;
-  color: #fff;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  text-decoration: none;
-  display: inline-block;
-}
-.compare__buy-btn:hover {
-  background: #0056b3;
-}
-.compare tr.compare__ingredient-row td {
-  padding-block: 0;
+body.page-template-compare-page-template .compare__buy-btn {
+  max-width: 200px;
+  margin: auto;
 }
 
 /*# sourceMappingURL=style.css.map */

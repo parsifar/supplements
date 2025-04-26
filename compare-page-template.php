@@ -82,7 +82,7 @@ uasort(
 			<?php foreach ( $query->posts as $post ) : ?>
 			<th class="compare__product-header">
 				<div class="compare__product-header-content">
-				<a href="<?php echo get_permalink( $post ); ?>" class="compare__product-link">
+				<a href="<?php echo get_permalink( $post ); ?>" class="compare__product-link  inline-link">
 					<?php echo esc_html( $post->post_title ); ?>
 				</a>
 				<button class="compare__remove-btn" data-id="<?php echo esc_attr( $post->ID ); ?>">Remove</button>
@@ -180,13 +180,11 @@ uasort(
 			?>
 			<tr class="compare__ingredient-row">
 				<td class="compare__attribute compare__ingredient-name">
-					<span class="compare__tooltip">
-					<a href="<?php echo get_permalink( $ingredient_id ); ?>" class="compare__product-link">
-						<?php echo esc_html( $data['name'] ); ?>
-					</a>
-					<span class="compare__tooltip-content">
-						<?php echo esc_html( get_the_excerpt( $ingredient_id ) ?: 'No description available' ); ?>
-					</span>
+					<span class="tooltip-wrapper">
+						<a href="<?php echo get_permalink( $ingredient_id ); ?>" class="ingredient-link inline-link ">
+							<?php echo esc_html( $data['name'] ); ?>
+						</a>
+						<span class="tooltip-text"><?php echo esc_html( get_the_excerpt( $ingredient_id ) ?: 'No description available' ); ?></span>
 					</span>
 				</td>
 
@@ -210,7 +208,7 @@ uasort(
 				?>
 			<td>
 				<?php if ( $url ) : ?>
-				<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="compare__buy-btn">Buy on Amazon</a>
+				<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="compare__buy-btn btn btn-primary">View on Amazon</a>
 				<?php else : ?>
 				—
 				<?php endif; ?>
