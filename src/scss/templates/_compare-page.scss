@@ -1,3 +1,10 @@
+body.page-template-compare-page-template {
+  //hide the compare bar on the comparison page
+  #compare-bar {
+    bottom: -100%;
+  }
+}
+
 .compare {
   flex-grow: 1;
   padding-block: 2rem;

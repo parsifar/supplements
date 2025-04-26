@@ -963,6 +963,10 @@ body.single-supplement .ingredient-breakdown .ingredient-table .text-muted {
   font-style: italic;
 }
 
+body.page-template-compare-page-template #compare-bar {
+  bottom: -100%;
+}
+
 .compare {
   flex-grow: 1;
   padding-block: 2rem;
