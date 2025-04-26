@@ -1,0 +1,43 @@
+@use "../base/variables" as *;
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+
+  .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    background-color: $color-dark;
+    color: #fff;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-radius: $radius;
+    font-size: 0.875rem;
+    white-space: normal;
+    word-break: break-word;
+    min-width: 300px;
+    max-width: 500px;
+    position: absolute;
+    bottom: 125%;
+    left: 0;
+    z-index: 10;
+
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 10%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: $color-dark transparent transparent transparent;
+    }
+  }
+
+  &:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+}

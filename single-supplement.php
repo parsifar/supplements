@@ -181,9 +181,12 @@
 								<tr>
 									<td>
 										<?php if ( $ingredient ) : ?>
-										<a href="<?php echo esc_url( get_permalink( $ingredient ) ); ?>" class="ingredient-link inline-link ">
-											<?php echo esc_html( get_the_title( $ingredient ) ); ?>
-										</a>
+											<span class="tooltip-wrapper">
+												<a href="<?php echo esc_url( get_permalink( $ingredient ) ); ?>" class="ingredient-link inline-link ">
+													<?php echo esc_html( get_the_title( $ingredient ) ); ?>
+												</a>
+												<span class="tooltip-text"><?php echo esc_html( get_the_excerpt( $ingredient ) ?: 'No description available' ); ?></span>
+											</span>
 										<?php else : ?>
 										<span class="text-muted italic">Unknown</span>
 										<?php endif; ?>
