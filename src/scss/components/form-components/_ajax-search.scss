@@ -1,51 +1,64 @@
 @use "../../base/variables" as *;
 
-#supplement-ajax-search {
+.supplement-search-wrapper {
   position: relative;
   margin-bottom: 2rem;
-}
 
-#supplement-search-input {
-  border: 1px solid $color-border;
-  border-radius: $radius;
-  color: $body-text-color;
-  font-size: $font-size-lg;
-  height: unset;
-}
-#supplement-search-results {
-  position: absolute;
-  background: #fff;
-  width: 100%;
-  z-index: 1000;
-  overflow: hidden;
-  border-radius: $radius;
-
-  &:has(ul, p) {
-    border: 1px solid $color-primary;
+  #supplement-search {
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    color: $body-text-color;
+    font-size: $font-size-lg;
+    height: unset;
   }
-}
 
-#supplement-search-results ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+  #supplement-search-clear {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+  }
 
-#supplement-search-results p {
-  padding: 10px;
-  margin-bottom: 0;
-  font-weight: bold;
-}
-#supplement-search-results li {
-  padding: 10px;
-  border-bottom: 1px solid $color-border;
-}
+  #supplement-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid $color-primary;
+    border-radius: $radius;
+    display: none;
+    z-index: 99;
+    overflow: hidden;
+  }
 
-#supplement-search-results li a {
-  text-decoration: none;
-  color: $color-primary;
-}
+  #supplement-search-results ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-#supplement-search-results li:hover {
-  background-color: $color-light-blue;
+  #supplement-search-results p {
+    padding: 10px;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+  #supplement-search-results li {
+    padding: 10px;
+    border-bottom: 1px solid $color-border;
+  }
+
+  #supplement-search-results li a {
+    text-decoration: none;
+    color: $color-primary;
+  }
+
+  #supplement-search-results li:hover {
+    background-color: $color-light-blue;
+  }
 }

@@ -31,10 +31,13 @@
 
 		<section class="supplements-content">
 
-			<div id="supplement-ajax-search">
-				<input type="text" id="supplement-search-input" placeholder="Search supplements..." autocomplete="off">
+			<!-- Ajax Search -->
+			<div class="supplement-search-wrapper">
+				<input type="text" id="supplement-search" placeholder="Search supplements...">
+				<button type="button" id="supplement-search-clear">×</button>
 				<div id="supplement-search-results"></div>
 			</div>
+
 
 
 			<?php if ( have_posts() ) : ?>
