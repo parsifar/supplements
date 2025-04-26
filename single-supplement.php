@@ -17,6 +17,13 @@
 					<?php if ( has_post_thumbnail() ) : ?>
 						<div class="supplement-thumbnail">
 							<?php the_post_thumbnail( 'full', array( 'class' => 'thumbnail-image' ) ); ?>
+							
+							<div class="compare-checkbox-wrapper">
+								<label class="compare-checkbox-label">
+									<input type="checkbox" class="compare-checkbox" value="<?php the_ID(); ?>" data-title="<?php the_title_attribute(); ?>">
+									Compare
+								</label>
+							</div>
 						</div>
 					<?php endif; ?>
 

@@ -36,6 +36,7 @@ body.single-supplement {
     flex-basis: 40%;
     aspect-ratio: 1;
     overflow: hidden;
+    position: relative;
 
     @media (max-width: $breakpoint-md) {
       max-width: 400px;
@@ -45,6 +46,36 @@ body.single-supplement {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+    }
+
+    .compare-checkbox-wrapper {
+      background-color: $color-light;
+      border: 1px solid $color-border;
+      border-radius: 100px;
+      box-shadow: $shadow;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background-color: $color-light-blue;
+      }
+
+      label {
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+
+        input {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
     }
   }
 
@@ -148,15 +179,6 @@ body.single-supplement {
       td {
         padding: 0.5rem;
         border-top: 1px solid $color-border;
-      }
-
-      .ingredient-link {
-        // color: $color-primary;
-        // text-decoration: none;
-
-        // &:hover {
-        //   text-decoration: underline;
-        // }
       }
 
       .text-muted {
