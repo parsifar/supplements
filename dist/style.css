@@ -320,11 +320,14 @@ input[type=range]:focus::-moz-range-track {
   margin-bottom: 2rem;
 }
 .supplement-search-wrapper #supplement-search {
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
   color: #111827;
   font-size: 1.125rem;
   height: unset;
+}
+.supplement-search-wrapper #supplement-search:focus {
+  border: 2px solid #2563eb;
 }
 .supplement-search-wrapper #supplement-search-clear {
   display: none;

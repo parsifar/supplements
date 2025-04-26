@@ -5,11 +5,15 @@
   margin-bottom: 2rem;
 
   #supplement-search {
-    border: 1px solid $color-border;
+    border: 2px solid $color-border;
     border-radius: $radius;
     color: $body-text-color;
     font-size: $font-size-lg;
     height: unset;
+
+    &:focus {
+      border: 2px solid $color-primary;
+    }
   }
 
   #supplement-search-clear {
