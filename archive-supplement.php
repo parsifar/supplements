@@ -1,7 +1,5 @@
 <?php get_header(); ?>
 
-
-
 <main class="supplements-main">
 
 	<header class="supplements-header">
@@ -32,6 +30,13 @@
 		</aside>
 
 		<section class="supplements-content">
+
+			<div id="supplement-ajax-search">
+				<input type="text" id="supplement-search-input" placeholder="Search supplements..." autocomplete="off">
+				<div id="supplement-search-results"></div>
+			</div>
+
+
 			<?php if ( have_posts() ) : ?>
 				<div class="supplement-grid">
 					<?php
@@ -61,40 +66,5 @@
 	</div>
 </main>
 
-<!-- <div id="compare-bar" class="compare-bar">
-	<a id="compare-link" href="#" class="compare-link btn btn-primary">Compare (<span id="compare-count">0</span>)</a>
-</div> -->
-
-<script>
-	// const maxCompare = 4;
-	// const compareBar = document.getElementById('compare-bar');
-	// const compareLink = document.getElementById('compare-link');
-	// const compareCount = document.getElementById('compare-count');
-	// const checkboxes = document.querySelectorAll('.compare-checkbox');
-	// let selectedIds = [];
-
-	// function updateUI() {
-	// 	compareCount.textContent = selectedIds.length;
-	// 	compareBar.style.display = selectedIds.length > 0 ? 'block' : 'none';
-	// 	compareLink.href = `/compare/?ids=${selectedIds.join(',')}`;
-	// }
-
-	// checkboxes.forEach(box => {
-	// 	box.addEventListener('change', () => {
-	// 		const id = box.value;
-	// 		if (box.checked) {
-	// 			if (selectedIds.length < maxCompare) {
-	// 				selectedIds.push(id);
-	// 			} else {
-	// 				box.checked = false;
-	// 				alert(`You can only compare up to ${maxCompare} supplements.`);
-	// 			}
-	// 		} else {
-	// 			selectedIds = selectedIds.filter(i => i !== id);
-	// 		}
-	// 		updateUI();
-	// 	});
-	// });
-</script>
 
 <?php get_footer(); ?>
