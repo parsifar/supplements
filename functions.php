@@ -170,66 +170,49 @@ add_filter( 'get_meta_sql', 'cast_decimal_precision' );
 add_action( 'wp_ajax_supplement_ajax_search', 'supplement_ajax_search' );
 add_action( 'wp_ajax_nopriv_supplement_ajax_search', 'supplement_ajax_search' );
 
+add_action( 'wp_ajax_supplement_ajax_search', 'supplement_ajax_search' );
+add_action( 'wp_ajax_nopriv_supplement_ajax_search', 'supplement_ajax_search' );
+
 function supplement_ajax_search() {
 	$keyword         = sanitize_text_field( $_POST['keyword'] );
 	$category_filter = sanitize_text_field( $_POST['category_filter'] );
 
-	// Build the query
-	$args = array(
-		'post_type'      => 'supplement',
-		'posts_per_page' => 10,
-		's'              => $keyword,
+	// Build tax_query array
+	$tax_query = array(
+		'relation' => 'AND',
 	);
 
-	// Only add tax_query if we have a category to filter
+	// If filtering by supplement-category
 	if ( ! empty( $category_filter ) ) {
-		$args['tax_query'] = array(
-			array(
-				'taxonomy' => 'supplement-category',
-				'field'    => 'slug',
-				'terms'    => $category_filter,
-			),
+		$tax_query[] = array(
+			'taxonomy' => 'supplement-category',
+			'field'    => 'slug',
+			'terms'    => $category_filter,
 		);
 	}
 
+	// Add brand matching to the tax_query
+	$tax_query[] = array(
+		'taxonomy' => 'brand',
+		'field'    => 'name',  // search by brand name
+		'terms'    => $keyword,
+		'operator' => 'LIKE', // allow partial match
+	);
+
+	$args = array(
+		'post_type'      => 'supplement',
+		'posts_per_page' => 10,
+		'tax_query'      => $tax_query,
+		's'              => $keyword, // still search title normally
+	);
+
 	$query = new WP_Query( $args );
 
-	// Filter manually by brand taxonomy too
-	$matches = array();
-
 	if ( $query->have_posts() ) {
+		echo '<ul>';
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			$post_id = get_the_ID();
-
-			// Check if keyword matches brand term too
-			$brand_terms = wp_get_post_terms( $post_id, 'brand', array( 'fields' => 'names' ) );
-			$brand_match = false;
-
-			if ( ! empty( $brand_terms ) ) {
-				foreach ( $brand_terms as $brand_name ) {
-					if ( stripos( $brand_name, $keyword ) !== false ) {
-						$brand_match = true;
-						break;
-					}
-				}
-			}
-
-			// If title matches (WP default) or brand matches, add to matches
-			if ( stripos( get_the_title(), $keyword ) !== false || $brand_match ) {
-				$matches[] = array(
-					'title' => get_the_title(),
-					'link'  => get_permalink(),
-				);
-			}
-		}
-		wp_reset_postdata();
-	}
-
-	if ( ! empty( $matches ) ) {
-		echo '<ul>';
-		foreach ( $matches as $match ) {
-			echo '<li><a href="' . esc_url( $match['link'] ) . '">' . esc_html( $match['title'] ) . '</a></li>';
+			echo '<li><a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a></li>';
 		}
 		echo '</ul>';
 	} else {
