@@ -59,7 +59,7 @@ body.page-template-compare-page-template {
       font-weight: 600;
 
       td {
-        padding: 0.75rem;
+        padding-block: 0.75rem;
       }
     }
 
@@ -133,6 +133,13 @@ body.page-template-compare-page-template {
     &__buy-btn {
       max-width: 200px;
       margin: auto;
+    }
+
+    .rating-bar {
+      justify-content: flex-start;
+      .bar-wrapper {
+        max-width: 180px;
+      }
     }
   }
 }

@@ -162,9 +162,37 @@ uasort(
 		</tr>
 
 		<tr>
-			<td class="compare__attribute">Amazon Rating</td>
+			<td class="compare__attribute">Average Rating</td>
 			<?php foreach ( $query->posts as $post ) : ?>
-			<td><?php echo esc_html( get_field( 'amazon_rating', $post->ID ) ?: '—' ); ?></td>
+			<td>
+				<?php
+				$rating = get_field( 'amazon_rating' );
+				if ( $rating ) {
+					?>
+					<div class="rating-bar" data-rating="<?php echo esc_html( $rating ); ?>">
+						<div class="bar-label"><?php echo esc_html( $rating ); ?> out of 5</div>
+
+						<div class="bar-wrapper">
+							<div class="bar-bg">
+								<div class="bar-fill"></div>
+								<div class="bar-ticks">
+									<div class="segment" data-label="1"></div>
+									<div class="segment" data-label="2"></div>
+									<div class="segment" data-label="3"></div>
+									<div class="segment" data-label="4"></div>
+									<div class="segment last" data-label="5"></div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<?php
+				} else {
+					echo '-';
+				}
+				?>
+			</td>
 			<?php endforeach; ?>
 		</tr>
 

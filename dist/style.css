@@ -1025,7 +1025,7 @@ body.page-template-compare-page-template .compare__ingredient-heading-row {
   font-weight: 600;
 }
 body.page-template-compare-page-template .compare__ingredient-heading-row td {
-  padding: 0.75rem;
+  padding-block: 0.75rem;
 }
 body.page-template-compare-page-template .compare .sticky-left {
   position: sticky;
@@ -1081,6 +1081,12 @@ body.page-template-compare-page-template .compare__highlight {
 body.page-template-compare-page-template .compare__buy-btn {
   max-width: 200px;
   margin: auto;
+}
+body.page-template-compare-page-template .compare .rating-bar {
+  justify-content: flex-start;
+}
+body.page-template-compare-page-template .compare .rating-bar .bar-wrapper {
+  max-width: 180px;
 }
 
 /*# sourceMappingURL=style.css.map */
