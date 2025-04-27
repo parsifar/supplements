@@ -3,7 +3,15 @@
 add_action(
 	'admin_menu',
 	function () {
-		add_menu_page( 'Amazon HTML Parser', 'Amazon Parser', 'manage_options', 'amazon-html-parser', 'amazon_html_parser_page' );
+		add_menu_page(
+			'Amazon HTML Parser',
+			'Amazon Parser',
+			'manage_options',
+			'amazon-html-parser',
+			'amazon_html_parser_page',
+			'dashicons-amazon',
+			60
+		);
 	}
 );
 
@@ -28,42 +36,73 @@ function amazon_html_parser_page() {
 				@$dom->loadHTML( $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 				$xpath = new DOMXPath( $dom );
 
-				$nodes = $xpath->query( "//div[contains(@class, 's-result-item') and @data-asin]" );
+				// Find all elements with a data-asin
+				$nodes = $xpath->query( "//div[@data-asin and @data-asin != '']" );
 
 				foreach ( $nodes as $node ) {
 					$asin = $node->getAttribute( 'data-asin' );
 					if ( ! $asin || isset( $products[ $asin ] ) ) {
-						continue; // skip empty or duplicate asins
+						continue;
 					}
 
-					// Title
+					// Try getting title
 					$titleNode = $xpath->query( './/h2//span', $node );
-					$title     = $titleNode->length ? trim( html_entity_decode( $titleNode->item( 0 )->textContent, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ) : '';
+					if ( $titleNode->length ) {
+						$title = trim( html_entity_decode( $titleNode->item( 0 )->textContent, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+					} else {
+						// Try Best Seller structure
+						$titleNode = $xpath->query( ".//div[contains(@class, 'p13n-sc-css-line-clamp-3')]", $node );
+						$title     = $titleNode->length ? trim( html_entity_decode( $titleNode->item( 0 )->textContent, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ) : '';
+					}
 
-					// Rating
+					// Try getting rating
 					$ratingNode = $xpath->query( ".//span[contains(@class, 'a-size-small') and contains(@class, 'a-color-base')]", $node );
-					$rating     = $ratingNode->length ? trim( $ratingNode->item( 0 )->textContent ) : '';
-
-					// Price
-					$wholePriceNode    = $xpath->query( ".//span[contains(@class,'a-price-whole')]", $node );
-					$fractionPriceNode = $xpath->query( ".//span[contains(@class,'a-price-fraction')]", $node );
-					$price             = '';
-					if ( $wholePriceNode->length ) {
-						$price = str_replace( array( '.', ',' ), '', trim( $wholePriceNode->item( 0 )->textContent ) ); // remove any commas or periods in whole part
-						if ( $fractionPriceNode->length ) {
-							$price .= '.' . trim( $fractionPriceNode->item( 0 )->textContent );
+					if ( $ratingNode->length ) {
+						$rating = trim( $ratingNode->item( 0 )->textContent );
+					} else {
+						// Try Best Seller structure
+						$ratingNode = $xpath->query( ".//span[contains(@class, 'a-icon-alt')]", $node );
+						if ( $ratingNode->length ) {
+							$rawRating = trim( $ratingNode->item( 0 )->textContent );
+							// Extract only the numeric part (e.g., "4.3" from "4.3 out of 5 stars")
+							if ( preg_match( '/[\d.]+/', $rawRating, $matches ) ) {
+								$rating = $matches[0];
+							} else {
+								$rating = '';
+							}
+						} else {
+							$rating = '';
 						}
 					}
 
-					// Only add if price and rating are present
-					if ( ! empty( $price ) && ! empty( $rating ) ) {
-						$products[ $asin ] = array(
-							'asin'   => $asin,
-							'title'  => $title,
-							'price'  => $price,
-							'rating' => $rating,
-						);
+					// Try getting price
+					$wholePriceNode    = $xpath->query( ".//span[contains(@class,'a-price-whole')]", $node );
+					$fractionPriceNode = $xpath->query( ".//span[contains(@class,'a-price-fraction')]", $node );
+					if ( $wholePriceNode->length ) {
+						$price = trim( str_replace( ',', '', $wholePriceNode->item( 0 )->textContent ) ); // Remove commas
+						if ( $fractionPriceNode->length ) {
+							$price .= '.' . trim( $fractionPriceNode->item( 0 )->textContent );
+						}
+					} else {
+						// Try Best Seller structure
+						$priceNode = $xpath->query( ".//span[contains(@class, 'p13n-sc-price')]", $node );
+						$price     = $priceNode->length ? trim( str_replace( array( '$', ',' ), '', $priceNode->item( 0 )->textContent ) ) : '';
 					}
+
+					// Clean up price (fix cases like 44..99)
+					$price = preg_replace( '/\.+/', '.', $price ); // Replace multiple dots with one
+
+					// Skip if no price or no rating
+					if ( empty( $price ) || empty( $rating ) ) {
+						continue;
+					}
+
+					$products[ $asin ] = array(
+						'asin'   => $asin,
+						'title'  => $title,
+						'price'  => $price,
+						'rating' => $rating,
+					);
 				}
 			}
 
