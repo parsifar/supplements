@@ -5,6 +5,8 @@
  * @package SuppPick
  */
 
+require_once 'update-price-script.php';
+
 add_action( 'wp_enqueue_scripts', 'astra_child_enqueue_styles' );
 function astra_child_enqueue_styles() {
 	wp_enqueue_style( 'child-style', get_stylesheet_directory_uri() . '/dist/style.css', array(), false, 'all' );
