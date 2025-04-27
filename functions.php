@@ -7,6 +7,7 @@
 
 require_once 'update-price-script.php';
 require_once 'amazon-html-parser.php';
+require_once 'product-info-viewer.php';
 
 add_action( 'wp_enqueue_scripts', 'astra_child_enqueue_styles' );
 function astra_child_enqueue_styles() {
