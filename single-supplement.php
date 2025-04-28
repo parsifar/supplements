@@ -187,6 +187,17 @@
 												</a>
 												<span class="tooltip-text"><?php echo esc_html( get_the_excerpt( $ingredient ) ?: 'No description available' ); ?></span>
 											</span>
+											<?php
+											if ( get_field( 'proprietary_blend', $ingredient ) ) {
+												?>
+													<span class="tooltip-wrapper">
+														<span>⚠️</span>
+														<span class="tooltip-text">Proprietary Blend: Exact ingredient amounts are not disclosed.</span>
+													</span>
+
+												<?php
+											}
+											?>
 										<?php else : ?>
 										<span class="text-muted italic">Unknown</span>
 										<?php endif; ?>
