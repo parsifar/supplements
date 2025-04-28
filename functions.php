@@ -181,12 +181,15 @@ function supplement_ajax_search() {
 	$keyword         = sanitize_text_field( $_POST['keyword'] );
 	$category_filter = sanitize_text_field( $_POST['category_filter'] );
 
-	// Build tax_query array
-	$tax_query = array(
-		'relation' => 'AND',
+	// Start with title/content search first
+	$args = array(
+		'post_type'      => 'supplement',
+		'posts_per_page' => 10,
+		's'              => $keyword,
 	);
 
-	// If filtering by supplement-category
+	// Apply category filter if needed
+	$tax_query = array();
 	if ( ! empty( $category_filter ) ) {
 		$tax_query[] = array(
 			'taxonomy' => 'supplement-category',
@@ -195,23 +198,64 @@ function supplement_ajax_search() {
 		);
 	}
 
-	// Add brand matching to the tax_query
-	$tax_query[] = array(
-		'taxonomy' => 'brand',
-		'field'    => 'name',  // search by brand name
-		'terms'    => $keyword,
-		'operator' => 'LIKE', // allow partial match
-	);
-
-	$args = array(
-		'post_type'      => 'supplement',
-		'posts_per_page' => 10,
-		'tax_query'      => $tax_query,
-		's'              => $keyword, // still search title normally
-	);
+	if ( ! empty( $tax_query ) ) {
+		$args['tax_query'] = $tax_query;
+	}
 
 	$query = new WP_Query( $args );
 
+	// If no posts found by title/content, search by brand
+	if ( ! $query->have_posts() ) {
+
+		// Find matching brand terms
+		$brand_terms = get_terms(
+			array(
+				'taxonomy'   => 'brand',
+				'hide_empty' => false,
+			)
+		);
+
+		$matching_brand_ids = array();
+
+		if ( ! empty( $brand_terms ) && ! is_wp_error( $brand_terms ) ) {
+			foreach ( $brand_terms as $brand_term ) {
+				if ( stripos( $brand_term->name, $keyword ) !== false ) {
+					$matching_brand_ids[] = $brand_term->term_id;
+				}
+			}
+		}
+
+		if ( ! empty( $matching_brand_ids ) ) {
+			// New query: search by brand
+			$args = array(
+				'post_type'      => 'supplement',
+				'posts_per_page' => 10,
+				'tax_query'      => array(
+					'relation' => 'AND',
+				),
+			);
+
+			// Re-apply category filter
+			if ( ! empty( $category_filter ) ) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'supplement-category',
+					'field'    => 'slug',
+					'terms'    => $category_filter,
+				);
+			}
+
+			// Add brand filter
+			$args['tax_query'][] = array(
+				'taxonomy' => 'brand',
+				'field'    => 'term_id',
+				'terms'    => $matching_brand_ids,
+			);
+
+			$query = new WP_Query( $args );
+		}
+	}
+
+	// Output results
 	if ( $query->have_posts() ) {
 		echo '<ul>';
 		while ( $query->have_posts() ) {
