@@ -221,6 +221,18 @@
 				</div>
 				<?php endif; ?>
 
+				<!-- OtherIngredients -->
+				<?php
+					$other_ingredients = get_field( 'other_ingredients' );
+				if ( ! empty( $other_ingredients ) ) {
+					?>
+					<div class="other-ingredients">
+						<h4>Other Ingredients</h4>
+						<?php echo esc_html( $other_ingredients ); ?>
+					</div>
+					<?php
+				}
+				?>
 					
 				
 
