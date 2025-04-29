@@ -399,9 +399,11 @@ input[type=range]:focus::-moz-range-track {
   height: 100%;
 }
 .supplement-card .image-wrapper {
+  aspect-ratio: 1;
   background: white;
   padding: 1rem;
   overflow: hidden;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -472,16 +474,11 @@ input[type=range]:focus::-moz-range-track {
 }
 .supplement-card .card-footer {
   padding: 1rem;
-  border-top: 1px solid #e5e7eb;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
-.supplement-card .compare-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+.supplement-card .card-footer .btn {
+  flex-grow: 1;
 }
 
 .rating-bar {
@@ -643,6 +640,33 @@ input[type=range]:focus::-moz-range-track {
 .tooltip-wrapper:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.compare-checkbox-wrapper {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 100px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: background 0.2s ease;
+}
+.compare-checkbox-wrapper:hover {
+  background-color: #d8e5ff;
+}
+.compare-checkbox-wrapper label {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.compare-checkbox-wrapper label input {
+  width: 1rem;
+  height: 1rem;
 }
 
 .compare-bar {
@@ -900,32 +924,6 @@ body.single-supplement .supplement-thumbnail .thumbnail-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-}
-body.single-supplement .supplement-thumbnail .compare-checkbox-wrapper {
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 100px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  transition: background 0.2s ease;
-}
-body.single-supplement .supplement-thumbnail .compare-checkbox-wrapper:hover {
-  background-color: #d8e5ff;
-}
-body.single-supplement .supplement-thumbnail .compare-checkbox-wrapper label {
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-body.single-supplement .supplement-thumbnail .compare-checkbox-wrapper label input {
-  width: 1rem;
-  height: 1rem;
 }
 body.single-supplement .supplement-meta {
   flex-basis: 50%;

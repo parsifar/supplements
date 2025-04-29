@@ -6,6 +6,12 @@
 				the_post_thumbnail( 'medium', array( 'class' => 'supplement-thumbnail' ) );
 			endif;
 			?>
+			<div class="compare-checkbox-wrapper">
+				<label class="compare-checkbox-label">
+					<input type="checkbox" class="compare-checkbox" value="<?php the_ID(); ?>" data-title="<?php the_title_attribute(); ?>">
+					Compare
+				</label>
+			</div>
 		</div>
 
 		<div class="card-content">
@@ -113,13 +119,8 @@
 	</a>
 
 	<div class="card-footer">
-		<label class="compare-checkbox-label">
-			<input type="checkbox" class="compare-checkbox" value="<?php the_ID(); ?>" data-title="<?php the_title_attribute(); ?>">
-			Compare
-		</label>
-
 		<?php if ( $affiliate = get_field( 'affiliate_url' ) ) : ?>
-			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn btn-primary small" target="_blank" rel="nofollow noopener">See on Amazon</a>
+			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn btn-primary small" target="_blank" rel="nofollow noopener">View on Amazon</a>
 		<?php endif; ?>
 	</div>
 </article>
