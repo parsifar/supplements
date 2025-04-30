@@ -82,20 +82,21 @@ function get_best_flavor_for_supplement( $supplement_id ) {
 
 
 /**
- * Caches key data from the "best" flavor post onto its parent supplement post.
+ * Updates a supplement's key ACF fields and featured image based on its best flavor.
  *
  * This function:
- * - Retrieves the best flavor for the given supplement using the get_best_flavor_for_supplement() function.
- * - Updates specific ACF fields on the parent supplement (price, price_per_serving, affiliate_url)
- *   using values from the selected flavor.
- * - Copies the featured image (thumbnail) from the flavor to the parent supplement, if available.
+ * - Deletes the cached transient related to the best flavor, forcing fresh evaluation.
+ * - Retrieves the current best flavor for the given supplement.
+ * - If a best flavor is found:
+ *   - Updates the parent supplement's ACF fields (`price`, `price_per_serving`, `affiliate_url`)
+ *     using values from the best flavor.
+ *   - Copies the featured image from the best flavor to the parent supplement.
  *
- * This caching mechanism improves performance and simplifies querying/sorting/filtering
- * by storing flavor-specific data directly on the supplement post.
- *
- * @param int $supplement_id The ID of the supplement post to update.
+ * @param int $supplement_id The ID of the parent supplement post to update.
  */
 function update_best_flavor_fields_from_function( $supplement_id ) {
+	delete_transient( 'best_flavor_' . $supplement_id );
+
 	$flavor = get_best_flavor_for_supplement( $supplement_id );
 
 	if ( ! $flavor ) {

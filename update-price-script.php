@@ -283,6 +283,9 @@ add_action(
 		update_post_meta( $supplement_id, 'last_update_date', current_time( 'Y-m-d' ) );
 		update_post_meta( $supplement_id, 'last_update_time', current_time( 'H:i:s' ) );
 
+		// reset the best flavor of this supplement
+		update_best_flavor_fields_from_function( $supplement_id );
+
 		wp_send_json_success( 'Updated ' . $update['post_title'] );
 	}
 );
