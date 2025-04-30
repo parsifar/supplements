@@ -224,7 +224,7 @@ add_action(
 		update_field( 'price', $update['new_price'], $update['post_id'] );
 		update_field( 'price_per_serving', $update['new_pps'], $update['post_id'] );
 		update_field( 'amazon_rating', $update['new_rating'], $update['post_id'] );
-		update_post_meta( $update['post_id'], '_last_price_update', current_time( 'mysql' ) );
+		update_post_meta( $update['post_id'], 'last_price_update', current_time( 'mysql' ) );
 
 		wp_send_json_success( 'Updated ' . $update['post_title'] );
 	}

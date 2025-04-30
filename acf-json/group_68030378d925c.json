@@ -205,70 +205,6 @@
             "append": ""
         },
         {
-            "key": "field_68040ed0b485b",
-            "label": "Price",
-            "name": "price",
-            "aria-label": "",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "min": "",
-            "max": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "step": "0.01",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_68040e7d066e7",
-            "label": "Price per serving",
-            "name": "price_per_serving",
-            "aria-label": "",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "min": "",
-            "max": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "step": "0.01",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_68030781a103c",
-            "label": "Affiliate URL",
-            "name": "affiliate_url",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "allow_in_bindings": 0,
-            "placeholder": ""
-        },
-        {
             "key": "field_6805310ecce6d",
             "label": "Amazon Rating",
             "name": "amazon_rating",
@@ -292,9 +228,55 @@
             "append": ""
         },
         {
-            "key": "field_680d677f7ec08",
-            "label": "asin",
-            "name": "asin",
+            "key": "field_6811881cd011e",
+            "label": "Price",
+            "name": "price",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "step": "0.01",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6811884b8d33d",
+            "label": "Price per serving",
+            "name": "price_per_serving",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "step": "0.01",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6811886a8d33e",
+            "label": "Affiliate URL",
+            "name": "affiliate_url",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -331,5 +313,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1745808085
+    "modified": 1745979519
 }

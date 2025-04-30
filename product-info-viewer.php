@@ -81,7 +81,7 @@ function render_product_info_viewer() {
 					$asin        = get_field( 'asin' );
 					$price       = get_field( 'price' );
 					$rating      = get_field( 'amazon_rating' );
-					$last_update = get_post_meta( get_the_ID(), '_last_price_update', true );
+					$last_update = get_post_meta( get_the_ID(), 'last_price_update', true );
 					?>
 					<tr>
 						<td><a href="<?php echo esc_url( get_permalink() ); ?>" target="_blank"><?php the_title(); ?></a></td>
