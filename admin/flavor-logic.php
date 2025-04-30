@@ -58,8 +58,6 @@ function get_best_flavor_for_supplement( $supplement_id ) {
 			$dateA = get_field( 'last_update_date', $a->ID );
 			$dateB = get_field( 'last_update_date', $b->ID );
 
-			error_log( $dateA . ' ' . $dateB );
-
 			if ( $dateA === $dateB ) {
 				$priceA = floatval( get_field( 'price', $a->ID ) );
 				$priceB = floatval( get_field( 'price', $b->ID ) );
@@ -72,9 +70,6 @@ function get_best_flavor_for_supplement( $supplement_id ) {
 	);
 
 	$selected_flavor = $flavors[0] ?? null;
-
-	error_log( get_the_ID() );
-	error_log( 'this ran ' . print_r( $flavors, 1 ) );
 
 	if ( $selected_flavor ) {
 
@@ -138,6 +133,7 @@ function update_best_flavor_fields_from_function( $supplement_id ) {
 add_action(
 	'acf/save_post',
 	function ( $post_id ) {
+		error_log( 'HOOK RAN flavor id: ' . $post_id );
 		if ( get_post_type( $post_id ) !== 'flavor' ) {
 			return;
 		}
@@ -151,6 +147,7 @@ add_action(
 
 		if ( $parent && is_array( $parent ) ) {
 			foreach ( $parent as $supplement ) {
+				error_log( 'HOOK RAN flavor id: ' . $post_id . ' supplement: ' . $supplement->ID );
 				delete_transient( 'best_flavor_' . $supplement->ID );
 
 				$best_flavor = get_best_flavor_for_supplement( $supplement->ID );

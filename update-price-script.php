@@ -28,8 +28,6 @@ add_action(
 				array(
 					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 					'nonce'   => wp_create_nonce( 'supplement_updater_ajax' ),
-					'updates' => get_option( 'supplement_update_data', array() ),
-					'total'   => count( get_option( 'supplement_update_data', array() ) ),
 				)
 			);
 			wp_enqueue_style( 'supplement-updater-style', get_stylesheet_directory_uri() . '/src/admin/supplement-updater.css' );
@@ -47,6 +45,7 @@ function render_supplement_updater_page() {
 			<?php
 			if ( isset( $_POST['cancel_update'] ) ) {
 				delete_option( 'supplement_update_data' );
+				delete_option( 'flavor_update_data' );
 				echo '<div class="notice notice-warning"><p>Update canceled.</p></div>';
 				show_upload_form();
 			} elseif ( isset( $_FILES['supplement_json'] ) && check_admin_referer( 'supplement_updater_action', 'supplement_updater_nonce' ) ) {
@@ -88,20 +87,29 @@ function analyze_uploaded_json( $file ) {
 		return;
 	}
 
-	$updates     = array();
-	$found_asins = array();
+	$supplement_updates = array();
+	$flavor_updates     = array();
+	$found_asins        = array();
 
+	// for each item in the json file find the flavor and its parent and populate the update arrays
 	foreach ( $supplements as $item ) {
 		if ( empty( $item['asin'] ) ) {
 			continue;
 		}
 
-		$asin  = trim( $item['asin'] );
-		$query = new WP_Query(
+		// get the asin, price and rating of the current item in the json.
+		$asin            = trim( $item['asin'] );
+		$new_price       = floatval( $item['price'] ?? 0 );
+		$clean_new_price = floatval( preg_replace( '/[^0-9\.]/', '', $new_price ) );
+		$new_rating      = floatval( $item['rating'] ?? 0 );
+
+		// find the flavor post with this asin.
+		$flavor_query = new WP_Query(
 			array(
-				'post_type'      => 'supplement',
-				'posts_per_page' => 1,
-				'meta_query'     => array(
+				'post_type'           => 'flavor',
+				'posts_per_page'      => 1,
+				'ignore_sticky_posts' => true,
+				'meta_query'          => array(
 					array(
 						'key'     => 'asin',
 						'value'   => $asin,
@@ -111,48 +119,65 @@ function analyze_uploaded_json( $file ) {
 			)
 		);
 
-		if ( $query->have_posts() ) {
-			$post = $query->posts[0];
+		// if found the flavor with the same asin.
+		if ( $flavor_query->have_posts() ) {
+			$flavor    = $flavor_query->posts[0];
+			$flavor_id = $flavor->ID;
 
-			$raw_new_price   = $item['price'];
-			$clean_new_price = floatval( preg_replace( '/[^0-9\.]/', '', $raw_new_price ) );
+			// get the flavors parent.
+			$parent    = get_field( 'parent_supplement', $flavor_id )[0];
+			$parent_id = $parent->ID ?? null;
+			// get the servings from parent.
+			$servings = floatval( get_field( 'servings_per_container', $parent_id ) );
 
-			// Get servings_per_container.
-			$servings = get_field( 'servings_per_container', $post->ID, );
-			if ( $servings && is_numeric( $servings ) && $servings > 0 ) {
-				$new_price_per_serving = round( $clean_new_price / $servings, 2 );
-			} else {
-				$new_price_per_serving = 0;
-			}
+			$old_price = floatval( get_field( 'price', $flavor_id ) );
+			$old_pps   = floatval( get_field( 'price_per_serving', $flavor_id ) );
+			$new_pps   = $servings > 0 ? round( $clean_new_price / $servings, 2 ) : 0;
 
-			$updates[ $asin ] = array(
-				'post_id'    => $post->ID,
-				'post_title' => $post->post_title,
+			// add the current flavor data to the $flavor_updates array
+			$flavor_updates[ $flavor_id ] = array(
+				'post_id'    => $flavor_id,
+				'post_title' => $flavor->post_title,
 				'asin'       => $asin,
-				'old_price'  => get_field( 'price', $post->ID ),
+				'old_price'  => $old_price,
 				'new_price'  => $clean_new_price,
-				'old_pps'    => get_field( 'price_per_serving', $post->ID ),
-				'new_pps'    => $new_price_per_serving,
-				'old_rating' => get_field( 'amazon_rating', $post->ID ),
-				'new_rating' => $item['rating'],
+				'old_pps'    => $old_pps,
+				'new_pps'    => $new_pps,
 			);
-			$found_asins[]    = $asin;
+
+			// add the current flavor asin to the $found_asins array.
+			$found_asins[] = $asin;
+
+			// add the parent of the current flavor to the $supplement_updates array.
+			$supplement_updates[ $parent_id ] = array(
+				'post_id'    => $parent_id,
+				'post_title' => $parent->post_title,
+				'old_rating' => get_field( 'amazon_rating', $parent_id ),
+				'new_rating' => $new_rating,
+			);
+
 		}
 
 		wp_reset_postdata();
 	}
 
-	if ( empty( $updates ) ) {
+	if ( empty( $flavor_updates ) || empty( $supplement_updates ) ) {
 		echo '<div class="notice notice-warning"><p>No matching supplements found to update.</p></div>';
 		show_upload_form();
 		return;
 	}
 
-	update_option( 'supplement_update_data', $updates );
+	// store the information about the flavor and supplement updates in the options table
+	update_option( 'supplement_update_data', $supplement_updates );
+	update_option( 'flavor_update_data', $flavor_updates );
 
+	// Preview tables
 	echo '<h2>Preview Updates</h2>';
-	echo '<table class="widefat"><thead><tr><th>Title</th><th>ASIN</th><th>Old Price</th><th>New Price</th><th>Old PPS</th><th>New PPS</th><th>Old Rating</th><th>New Rating</th></tr></thead><tbody>';
-	foreach ( $updates as $update ) {
+
+	// Flavors preview table
+	echo '<h3>Flavor Updates</h3>';
+	echo '<table class="widefat"><thead><tr><th>Title</th><th>ASIN</th><th>Old Price</th><th>New Price</th><th>Old PPS</th><th>New PPS</th></tr></thead><tbody>';
+	foreach ( $flavor_updates as $update ) {
 		echo '<tr>';
 		echo '<td><a href="' . get_edit_post_link( $update['post_id'] ) . '" target="_blank">' . esc_html( $update['post_title'] ) . '</a></td>';
 		echo '<td>' . esc_html( $update['asin'] ) . '</td>';
@@ -160,6 +185,16 @@ function analyze_uploaded_json( $file ) {
 		echo '<td>' . esc_html( $update['new_price'] ) . '</td>';
 		echo '<td>' . esc_html( $update['old_pps'] ) . '</td>';
 		echo '<td>' . esc_html( $update['new_pps'] ) . '</td>';
+		echo '</tr>';
+	}
+	echo '</tbody></table>';
+
+	// Supplement preview table
+	echo '<h3>Supplement Updates</h3>';
+	echo '<table class="widefat"><thead><tr><th>Title</th><th>Old Rating</th><th>New Rating</th></tr></thead><tbody>';
+	foreach ( $supplement_updates as $update ) {
+		echo '<tr>';
+		echo '<td><a href="' . get_edit_post_link( $update['post_id'] ) . '" target="_blank">' . esc_html( $update['post_title'] ) . '</a></td>';
 		echo '<td>' . esc_html( $update['old_rating'] ) . '</td>';
 		echo '<td>' . esc_html( $update['new_rating'] ) . '</td>';
 		echo '</tr>';
@@ -206,25 +241,47 @@ function analyze_uploaded_json( $file ) {
 	<?php
 }
 
+// AJAX endpoint for updating flavors
+add_action(
+	'wp_ajax_flavor_updater_update',
+	function () {
+		check_ajax_referer( 'supplement_updater_ajax', 'nonce' );
+
+		$flavor_id = sanitize_text_field( $_POST['flavor_id'] );
+		$updates   = get_option( 'flavor_update_data' );
+
+		if ( ! isset( $updates[ $flavor_id ] ) ) {
+			wp_send_json_error( 'flavor_id not found.' );
+		}
+
+		$update = $updates[ $flavor_id ];
+
+		update_field( 'price', $update['new_price'], $flavor_id );
+		update_field( 'price_per_serving', $update['new_pps'], $flavor_id );
+		update_post_meta( $flavor_id, 'last_update_date', current_time( 'Y-m-d' ) );
+		update_post_meta( $flavor_id, 'last_update_time', current_time( 'H:i:s' ) );
+
+		wp_send_json_success( 'Updated ' . $update['post_title'] );
+	}
+);
 // AJAX endpoint for updating supplements
 add_action(
 	'wp_ajax_supplement_updater_update',
 	function () {
 		check_ajax_referer( 'supplement_updater_ajax', 'nonce' );
 
-		$asin    = sanitize_text_field( $_POST['asin'] );
-		$updates = get_option( 'supplement_update_data' );
+		$supplement_id = sanitize_text_field( $_POST['supplement_id'] );
+		$updates       = get_option( 'supplement_update_data' );
 
-		if ( ! isset( $updates[ $asin ] ) ) {
-			wp_send_json_error( 'ASIN not found.' );
+		if ( ! isset( $updates[ $supplement_id ] ) ) {
+			wp_send_json_error( 'supplement_id not found.' );
 		}
 
-		$update = $updates[ $asin ];
+		$update = $updates[ $supplement_id ];
 
-		update_field( 'price', $update['new_price'], $update['post_id'] );
-		update_field( 'price_per_serving', $update['new_pps'], $update['post_id'] );
-		update_field( 'amazon_rating', $update['new_rating'], $update['post_id'] );
-		update_post_meta( $update['post_id'], 'last_price_update', current_time( 'mysql' ) );
+		update_field( 'amazon_rating', $update['new_rating'], $supplement_id );
+		update_post_meta( $supplement_id, 'last_update_date', current_time( 'Y-m-d' ) );
+		update_post_meta( $supplement_id, 'last_update_time', current_time( 'H:i:s' ) );
 
 		wp_send_json_success( 'Updated ' . $update['post_title'] );
 	}
@@ -276,5 +333,23 @@ add_action(
 		wp_reset_postdata();
 
 		wp_send_json_success( $missing );
+	}
+);
+
+// AJAX endpoint for the JS to  get the update info of the flavors and supplements
+add_action(
+	'wp_ajax_get_supplement_update_data',
+	function () {
+		check_ajax_referer( 'supplement_updater_ajax', 'nonce' );
+
+		$flavor_updates     = get_option( 'flavor_update_data', array() );
+		$supplement_updates = get_option( 'supplement_update_data', array() );
+
+		wp_send_json_success(
+			array(
+				'flavor_updates'     => $flavor_updates,
+				'supplement_updates' => $supplement_updates,
+			)
+		);
 	}
 );
