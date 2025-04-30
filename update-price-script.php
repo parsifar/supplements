@@ -293,9 +293,9 @@ add_action(
 	function () {
 		check_ajax_referer( 'supplement_updater_ajax', 'nonce' );
 
-		$category_id   = sanitize_text_field( $_POST['category_id'] ); // can be 'all' or a number
-		$updates       = get_option( 'supplement_update_data' );
-		$updated_asins = is_array( $updates ) ? array_keys( $updates ) : array();
+		$category_id            = sanitize_text_field( $_POST['category_id'] ); // can be 'all' or a number
+		$updates                = get_option( 'supplement_update_data' );
+		$updated_supplement_ids = is_array( $updates ) ? array_keys( $updates ) : array();
 
 		// Prepare the query args
 		$args = array(
@@ -316,23 +316,23 @@ add_action(
 
 		$query = new WP_Query( $args );
 
-		$missing = array();
+		$missing_supplements = array();
 
 		if ( $query->have_posts() ) {
 			foreach ( $query->posts as $post ) {
-				$asin = get_field( 'asin', $post->ID );
-				if ( ! in_array( $asin, $updated_asins, true ) ) {
-					$missing[] = array(
-						'title'     => get_the_title( $post->ID ),
-						'asin'      => $asin,
-						'edit_link' => get_edit_post_link( $post->ID ),
+				$supplement_id = $post->ID;
+				if ( ! in_array( $supplement_id, $updated_supplement_ids, true ) ) {
+					$missing_supplements[] = array(
+						'title'            => get_the_title( $supplement_id ),
+						'edit_link'        => get_edit_post_link( $supplement_id ),
+						'last_update_date' => get_field( 'last_update_date', $supplement_id ),
 					);
 				}
 			}
 		}
 		wp_reset_postdata();
 
-		wp_send_json_success( $missing );
+		wp_send_json_success( $missing_supplements );
 	}
 );
 

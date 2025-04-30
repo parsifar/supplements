@@ -112,9 +112,9 @@ jQuery(function ($) {
       function (response) {
         if (response.success) {
           let html =
-            '<table class="widefat"><thead><tr><th>Title</th><th>ASIN</th></tr></thead><tbody>';
+            '<table class="widefat"><thead><tr><th>Title</th><th>Last updated</th></tr></thead><tbody>';
           response.data.forEach(function (post) {
-            html += `<tr><td><a href="${post.edit_link}" target="_blank">${post.title}</a></td><td>${post.asin}</td></tr>`;
+            html += `<tr><td><a href="${post.edit_link}" target="_blank">${post.title}</a></td><td>${post.last_update_date}</td></tr>`;
           });
           html += "</tbody></table>";
           $("#missing-supplements-table").html(html);
