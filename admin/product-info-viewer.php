@@ -44,9 +44,11 @@ function render_product_info_viewer() {
 				?>
 			</select>
 		</form>
+
+		
 		<?php
 		$args = array(
-			'post_type'      => 'supplement', // or whatever your product CPT is called
+			'post_type'      => 'supplement',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
 		);
@@ -68,26 +70,47 @@ function render_product_info_viewer() {
 				<thead>
 				<tr>
 					<th><a href="#">Title</a></th>
-					<th><a href="#">ASIN</a></th>
-					<th><a href="#">Price</a></th>
-					<th><a href="#">Rating</a></th>
-					<th><a href="#">Last Price Update</a></th>
+					<th><a href="#">Last Update</a></th>
+					<th><a href="#">Flavors</a></th>
 				</tr>
 				</thead>
 				<tbody>
 				<?php
 				while ( $query->have_posts() ) :
 					$query->the_post();
-					$asin        = get_field( 'asin' );
-					$price       = get_field( 'price' );
-					$rating      = get_field( 'amazon_rating' );
-					$last_update = get_post_meta( get_the_ID(), '_last_price_update', true );
+
+					$supplement_id = get_the_ID();
+
+					// best flavor
+					$best_flavor = get_best_flavor_for_supplement( $supplement_id );
+
+					$best_flavor_id = $best_flavor ? $best_flavor->ID : null;
+					// last update.
+					$last_update = get_post_meta( $supplement_id, 'last_update_date', true ) . get_post_meta( $supplement_id, 'last_update_time', true );
+
+					// flavors list.
+					$flavor_ids   = get_field( 'flavors', $supplement_id );
+					$flavors_list = '';
+
+					if ( $flavor_ids && is_array( $flavor_ids ) ) {
+
+						foreach ( $flavor_ids as $flavor_id ) {
+							$flavor_name = get_field( 'flavor_name', $flavor_id );
+							$flavor_link = get_edit_post_link( $flavor_id );
+
+							$classes  = 'flavor-link';
+							$classes .= ( $flavor_id === $best_flavor_id ) ? ' active' : '';
+
+							if ( $flavor_name && $flavor_link ) {
+								$flavors_list .= '<a href="' . esc_url( $flavor_link ) . '" class="' . esc_attr( $classes )
+								. '">' . esc_html( $flavor_name ) . '</a>';
+							}
+						}
+					}
 					?>
 					<tr>
 						<td><a href="<?php echo esc_url( get_permalink() ); ?>" target="_blank"><?php the_title(); ?></a></td>
-						<td><?php echo esc_html( $asin ); ?></td>
-						<td><?php echo esc_html( $price ); ?></td>
-						<td><?php echo esc_html( $rating ); ?></td>
+					
 						<td data-order="<?php echo esc_attr( $last_update ); ?>">
 							<?php
 							if ( ! empty( $last_update ) ) {
@@ -102,6 +125,8 @@ function render_product_info_viewer() {
 							}
 							?>
 						</td>
+
+						<td><?php echo $flavors_list; ?></td>
 					</tr>
 				<?php endwhile; ?>
 				</tbody>
@@ -116,6 +141,19 @@ function render_product_info_viewer() {
 				}
 				th.sorted-desc:after {
 					content: " 🔽";
+				}
+
+				a.flavor-link{
+					border:1px solid #aaa;
+					display:inline-block;
+					padding-inline:3px;
+					margin-right:5px;
+					border-radius: 5px;
+				}
+
+				a.flavor-link.active{
+					background: #D4EDDA;
+					font-weight: bold;
 				}
 			</style>
 

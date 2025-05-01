@@ -7,7 +7,8 @@
 
 require_once 'update-price-script.php';
 require_once 'amazon-html-parser.php';
-require_once 'product-info-viewer.php';
+require_once 'admin/product-info-viewer.php';
+require_once 'admin/flavor-logic.php';
 
 add_action( 'wp_enqueue_scripts', 'astra_child_enqueue_styles' );
 function astra_child_enqueue_styles() {
@@ -171,8 +172,7 @@ add_filter( 'get_meta_sql', 'cast_decimal_precision' );
 /**
  * Ajax Search Handler
  */
-add_action( 'wp_ajax_supplement_ajax_search', 'supplement_ajax_search' );
-add_action( 'wp_ajax_nopriv_supplement_ajax_search', 'supplement_ajax_search' );
+
 
 add_action( 'wp_ajax_supplement_ajax_search', 'supplement_ajax_search' );
 add_action( 'wp_ajax_nopriv_supplement_ajax_search', 'supplement_ajax_search' );
