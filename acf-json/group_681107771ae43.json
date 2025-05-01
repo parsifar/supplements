@@ -40,9 +40,7 @@
             "post_type": [
                 "supplement"
             ],
-            "post_status": [
-                "publish"
-            ],
+            "post_status": "",
             "taxonomy": "",
             "filters": [
                 "search",
@@ -53,9 +51,13 @@
             "min": "",
             "max": "",
             "allow_in_bindings": 0,
-            "elements": "",
-            "bidirectional": 0,
-            "bidirectional_target": []
+            "elements": [
+                "featured_image"
+            ],
+            "bidirectional": 1,
+            "bidirectional_target": [
+                "field_6812aefd4bcf4"
+            ]
         },
         {
             "key": "field_681108195f6dc",
@@ -206,5 +208,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1745965396
+    "modified": 1746058420
 }

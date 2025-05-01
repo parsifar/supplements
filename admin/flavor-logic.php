@@ -134,12 +134,11 @@ function update_best_flavor_fields_from_function( $supplement_id ) {
 add_action(
 	'acf/save_post',
 	function ( $post_id ) {
-		error_log( 'HOOK RAN flavor id: ' . $post_id );
 		if ( get_post_type( $post_id ) !== 'flavor' ) {
 			return;
 		}
 
-		// Avoid running on autosave or ACF field group saves
+		// Avoid running on autosave or ACF field group saves.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
@@ -148,7 +147,6 @@ add_action(
 
 		if ( $parent && is_array( $parent ) ) {
 			foreach ( $parent as $supplement ) {
-				error_log( 'HOOK RAN flavor id: ' . $post_id . ' supplement: ' . $supplement->ID );
 				delete_transient( 'best_flavor_' . $supplement->ID );
 
 				$best_flavor = get_best_flavor_for_supplement( $supplement->ID );
@@ -158,7 +156,7 @@ add_action(
 			}
 		}
 	},
-	20
+	99
 );
 
 
