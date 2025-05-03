@@ -126,9 +126,13 @@ body.single-supplement {
     }
   }
 
-  .supplement-content p {
+  .supplement-content :is(p, li) {
     font-size: $font-size-lg;
     line-height: 1.75;
+  }
+
+  .supplement-content li {
+    margin-bottom: 0.5rem;
   }
 
   .ingredient-breakdown {
@@ -155,6 +159,31 @@ body.single-supplement {
         color: #9ca3af;
         font-style: italic;
       }
+    }
+  }
+
+  .external-reviews {
+    margin-block: 2rem;
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .review-card {
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      padding: 1rem;
+      background: $color-light;
+    }
+
+    .review-card p {
+      color: $color-secondary;
     }
   }
 }

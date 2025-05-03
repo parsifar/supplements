@@ -1003,9 +1003,12 @@ body.single-supplement .supplement-meta .badges .badge.certification-badge {
 body.single-supplement .supplement-meta .affiliate-wrapper {
   margin-top: 1rem;
 }
-body.single-supplement .supplement-content p {
+body.single-supplement .supplement-content :is(p, li) {
   font-size: 1.125rem;
   line-height: 1.75;
+}
+body.single-supplement .supplement-content li {
+  margin-bottom: 0.5rem;
 }
 body.single-supplement .ingredient-breakdown .ingredient-title {
   margin-bottom: 1rem;
@@ -1026,6 +1029,26 @@ body.single-supplement .ingredient-breakdown .ingredient-table td {
 body.single-supplement .ingredient-breakdown .ingredient-table .text-muted {
   color: #9ca3af;
   font-style: italic;
+}
+body.single-supplement .external-reviews {
+  margin-block: 2rem;
+}
+body.single-supplement .external-reviews h2 {
+  margin-bottom: 1rem;
+}
+body.single-supplement .external-reviews .reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+body.single-supplement .external-reviews .review-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #f9fafb;
+}
+body.single-supplement .external-reviews .review-card p {
+  color: #4b5563;
 }
 
 body.page-template-compare-page-template #compare-bar {

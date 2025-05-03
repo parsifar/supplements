@@ -163,7 +163,7 @@
 				if ( $dosages ) :
 					?>
 				<div class="ingredient-breakdown">
-					<h3 class="ingredient-title">Ingredient Breakdown</h3>
+					<h2 class="ingredient-title">Ingredient Breakdown</h2>
 					<table class="ingredient-table">
 						<thead>
 							<tr>
@@ -233,8 +233,39 @@
 					<?php
 				}
 				?>
-					
-				
+
+				<!-- External Reviews -->
+				<?php if ( have_rows( 'external_reviews' ) ) : ?>
+				<section class="external-reviews">
+				<h2>External Reviews</h2>
+				<div class="reviews-grid">
+					<?php
+					while ( have_rows( 'external_reviews' ) ) :
+						the_row();
+						$source_name = get_sub_field( 'source_name' );
+						$source_url  = get_sub_field( 'source_url' );
+						$summary     = get_sub_field( 'summary' );
+						?>
+						<div class="review-card">
+										<?php if ( $source_name ) : ?>
+							<h3><?php echo esc_html( $source_name ); ?></h3>
+							<?php endif; ?>
+						
+										<?php if ( $summary ) : ?>
+							<p><?php echo wp_kses_post( $summary ); ?></p>
+							<?php endif; ?>
+						
+										<?php if ( $source_url ) : ?>
+							<a class="inline-link" href="<?php echo esc_url( $source_url ); ?>" target="_blank" rel="noopener">
+								Read Full Review
+							</a>
+							<?php endif; ?>
+						</div>
+					<?php endwhile; ?>
+				</div>
+				</section>
+				<?php endif; ?>
+
 
 				<!-- Affiliate -->
 					<?php $affiliate = get_field( 'affiliate_url' ); ?>

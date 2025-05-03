@@ -19,7 +19,7 @@ add_action(
 function render_product_info_viewer() {
 	?>
 	<div class="wrap">
-		<h1>Product Info Viewer</h1>
+		<h1>Supplement Info Viewer</h1>
 		<form method="get" style="margin-bottom:2rem">
 			<input type="hidden" name="page" value="supplement-info-viewer">
 			<label for="supplement_category">Filter by Category: </label>
@@ -126,7 +126,7 @@ function render_product_info_viewer() {
 							?>
 						</td>
 
-						<td><?php echo $flavors_list; ?></td>
+						<td class="flavors-list"><?php echo $flavors_list; ?></td>
 					</tr>
 				<?php endwhile; ?>
 				</tbody>
@@ -143,11 +143,16 @@ function render_product_info_viewer() {
 					content: " 🔽";
 				}
 
+				.flavors-list{
+					display: flex;
+					flex-wrap: wrap;
+					gap:5px;
+				}
+
 				a.flavor-link{
 					border:1px solid #aaa;
 					display:inline-block;
 					padding-inline:3px;
-					margin-right:5px;
 					border-radius: 5px;
 				}
 
