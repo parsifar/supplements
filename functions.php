@@ -10,6 +10,16 @@ require_once 'amazon-html-parser.php';
 require_once 'admin/product-info-viewer.php';
 require_once 'admin/flavor-logic.php';
 
+// shortcodes
+require_once 'shorcodes/top-supplements.php';
+
+
+function pp( $data ) {
+	echo '<pre style="background: #f8f8f8; padding: 1em; border: 1px solid #ddd; font-family: monospace; font-size: 14px; overflow: auto;">';
+	print_r( $data );
+	echo '</pre>';
+}
+
 add_action( 'wp_enqueue_scripts', 'astra_child_enqueue_styles' );
 function astra_child_enqueue_styles() {
 	wp_enqueue_style( 'child-style', get_stylesheet_directory_uri() . '/dist/style.css', array(), false, 'all' );

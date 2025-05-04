@@ -790,6 +790,21 @@ input[type=range]:focus::-moz-range-track {
   color: #eee;
 }
 
+.top-supplements-shortcode .supplement-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 768px) {
+  .top-supplements-shortcode .supplement-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.top-supplements-shortcode .supplement-grid .supplement-card .h4 {
+  font-size: 1.25rem;
+}
+.top-supplements-shortcode .supplement-grid .supplement-card .card-link {
+  text-decoration: none;
+}
+
 .supplements-layout {
   display: flex;
   gap: 2rem;
