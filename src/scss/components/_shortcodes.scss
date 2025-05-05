@@ -1,19 +1,171 @@
+@use "../base/variables" as *;
+@use "../base/typography" as *;
+@use "../base/mixins" as *;
+
 .top-supplements-shortcode {
   .supplement-grid {
-    grid-template-columns: repeat(3, 1fr);
+    display: block;
 
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
+    article.top-supplement-card {
+      margin-block: 3rem;
+      position: relative;
+      background-color: #fff;
+      border: 1px solid $color-border;
+      padding: 3rem 1.5rem;
+      border-radius: $radius-lg;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
     }
 
-    .supplement-card {
-      .h4 {
+    .supplement-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      @media (min-width: $breakpoint-md) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .supplement-thumbnail {
+      flex-basis: 40%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      position: relative;
+
+      @media (max-width: $breakpoint-md) {
+        max-width: 400px;
+      }
+
+      .thumbnail-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .supplement-meta {
+      flex-basis: 50%;
+      flex-grow: 1;
+
+      .brand {
+        color: $color-primary;
+        margin-bottom: 0.5rem;
+      }
+      .supplement-title {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+      }
+
+      .rating-bar {
+        justify-content: flex-start;
+        margin-bottom: 2rem;
+
+        .bar-label {
+          font-size: 1rem;
+        }
+        .bar-wrapper {
+          max-width: 300px;
+        }
+      }
+
+      .price-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-md;
+        margin-bottom: 1rem;
+
+        & > div {
+          flex-basis: 200px;
+          flex-grow: 1;
+          padding: $spacing-md;
+          background-color: $color-gray-light;
+          border-radius: $radius;
+        }
+
+        .price-label {
+          @include heading-style(6);
+          margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+          margin-bottom: 0;
+        }
+
+        .amount {
+          @include heading-style(3);
+        }
+      }
+
+      .quick-facts {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+        margin-bottom: 1rem;
+
+        & > p {
+          margin-bottom: 0;
+          font-size: 1rem;
+        }
+      }
+
+      .badges {
+        .badge {
+          @include badge;
+
+          &.certification-badge {
+            background: #d1fae5;
+          }
+        }
+      }
+
+      .links-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+        a {
+          flex-basis: calc(50% - 0.5rem);
+        }
+      }
+    }
+
+    .supplement-summary {
+      p,
+      li {
         font-size: 1.25rem;
-      }
 
-      .card-link {
-        text-decoration: none;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
+  }
+}
+
+.ranking-badge {
+  position: absolute;
+  top: -25px;
+  left: -15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.25em 0.75em;
+  display: inline-block;
+  background-color: $color-secondary;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &::after {
+    position: absolute;
+    content: "";
+    display: block;
+    left: -15px;
+    bottom: -10px;
+    border-color: transparent black transparent transparent;
+    border-style: solid;
+    border-width: 0 15px 10px;
   }
 }

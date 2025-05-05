@@ -1,0 +1,26 @@
+@use "../../base/variables" as *;
+
+#main .wp-block-stackable-accordion {
+  margin-bottom: 0;
+
+  &:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+
+  .stk-column-wrapper {
+    margin: 10px 0;
+  }
+
+  .stk-block-accordion__heading > .stk-column-wrapper {
+    border: 1px solid $color-border;
+    border-radius: $radius;
+  }
+
+  .stk-block-accordion__content > .stk-container {
+    padding-block: 10px;
+  }
+
+  .stk--inner-svg path {
+    fill: $color-primary;
+  }
+}

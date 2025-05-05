@@ -19,6 +19,9 @@
 @use "components/footer";
 @use "components/shortcodes";
 
+@use "components/stackable/accordion";
+
+@use "templates/default-page";
 @use "templates/archive-supplement";
 @use "templates/single-supplement";
 @use "templates/compare-page";

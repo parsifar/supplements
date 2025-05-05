@@ -170,11 +170,14 @@ function top_supplements_shortcode( $atts ) {
 			<section class="top-supplements-shortcode">
 				<div class="supplement-grid">
 					<?php
+					$index = 1;
 					foreach ( $results as $item ) {
 						global $post;
 						$post = $item['post'];
 						setup_postdata( $post );
-						get_template_part( '/template-parts/supplement', 'card' );
+						get_template_part( '/template-parts/top-supplement', 'card', array( 'supplement_index' => $index ) );
+
+						++$index;
 					}
 					?>
 				</div>

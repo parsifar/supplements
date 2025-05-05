@@ -8,6 +8,7 @@
   border-radius: $radius;
   font-size: 1rem;
   font-weight: 600;
+  text-decoration: none !important;
   line-height: $line-height-base;
   @include transition(background-color 0.2s);
 
@@ -35,5 +36,17 @@
   &:focus {
     background-color: color.adjust($color-secondary, $lightness: -10%);
     color: white;
+  }
+}
+
+.btn-outline {
+  background-color: #fff;
+  color: $color-primary;
+  border: 2px solid $color-primary;
+
+  &:hover,
+  &:focus {
+    background-color: $color-light-blue;
+    color: $color-primary;
   }
 }
