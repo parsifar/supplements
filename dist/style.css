@@ -167,6 +167,10 @@ button {
   font-weight: 600;
 }
 
+.main-header-menu .sub-menu {
+  width: max-content;
+}
+
 .btn {
   display: flex;
   align-items: center;
