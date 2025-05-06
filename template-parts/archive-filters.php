@@ -32,7 +32,7 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] ) : 1;
 
 ?>
-<form method="GET" class="supplements-filter-form">
+<form method="GET" id="filter-form" class="supplements-filter-form">
 	<?php
 	$taxonomies = array(
 		'supplement-category' => 'Category',
@@ -118,8 +118,18 @@ $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] )
 	}
 	?>
 
+	<!-- Add the current page to the form -->
+	<input type="hidden" id="paged-input" name="paged" value="<?php echo get_query_var( 'paged' ) ?: 1; ?>">
+
 	<div class="filter-actions">
 		<button type="submit" class="btn btn-secondary small">Apply Filters</button>
 		<a href="<?php echo esc_url( $reset_url ); ?>" class="reset-link">Reset Filters</a>
 	</div>
 </form>
+
+<script>
+document.getElementById('filter-form').addEventListener('submit', function() {
+	// Always reset to page 1 when the form is submitted
+	document.getElementById('paged-input').value = 1;
+});
+</script>

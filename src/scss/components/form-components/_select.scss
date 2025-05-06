@@ -17,6 +17,7 @@
     background-color: #fff;
     color: $body-text-color;
     cursor: pointer;
+    height: auto;
 
     // Remove focus outline and add a custom one
     &:focus {

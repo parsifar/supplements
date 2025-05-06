@@ -61,6 +61,10 @@ function filter_supplement_query( $query ) {
 		return;
 	}
 
+	// Get the current 'paged' parameter (page number)
+	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+	$query->set( 'paged', $paged );
+
 	// Taxonomy filters.
 
 	// Check if we're on a taxonomy archive for 'supplement-category'.
