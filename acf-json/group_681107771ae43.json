@@ -1,6 +1,6 @@
 {
     "key": "group_681107771ae43",
-    "title": "Flavors",
+    "title": "Variants",
     "fields": [
         {
             "key": "field_681108b95f6e0",
@@ -195,7 +195,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "flavor"
+                "value": "variant"
             }
         ]
     ],
@@ -208,5 +208,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1746269775
+    "modified": 1746572919
 }

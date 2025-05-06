@@ -361,8 +361,8 @@
         },
         {
             "key": "field_6812aefd4bcf4",
-            "label": "Flavors",
-            "name": "flavors",
+            "label": "Variants",
+            "name": "variants",
             "aria-label": "",
             "type": "relationship",
             "instructions": "",
@@ -374,7 +374,7 @@
                 "id": ""
             },
             "post_type": [
-                "flavor"
+                "variant"
             ],
             "post_status": "",
             "taxonomy": "",
@@ -499,5 +499,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1746469702
+    "modified": 1746572901
 }

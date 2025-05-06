@@ -45,7 +45,7 @@ function render_supplement_updater_page() {
 			<?php
 			if ( isset( $_POST['cancel_update'] ) ) {
 				delete_option( 'supplement_update_data' );
-				delete_option( 'flavor_update_data' );
+				delete_option( 'variant_update_data' );
 				echo '<div class="notice notice-warning"><p>Update canceled.</p></div>';
 				show_upload_form();
 			} elseif ( isset( $_FILES['supplement_json'] ) && check_admin_referer( 'supplement_updater_action', 'supplement_updater_nonce' ) ) {
@@ -88,10 +88,10 @@ function analyze_uploaded_json( $file ) {
 	}
 
 	$supplement_updates = array();
-	$flavor_updates     = array();
+	$variant_updates    = array();
 	$found_asins        = array();
 
-	// for each item in the json file find the flavor and its parent and populate the update arrays
+	// for each item in the json file find the variant and its parent and populate the update arrays
 	foreach ( $supplements as $item ) {
 		if ( empty( $item['asin'] ) ) {
 			continue;
@@ -103,10 +103,10 @@ function analyze_uploaded_json( $file ) {
 		$clean_new_price = floatval( preg_replace( '/[^0-9\.]/', '', $new_price ) );
 		$new_rating      = floatval( $item['rating'] ?? 0 );
 
-		// find the flavor post with this asin.
-		$flavor_query = new WP_Query(
+		// find the variant post with this asin.
+		$variant_query = new WP_Query(
 			array(
-				'post_type'           => 'flavor',
+				'post_type'           => 'variant',
 				'posts_per_page'      => 1,
 				'ignore_sticky_posts' => true,
 				'meta_query'          => array(
@@ -119,25 +119,25 @@ function analyze_uploaded_json( $file ) {
 			)
 		);
 
-		// if found the flavor with the same asin.
-		if ( $flavor_query->have_posts() ) {
-			$flavor    = $flavor_query->posts[0];
-			$flavor_id = $flavor->ID;
+		// if found the variant with the same asin.
+		if ( $variant_query->have_posts() ) {
+			$variant    = $variant_query->posts[0];
+			$variant_id = $variant->ID;
 
-			// get the flavors parent.
-			$parent    = get_field( 'parent_supplement', $flavor_id )[0];
+			// get the variants parent.
+			$parent    = get_field( 'parent_supplement', $variant_id )[0];
 			$parent_id = $parent->ID ?? null;
 			// get the servings from parent.
 			$servings = floatval( get_field( 'servings_per_container', $parent_id ) );
 
-			$old_price = floatval( get_field( 'price', $flavor_id ) );
-			$old_pps   = floatval( get_field( 'price_per_serving', $flavor_id ) );
+			$old_price = floatval( get_field( 'price', $variant_id ) );
+			$old_pps   = floatval( get_field( 'price_per_serving', $variant_id ) );
 			$new_pps   = $servings > 0 ? round( $clean_new_price / $servings, 2 ) : 0;
 
-			// add the current flavor data to the $flavor_updates array
-			$flavor_updates[ $flavor_id ] = array(
-				'post_id'    => $flavor_id,
-				'post_title' => $flavor->post_title,
+			// add the current variant data to the $variant_updates array
+			$variant_updates[ $variant_id ] = array(
+				'post_id'    => $variant_id,
+				'post_title' => $variant->post_title,
 				'asin'       => $asin,
 				'old_price'  => $old_price,
 				'new_price'  => $clean_new_price,
@@ -145,10 +145,10 @@ function analyze_uploaded_json( $file ) {
 				'new_pps'    => $new_pps,
 			);
 
-			// add the current flavor asin to the $found_asins array.
+			// add the current variant asin to the $found_asins array.
 			$found_asins[] = $asin;
 
-			// add the parent of the current flavor to the $supplement_updates array.
+			// add the parent of the current variant to the $supplement_updates array.
 			$supplement_updates[ $parent_id ] = array(
 				'post_id'    => $parent_id,
 				'post_title' => $parent->post_title,
@@ -161,23 +161,23 @@ function analyze_uploaded_json( $file ) {
 		wp_reset_postdata();
 	}
 
-	if ( empty( $flavor_updates ) || empty( $supplement_updates ) ) {
+	if ( empty( $variant_updates ) || empty( $supplement_updates ) ) {
 		echo '<div class="notice notice-warning"><p>No matching supplements found to update.</p></div>';
 		show_upload_form();
 		return;
 	}
 
-	// store the information about the flavor and supplement updates in the options table
+	// store the information about the variant and supplement updates in the options table
 	update_option( 'supplement_update_data', $supplement_updates );
-	update_option( 'flavor_update_data', $flavor_updates );
+	update_option( 'variant_update_data', $variant_updates );
 
 	// Preview tables
 	echo '<h2>Preview Updates</h2>';
 
-	// Flavors preview table
-	echo '<h3>Flavor Updates</h3>';
+	// variants preview table
+	echo '<h3>Variant Updates</h3>';
 	echo '<table class="widefat"><thead><tr><th>Title</th><th>ASIN</th><th>Old Price</th><th>New Price</th><th>Old PPS</th><th>New PPS</th></tr></thead><tbody>';
-	foreach ( $flavor_updates as $update ) {
+	foreach ( $variant_updates as $update ) {
 		echo '<tr>';
 		echo '<td><a href="' . get_edit_post_link( $update['post_id'] ) . '" target="_blank">' . esc_html( $update['post_title'] ) . '</a></td>';
 		echo '<td>' . esc_html( $update['asin'] ) . '</td>';
@@ -241,25 +241,25 @@ function analyze_uploaded_json( $file ) {
 	<?php
 }
 
-// AJAX endpoint for updating flavors
+// AJAX endpoint for updating variants
 add_action(
-	'wp_ajax_flavor_updater_update',
+	'wp_ajax_variant_updater_update',
 	function () {
 		check_ajax_referer( 'supplement_updater_ajax', 'nonce' );
 
-		$flavor_id = sanitize_text_field( $_POST['flavor_id'] );
-		$updates   = get_option( 'flavor_update_data' );
+		$variant_id = sanitize_text_field( $_POST['variant_id'] );
+		$updates    = get_option( 'variant_update_data' );
 
-		if ( ! isset( $updates[ $flavor_id ] ) ) {
-			wp_send_json_error( 'flavor_id not found.' );
+		if ( ! isset( $updates[ $variant_id ] ) ) {
+			wp_send_json_error( 'variant_id not found.' );
 		}
 
-		$update = $updates[ $flavor_id ];
+		$update = $updates[ $variant_id ];
 
-		update_field( 'price', $update['new_price'], $flavor_id );
-		update_field( 'price_per_serving', $update['new_pps'], $flavor_id );
-		update_post_meta( $flavor_id, 'last_update_date', current_time( 'Y-m-d' ) );
-		update_post_meta( $flavor_id, 'last_update_time', current_time( 'H:i:s' ) );
+		update_field( 'price', $update['new_price'], $variant_id );
+		update_field( 'price_per_serving', $update['new_pps'], $variant_id );
+		update_post_meta( $variant_id, 'last_update_date', current_time( 'Y-m-d' ) );
+		update_post_meta( $variant_id, 'last_update_time', current_time( 'H:i:s' ) );
 
 		wp_send_json_success( 'Updated ' . $update['post_title'] );
 	}
@@ -283,8 +283,8 @@ add_action(
 		update_post_meta( $supplement_id, 'last_update_date', current_time( 'Y-m-d' ) );
 		update_post_meta( $supplement_id, 'last_update_time', current_time( 'H:i:s' ) );
 
-		// reset the best flavor of this supplement
-		update_best_flavor_fields_from_function( $supplement_id );
+		// reset the best variant of this supplement
+		update_best_variant_fields_from_function( $supplement_id );
 
 		wp_send_json_success( 'Updated ' . $update['post_title'] );
 	}
@@ -339,18 +339,18 @@ add_action(
 	}
 );
 
-// AJAX endpoint for the JS to  get the update info of the flavors and supplements
+// AJAX endpoint for the JS to  get the update info of the variants and supplements
 add_action(
 	'wp_ajax_get_supplement_update_data',
 	function () {
 		check_ajax_referer( 'supplement_updater_ajax', 'nonce' );
 
-		$flavor_updates     = get_option( 'flavor_update_data', array() );
+		$variant_updates    = get_option( 'variant_update_data', array() );
 		$supplement_updates = get_option( 'supplement_update_data', array() );
 
 		wp_send_json_success(
 			array(
-				'flavor_updates'     => $flavor_updates,
+				'variant_updates'    => $variant_updates,
 				'supplement_updates' => $supplement_updates,
 			)
 		);
