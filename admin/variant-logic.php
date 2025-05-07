@@ -107,9 +107,10 @@ function update_best_variant_fields_from_function( $supplement_id ) {
 	update_field( 'price', get_field( 'price', $variant->ID ), $supplement_id );
 	update_field( 'price_per_serving', get_field( 'price_per_serving', $variant->ID ), $supplement_id );
 	update_field( 'affiliate_url', get_field( 'affiliate_url', $variant->ID ), $supplement_id );
+	update_field( 'amazon_rating', get_field( 'amazon_rating', $variant->ID ), $supplement_id );
+	update_field( 'servings_per_container', get_field( 'servings_per_container', $variant->ID ), $supplement_id );
 
 	// Copy featured image
-	// Check if the variant has a featured image
 	$image_id = get_post_thumbnail_id( $variant->ID );
 
 	if ( $image_id ) {

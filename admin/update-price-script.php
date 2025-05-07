@@ -127,14 +127,17 @@ function analyze_uploaded_json( $file ) {
 			// get the variants parent.
 			$parent    = get_field( 'parent_supplement', $variant_id )[0];
 			$parent_id = $parent->ID ?? null;
-			// get the servings from parent.
-			$servings = floatval( get_field( 'servings_per_container', $parent_id ) );
 
-			$old_price = floatval( get_field( 'price', $variant_id ) );
-			$old_pps   = floatval( get_field( 'price_per_serving', $variant_id ) );
-			$new_pps   = $servings > 0 ? round( $clean_new_price / $servings, 2 ) : 0;
+			// get the servings and old price.
+			$servings   = floatval( get_field( 'servings_per_container', $variant_id ) );
+			$old_price  = floatval( get_field( 'price', $variant_id ) );
+			$old_pps    = floatval( get_field( 'price_per_serving', $variant_id ) );
+			$old_rating = get_field( 'amazon_rating', $variant_id );
 
-			// add the current variant data to the $variant_updates array
+			// calculate new pps.
+			$new_pps = $servings > 0 ? round( $clean_new_price / $servings, 2 ) : 0;
+
+			// add the current variant data to the $variant_updates array.
 			$variant_updates[ $variant_id ] = array(
 				'post_id'    => $variant_id,
 				'post_title' => $variant->post_title,
@@ -143,6 +146,8 @@ function analyze_uploaded_json( $file ) {
 				'new_price'  => $clean_new_price,
 				'old_pps'    => $old_pps,
 				'new_pps'    => $new_pps,
+				'old_rating' => $old_rating,
+				'new_rating' => $new_rating,
 			);
 
 			// add the current variant asin to the $found_asins array.
@@ -152,8 +157,6 @@ function analyze_uploaded_json( $file ) {
 			$supplement_updates[ $parent_id ] = array(
 				'post_id'    => $parent_id,
 				'post_title' => $parent->post_title,
-				'old_rating' => get_field( 'amazon_rating', $parent_id ),
-				'new_rating' => $new_rating,
 			);
 
 		}
@@ -191,17 +194,16 @@ function analyze_uploaded_json( $file ) {
 
 	// Supplement preview table
 	echo '<h3>Supplement Updates</h3>';
-	echo '<table class="widefat"><thead><tr><th>Title</th><th>Old Rating</th><th>New Rating</th></tr></thead><tbody>';
+	echo '<table class="widefat"><thead><tr><th>Title</th><th>Last updated</th></tr></thead><tbody>';
 	foreach ( $supplement_updates as $update ) {
 		echo '<tr>';
 		echo '<td><a href="' . get_edit_post_link( $update['post_id'] ) . '" target="_blank">' . esc_html( $update['post_title'] ) . '</a></td>';
-		echo '<td>' . esc_html( $update['old_rating'] ) . '</td>';
-		echo '<td>' . esc_html( $update['new_rating'] ) . '</td>';
+		echo '<td>' . esc_html( get_field( 'last_update_date', $update['post_id'] ) ) . '</td>';
 		echo '</tr>';
 	}
 	echo '</tbody></table>';
 
-	// Dropdown for category
+	// Dropdown for category.
 	$terms = get_terms(
 		array(
 			'taxonomy'   => 'supplement-category',
@@ -258,6 +260,7 @@ add_action(
 
 		update_field( 'price', $update['new_price'], $variant_id );
 		update_field( 'price_per_serving', $update['new_pps'], $variant_id );
+		update_field( 'amazon_rating', $update['new_rating'], $variant_id );
 		update_post_meta( $variant_id, 'last_update_date', current_time( 'Y-m-d' ) );
 		update_post_meta( $variant_id, 'last_update_time', current_time( 'H:i:s' ) );
 
@@ -279,7 +282,6 @@ add_action(
 
 		$update = $updates[ $supplement_id ];
 
-		update_field( 'amazon_rating', $update['new_rating'], $supplement_id );
 		update_post_meta( $supplement_id, 'last_update_date', current_time( 'Y-m-d' ) );
 		update_post_meta( $supplement_id, 'last_update_time', current_time( 'H:i:s' ) );
 

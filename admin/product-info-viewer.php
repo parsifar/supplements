@@ -70,6 +70,7 @@ function render_product_info_viewer() {
 				<thead>
 				<tr>
 					<th><a href="#">Title</a></th>
+					<th><a href="#">Brand</a></th>
 					<th><a href="#">Last Update</a></th>
 					<th><a href="#">Flavors</a></th>
 				</tr>
@@ -80,6 +81,9 @@ function render_product_info_viewer() {
 					$query->the_post();
 
 					$supplement_id = get_the_ID();
+
+					// brand
+					$brands = get_the_terms( $supplement_id, 'brand' );
 
 					// best variant
 					$best_variant = get_best_variant_for_supplement( $supplement_id );
@@ -110,6 +114,7 @@ function render_product_info_viewer() {
 					?>
 					<tr>
 						<td><a href="<?php echo esc_url( get_permalink() ); ?>" target="_blank"><?php the_title(); ?></a></td>
+						<td><?php echo $brands ? esc_html( $brands[0]->name ) : '—'; ?></td>
 					
 						<td data-order="<?php echo esc_attr( $last_update ); ?>">
 							<?php

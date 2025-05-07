@@ -5,7 +5,7 @@
  * @package SuppPick
  */
 
-require_once 'update-price-script.php';
+require_once 'admin/update-price-script.php';
 require_once 'amazon-html-parser.php';
 require_once 'admin/product-info-viewer.php';
 require_once 'admin/variant-logic.php';
