@@ -9,10 +9,10 @@ jQuery(function ($) {
       },
       function (response) {
         if (response.success) {
-          const { flavor_updates, supplement_updates } = response.data;
-          // Get the keys (IDs) from both flavor and supplement update objects
-          const flavorUpdates = flavor_updates
-            ? Object.keys(flavor_updates)
+          const { variant_updates, supplement_updates } = response.data;
+          // Get the keys (IDs) from both variant and supplement update objects
+          const variantUpdates = variant_updates
+            ? Object.keys(variant_updates)
             : [];
 
           const supplementUpdates = supplement_updates
@@ -20,10 +20,10 @@ jQuery(function ($) {
             : [];
 
           // Total number of updates to calculate progress
-          const totalUpdates = flavorUpdates.length + supplementUpdates.length;
+          const totalUpdates = variantUpdates.length + supplementUpdates.length;
           let completed = 0;
 
-          console.log("flavorUpdates" + flavorUpdates);
+          console.log("variantUpdates" + variantUpdates);
           console.log("supplementUpdates" + supplementUpdates);
           console.log("total: " + totalUpdates);
 
@@ -31,7 +31,7 @@ jQuery(function ($) {
           $("#progress-wrapper").show();
 
           // Start the update chain
-          processFlavorUpdates();
+          processVariantUpdates();
 
           // Function to update the progress bar UI
           function updateProgress() {
@@ -40,33 +40,33 @@ jQuery(function ($) {
             $("#progress-text").text(percent + "%");
           }
 
-          // Function to process flavor updates first
-          function processFlavorUpdates() {
-            if (flavorUpdates.length === 0) {
+          // Function to process variant updates first
+          function processVariantUpdates() {
+            if (variantUpdates.length === 0) {
               processSupplementUpdates(); // Move on to supplement updates
               return;
             }
 
-            const flavor_id = flavorUpdates.shift();
+            const variant_id = variantUpdates.shift();
 
             $.post(
               supplementUpdater.ajaxUrl,
               {
-                action: "flavor_updater_update",
+                action: "variant_updater_update",
                 nonce: supplementUpdater.nonce,
-                flavor_id: flavor_id,
+                variant_id: variant_id,
               },
               function (response) {
-                console.log("updated flavor: " + flavor_id);
+                console.log("updated variant: " + variant_id);
 
                 completed++;
                 updateProgress();
-                processFlavorUpdates(); // Continue with next flavor
+                processVariantUpdates(); // Continue with next variant
               }
             );
           }
 
-          // Function to process supplement updates after flavors
+          // Function to process supplement updates after variants
           function processSupplementUpdates() {
             if (supplementUpdates.length === 0) {
               $("#progress-text").text("Completed");

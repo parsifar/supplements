@@ -70,6 +70,7 @@ function render_product_info_viewer() {
 				<thead>
 				<tr>
 					<th><a href="#">Title</a></th>
+					<th><a href="#">Brand</a></th>
 					<th><a href="#">Last Update</a></th>
 					<th><a href="#">Flavors</a></th>
 				</tr>
@@ -81,28 +82,31 @@ function render_product_info_viewer() {
 
 					$supplement_id = get_the_ID();
 
-					// best flavor
-					$best_flavor = get_best_flavor_for_supplement( $supplement_id );
+					// brand
+					$brands = get_the_terms( $supplement_id, 'brand' );
 
-					$best_flavor_id = $best_flavor ? $best_flavor->ID : null;
+					// best variant
+					$best_variant = get_best_variant_for_supplement( $supplement_id );
+
+					$best_variant_id = $best_variant ? $best_variant->ID : null;
 					// last update.
 					$last_update = get_post_meta( $supplement_id, 'last_update_date', true ) . get_post_meta( $supplement_id, 'last_update_time', true );
 
-					// flavors list.
-					$flavor_ids   = get_field( 'flavors', $supplement_id );
-					$flavors_list = '';
+					// variants list.
+					$variant_ids   = get_field( 'variants', $supplement_id );
+					$variants_list = '';
 
-					if ( $flavor_ids && is_array( $flavor_ids ) ) {
+					if ( $variant_ids && is_array( $variant_ids ) ) {
 
-						foreach ( $flavor_ids as $flavor_id ) {
-							$flavor_name = get_field( 'flavor_name', $flavor_id );
-							$flavor_link = get_edit_post_link( $flavor_id );
+						foreach ( $variant_ids as $variant_id ) {
+							$flavor_name  = get_field( 'flavor_name', $variant_id );
+							$variant_link = get_edit_post_link( $variant_id );
 
-							$classes  = 'flavor-link';
-							$classes .= ( $flavor_id === $best_flavor_id ) ? ' active' : '';
+							$classes  = 'variant-link';
+							$classes .= ( $variant_id === $best_variant_id ) ? ' active' : '';
 
-							if ( $flavor_name && $flavor_link ) {
-								$flavors_list .= '<a href="' . esc_url( $flavor_link ) . '" class="' . esc_attr( $classes )
+							if ( $flavor_name && $variant_link ) {
+								$variants_list .= '<a href="' . esc_url( $variant_link ) . '" class="' . esc_attr( $classes )
 								. '">' . esc_html( $flavor_name ) . '</a>';
 							}
 						}
@@ -110,6 +114,7 @@ function render_product_info_viewer() {
 					?>
 					<tr>
 						<td><a href="<?php echo esc_url( get_permalink() ); ?>" target="_blank"><?php the_title(); ?></a></td>
+						<td><?php echo $brands ? esc_html( $brands[0]->name ) : '—'; ?></td>
 					
 						<td data-order="<?php echo esc_attr( $last_update ); ?>">
 							<?php
@@ -126,7 +131,7 @@ function render_product_info_viewer() {
 							?>
 						</td>
 
-						<td class="flavors-list"><?php echo $flavors_list; ?></td>
+						<td class="variants-list"><?php echo $variants_list; ?></td>
 					</tr>
 				<?php endwhile; ?>
 				</tbody>
@@ -143,20 +148,20 @@ function render_product_info_viewer() {
 					content: " 🔽";
 				}
 
-				.flavors-list{
+				.variants-list{
 					display: flex;
 					flex-wrap: wrap;
 					gap:5px;
 				}
 
-				a.flavor-link{
+				a.variant-link{
 					border:1px solid #aaa;
 					display:inline-block;
 					padding-inline:3px;
 					border-radius: 5px;
 				}
 
-				a.flavor-link.active{
+				a.variant-link.active{
 					background: #D4EDDA;
 					font-weight: bold;
 				}
