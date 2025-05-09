@@ -1,0 +1,39 @@
+@use "../base/variables" as *;
+@use "../base/typography" as *;
+@use "../base/mixins" as *;
+
+body.single-ingredient {
+  h1 {
+    margin-bottom: 2rem;
+  }
+  .single-ingredient-container {
+    background-color: #fff;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    border-radius: $radius-lg;
+  }
+
+  .ingredient-content {
+    & > p,
+    & > ul li {
+      font-size: 1.2rem;
+    }
+  }
+
+  section.top-supplements {
+    .section-title {
+      margin-block: 2rem;
+    }
+    .supplement-list {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    .supplement-card {
+      flex-basis: 300px;
+      flex-grow: 1;
+    }
+  }
+}

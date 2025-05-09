@@ -1255,6 +1255,32 @@ body.single-supplement .external-reviews .review-card p {
   color: #4b5563;
 }
 
+body.single-ingredient h1 {
+  margin-bottom: 2rem;
+}
+body.single-ingredient .single-ingredient-container {
+  background-color: #fff;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+}
+body.single-ingredient .ingredient-content > p, body.single-ingredient .ingredient-content > ul li {
+  font-size: 1.2rem;
+}
+body.single-ingredient section.top-supplements .section-title {
+  margin-block: 2rem;
+}
+body.single-ingredient section.top-supplements .supplement-list {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+body.single-ingredient section.top-supplements .supplement-card {
+  flex-basis: 300px;
+  flex-grow: 1;
+}
+
 body.page-template-compare-page-template #compare-bar {
   bottom: -100%;
 }
