@@ -143,7 +143,7 @@
 							<?php if ( $affiliate ) : ?>
 						<div class="affiliate-wrapper">
 							<a href="<?php echo esc_url( $affiliate ); ?>" target="_blank" rel="nofollow noopener" class="affiliate-button btn btn-primary">
-								View on Amazon
+							<i class="bi bi-amazon"></i>View on Amazon
 							</a>
 						</div>
 						<?php endif; ?>
@@ -272,7 +272,7 @@
 					<?php if ( $affiliate ) : ?>
 				<div class="affiliate-wrapper">
 					<a href="<?php echo esc_url( $affiliate ); ?>" target="_blank" rel="nofollow noopener" class="affiliate-button btn btn-primary">
-						View on Amazon
+					<i class="bi bi-amazon"></i> View on Amazon
 					</a>
 				</div>
 				<?php endif; ?>

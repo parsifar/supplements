@@ -161,6 +161,27 @@
             ]
         },
         {
+            "key": "field_681f87f41629b",
+            "label": "Card Title",
+            "name": "card_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_680ee7d19a450",
             "label": "Has Proprietary Blend",
             "name": "has_proprietary_blend",
@@ -170,7 +191,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "15",
                 "class": "",
                 "id": ""
             },
@@ -191,7 +212,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "15",
                 "class": "",
                 "id": ""
             },
@@ -499,5 +520,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1746572901
+    "modified": 1746897225
 }

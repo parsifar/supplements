@@ -142,6 +142,10 @@ p {
   padding-right: 1rem;
 }
 
+i.bi::before {
+  line-height: inherit;
+}
+
 body.ast-separate-container,
 body.ast-plain-container {
   background-color: #f9fafb;
@@ -185,6 +189,9 @@ button {
 }
 .btn.small {
   padding: 0.375rem 0.75rem;
+}
+.btn i {
+  margin-right: 10px;
 }
 
 .btn-primary {
@@ -452,18 +459,37 @@ input[type=range]:focus::-moz-range-track {
   color: #2563eb;
 }
 .supplement-card .content-header .title-col .supplement-title {
+  font-size: 1.5rem;
   margin-bottom: 0;
 }
 .supplement-card .content-header .price-col {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  gap: 3px;
 }
 .supplement-card .content-header .price-col .price {
   margin-bottom: 0;
 }
-.supplement-card .content-header .price-col .price-per-serving {
+.supplement-card .content-header .price-col .price-per-serving,
+.supplement-card .content-header .price-col .servings {
   font-weight: 700;
+}
+.supplement-card .supplement-highlight {
+  font-size: 0.875rem;
+  align-self: flex-start;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  padding: 0 8px;
+  border-radius: 0.5rem;
+}
+.supplement-card .supplement-highlight i {
+  color: #2563eb;
+  margin-right: 5px;
+}
+.supplement-card .supplement-highlight strong {
+  font-size: 1rem;
 }
 .supplement-card .ingredients-list {
   font-size: 0.875rem;
@@ -478,6 +504,9 @@ input[type=range]:focus::-moz-range-track {
   margin-bottom: 0.5rem;
   background: #eaeaea;
   color: #4b5563;
+}
+.supplement-card .badge i {
+  margin-right: 4px;
 }
 .supplement-card .badge.certification-badge {
   background: #d1fae5;
@@ -922,6 +951,9 @@ input[type=range]:focus::-moz-range-track {
   background: #eaeaea;
   color: #4b5563;
 }
+.top-supplements-shortcode .supplement-grid .supplement-meta .badges .badge i {
+  margin-right: 4px;
+}
 .top-supplements-shortcode .supplement-grid .supplement-meta .badges .badge.certification-badge {
   background: #d1fae5;
 }
@@ -1201,6 +1233,9 @@ body.single-supplement .supplement-meta .badges .badge {
   background: #eaeaea;
   color: #4b5563;
 }
+body.single-supplement .supplement-meta .badges .badge i {
+  margin-right: 4px;
+}
 body.single-supplement .supplement-meta .badges .badge.certification-badge {
   background: #d1fae5;
 }
@@ -1389,7 +1424,7 @@ body.page-template-compare-page-template .compare__highlight {
   font-weight: bold;
 }
 body.page-template-compare-page-template .compare__buy-btn {
-  max-width: 200px;
+  max-width: 250px;
   margin: auto;
 }
 body.page-template-compare-page-template .compare .rating-bar {

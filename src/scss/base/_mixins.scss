@@ -40,6 +40,10 @@
   margin-bottom: 0.5rem;
   background: $color-gray-light;
   color: $color-secondary;
+
+  i {
+    margin-right: 4px;
+  }
 }
 
 @mixin transition($props...) {

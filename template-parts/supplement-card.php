@@ -1,3 +1,45 @@
+<?php
+// Card Title
+$card_title = get_field( 'card_title' );
+
+if ( empty( $card_title ) ) {
+	$card_title = get_the_title();
+}
+// Get supplement categories for the current post
+$categories = get_the_terms( get_the_ID(), 'supplement-category' );
+
+// Initialize the highlight content
+$highlight = '';
+
+if ( $categories && ! is_wp_error( $categories ) ) {
+	foreach ( $categories as $category ) {
+		$slug = $category->slug;
+
+		if ( $slug === 'pre-workout' ) {
+			// Display total caffeine content if available.
+			$caffeine = get_field( 'total_caffeine_content' );
+			if ( $caffeine ) {
+				$highlight = "<strong>{$caffeine}</strong>mg caffeine per serving";
+			}
+			break;
+
+		} elseif ( $slug === 'protein' ) {
+			// Display protein per serving if available.
+			$protein = get_field( 'protein_per_serving' );
+			if ( $protein ) {
+				$highlight = "{$protein} g protein";
+			}
+			break;
+
+		}
+
+		// You can add more category-specific highlights here
+		// elseif ($slug === 'multivitamin') {
+		// $highlight = "Some multivitamin-specific field";
+		// }
+	}
+}
+?>
 <article class="supplement-card">
 	<a href="<?php the_permalink(); ?>" class="card-link">
 		<div class="image-wrapper">
@@ -26,13 +68,15 @@
 					}
 					?>
 
-					<h2 class="supplement-title h4"><?php the_title(); ?></h2>
+					<h2 class="supplement-title"><?php echo esc_html( $card_title ); ?></h2>
 
 				</div>
+			
 				
 				<?php
-				$price = get_field( 'price' );
-				$pps   = get_field( 'price_per_serving' );
+				$price    = get_field( 'price' );
+				$pps      = get_field( 'price_per_serving' );
+				$servings = get_field( 'servings_per_container' );
 
 				if ( $price || $pps ) {
 					echo '<div class="price-col">';
@@ -42,13 +86,25 @@
 					if ( $pps ) {
 						echo '<span class="price-per-serving text-tiny">$' . number_format( $pps, 2 ) . '/serving</span>';
 					}
+
+					if ( $servings ) {
+						echo '<span class="servings  text-tiny">' . esc_html( $servings ) . ' servings</span>';
+					}
 					echo '</div>';
 				}
 				?>
 
 			</div>
 			
-			
+			<?php
+			// Output the highlight section if not empty.
+			if ( $highlight ) :
+				?>
+				<div class="supplement-highlight">
+					<i class="bi bi-rocket-takeoff"></i>
+					<?php echo wp_kses_post( $highlight ); ?>
+				</div>
+			<?php endif; ?>
 
 			<?php
 			$ingredients = get_field( 'ingredients' );
@@ -68,24 +124,27 @@
 			<div class="badges">
 				<?php
 
-				foreach ( array( 'supplement-category', 'certification', 'dietary-tag', 'product-form' ) as $tax ) {
+				foreach ( array( 'supplement-category', 'certification', 'product-form' ) as $tax ) {
 					$terms = get_the_terms( get_the_ID(), $tax );
 					if ( $terms && ! is_wp_error( $terms ) ) {
 
+						$icon = '';
+						if ( $tax === 'certification' ) {
+							$icon = '<i class="bi bi-award"></i>';
+						} elseif ( $tax === 'supplement-category' ) {
+							$icon = '<i class="bi bi-tag"></i>';
+						} elseif ( $tax === 'product-form' ) {
+							$icon = '<i class="bi bi-flask"></i>';
+						}
+
 						foreach ( $terms as $term ) {
-							echo '<span class="badge ' . $tax . '-badge">' . esc_html( $term->name ) . '</span>';
+							echo '<span class="badge ' . $tax . '-badge">' . $icon . esc_html( $term->name ) . '</span>';
 						}
 					}
 				}
 				?>
 			</div>
-			<?php
-
-			$servings = get_field( 'servings_per_container' );
-			if ( $servings ) {
-				echo '<p class="servings">' . esc_html( $servings ) . ' servings</p>';
-			}
-			?>
+			
 
 			<?php
 			$rating = get_field( 'amazon_rating' );
@@ -120,7 +179,7 @@
 
 	<div class="card-footer">
 		<?php if ( $affiliate = get_field( 'affiliate_url' ) ) : ?>
-			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn btn-primary small" target="_blank" rel="nofollow noopener">View on Amazon</a>
+			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn btn-primary small" target="_blank" rel="nofollow noopener"><i class="bi bi-amazon"></i> View on Amazon</a>
 		<?php endif; ?>
 	</div>
 </article>

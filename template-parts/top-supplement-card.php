@@ -20,6 +20,7 @@ switch ( $index ) {
 	<!-- Ranking badge -->
 	<?php if ( $badge_text ) : ?>
 		<div class="ranking-badge">
+			<i class="bi bi-trophy"></i>
 			<?php echo esc_html( $badge_text ); ?>
 		</div>
 	<?php endif; ?>

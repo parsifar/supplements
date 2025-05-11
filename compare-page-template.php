@@ -247,7 +247,7 @@ uasort(
 				?>
 			<td>
 				<?php if ( $url ) : ?>
-				<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="compare__buy-btn btn btn-primary">View on Amazon</a>
+				<a href="<?php echo esc_url( $url ); ?>" target="_blank" class="compare__buy-btn btn btn-primary"><i class="bi bi-amazon"></i>View on Amazon</a>
 				<?php else : ?>
 				—
 				<?php endif; ?>

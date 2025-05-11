@@ -55,20 +55,42 @@
         color: $color-primary;
       }
       .supplement-title {
+        font-size: 1.5rem;
         margin-bottom: 0;
       }
     }
     .price-col {
       @include flex-column;
       align-items: flex-end;
+      gap: 3px;
 
       .price {
         margin-bottom: 0;
       }
 
-      .price-per-serving {
+      .price-per-serving,
+      .servings {
         font-weight: 700;
       }
+    }
+  }
+
+  .supplement-highlight {
+    font-size: $font-size-sm;
+    align-self: flex-start;
+    background: $color-light;
+    border: 1px solid $color-border;
+    color: $color-dark;
+    padding: 0 8px;
+    border-radius: $radius;
+
+    i {
+      color: $color-primary;
+      margin-right: 5px;
+    }
+
+    strong {
+      font-size: 1rem;
     }
   }
 

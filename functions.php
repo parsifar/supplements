@@ -31,6 +31,13 @@ function astra_child_enqueue_styles() {
 		false,
 		true
 	);
+	// Bootstrap Icons.
+	wp_enqueue_style(
+		'bootstrap-icons',
+		'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css',
+		array(),
+		'1.13.1'
+	);
 
 	// Ajax search
 
