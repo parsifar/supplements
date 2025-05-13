@@ -258,6 +258,7 @@
 										<?php if ( $source_url ) : ?>
 							<a class="inline-link" href="<?php echo esc_url( $source_url ); ?>" target="_blank" rel="noopener">
 								Read Full Review
+								<i class="bi bi-box-arrow-up-right"></i>
 							</a>
 							<?php endif; ?>
 						</div>

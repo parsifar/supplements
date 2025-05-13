@@ -28,7 +28,7 @@ h1,
 .h1 {
   font-size: 2.5rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   h1,
   .h1 {
     font-size: 2rem;
@@ -39,7 +39,7 @@ h2,
 .h2 {
   font-size: 2rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   h2,
   .h2 {
     font-size: 1.75rem;
@@ -76,12 +76,12 @@ p {
   color: #111827;
 }
 
-.inline-link {
+.inline-link, .wp-block-columns.title-text-columns .wp-block-column .learn-more-link {
   display: inline-block;
   color: #2563eb;
   font-weight: 600;
 }
-.inline-link:hover {
+.inline-link:hover, .wp-block-columns.title-text-columns .wp-block-column .learn-more-link:hover {
   color: #111827;
 }
 
@@ -771,21 +771,28 @@ input[type=range]:focus::-moz-range-track {
 }
 
 .pagination {
+  margin-top: 1.5rem;
+}
+.pagination .nav-links {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 1.5rem;
 }
-.pagination button {
+.pagination .page-numbers {
+  font-size: 1rem;
   border: 1px solid #e5e7eb;
-  padding: 0.5rem 1rem;
+  padding: 4px 15px;
   background: white;
   border-radius: 0.5rem;
   cursor: pointer;
 }
-.pagination button.active {
-  background-color: #2563eb;
+.pagination .page-numbers:hover {
+  background-color: #d8e5ff;
+}
+.pagination .page-numbers.current {
+  background-color: #4b5563;
   color: white;
+  cursor: default;
 }
 
 .site-footer {
@@ -854,7 +861,7 @@ input[type=range]:focus::-moz-range-track {
   flex-direction: column;
   gap: 1.5rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 782px) {
   .top-supplements-shortcode .supplement-grid .supplement-header {
     flex-direction: row;
     justify-content: space-between;
@@ -866,7 +873,7 @@ input[type=range]:focus::-moz-range-track {
   overflow: hidden;
   position: relative;
 }
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   .top-supplements-shortcode .supplement-grid .supplement-thumbnail {
     max-width: 400px;
   }
@@ -999,6 +1006,89 @@ input[type=range]:focus::-moz-range-track {
   border-width: 0 15px 10px;
 }
 
+.wp-block-columns.image-text-col {
+  margin-block: 3rem;
+  gap: 80px;
+  align-items: center !important;
+}
+.wp-block-columns.image-text-col + .wp-block-columns.image-text-col {
+  margin-top: 5rem;
+}
+@media (max-width: 782px) {
+  .wp-block-columns.image-text-col {
+    gap: 2rem;
+  }
+  .wp-block-columns.image-text-col + .wp-block-columns.image-text-col {
+    margin-top: 3rem;
+  }
+  .wp-block-columns.image-text-col.img-left .wp-block-column:first-child {
+    order: 2;
+  }
+}
+.wp-block-columns.image-text-col figure.wp-block-image img {
+  border-radius: 0.5rem;
+}
+
+.wp-block-columns.card-columns {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+.wp-block-columns.card-columns .wp-block-column {
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.wp-block-columns.card-columns .wp-block-column .card-content {
+  padding: 1rem;
+}
+
+.wp-block-columns.title-text-columns {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+.wp-block-columns.title-text-columns .wp-block-column {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  background-color: white;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.wp-block-columns.title-text-columns .wp-block-column .title,
+.wp-block-columns.title-text-columns .wp-block-column .content,
+.wp-block-columns.title-text-columns .wp-block-column .learn-more-link {
+  margin: 0;
+}
+.wp-block-columns.title-text-columns .wp-block-column .title {
+  font-size: 1.5rem;
+}
+.wp-block-columns.title-text-columns .wp-block-column .content,
+.wp-block-columns.title-text-columns .wp-block-column .learn-more-link {
+  font-size: 1rem;
+}
+.wp-block-columns.title-text-columns .wp-block-column .learn-more-link {
+  margin-top: auto;
+}
+.wp-block-columns.title-text-columns .wp-block-column a {
+  text-decoration: none;
+}
+.wp-block-columns.title-text-columns .wp-block-column a:first-of-type::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.wp-block-columns.title-text-columns .wp-block-column:has(a):hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 #main .wp-block-stackable-accordion {
   margin-bottom: 0;
 }
@@ -1019,11 +1109,32 @@ input[type=range]:focus::-moz-range-track {
   fill: #2563eb;
 }
 
-body.page-template-default .entry-content p {
+body.page-template-default .entry-content {
+  padding-block: 3rem;
+}
+body.page-template-default .entry-content:has(.wp-block-cover.alignfull) {
+  padding-top: 0;
+}
+body.page-template-default .entry-content p,
+body.page-template-default .entry-content li {
   font-size: 1.25rem;
+}
+body.page-template-default .entry-content > h2 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
 }
 body.page-template-default .entry-content ul.wp-block-list > li {
   margin-bottom: 0.5rem;
+}
+body.page-template-default .entry-content .wp-block-columns {
+  margin-block: 3rem;
+  padding: 0;
+}
+body.page-template-default .entry-content .wp-block-group.alignfull.has-background {
+  padding-block: 3rem;
+}
+body.page-template-default .entry-content .wp-block-group.alignfull.has-background > div:last-child {
+  margin-bottom: 0;
 }
 
 .supplements-layout {
@@ -1139,7 +1250,7 @@ body.single-supplement .supplement-header {
   flex-direction: column;
   gap: 1.5rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 782px) {
   body.single-supplement .supplement-header {
     flex-direction: row;
     justify-content: space-between;
@@ -1151,7 +1262,7 @@ body.single-supplement .supplement-thumbnail {
   overflow: hidden;
   position: relative;
 }
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   body.single-supplement .supplement-thumbnail {
     max-width: 400px;
   }
@@ -1331,7 +1442,7 @@ body.page-template-compare-page-template .compare__no-items {
   line-height: 1.25;
   font-size: 2rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   body.page-template-compare-page-template .compare__no-items {
     font-size: 1.75rem;
   }

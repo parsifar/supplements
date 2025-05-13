@@ -19,6 +19,10 @@
 @use "components/footer";
 @use "components/shortcodes";
 
+@use "components/patterns/image-text-columns";
+@use "components/patterns/card-columns";
+@use "components/patterns/title-text-columns";
+
 @use "components/stackable/accordion";
 
 @use "templates/default-page";

@@ -14,7 +14,8 @@
 
 	<!-- MOBILE FILTER TOGGLE BUTTON -->
 	<button class="mobile-filter-toggle btn btn-primary" onclick="document.querySelector('.filters-sidebar').classList.toggle('open')">
-		Show Filter
+	<i class="bi bi-sliders"></i>	
+	Show Filters
 	</button>
 
 	<div class="supplements-layout">
@@ -50,7 +51,7 @@
 					?>
 				</div>
 
-				<div class="pagination">
+				<div class="pagination-wrapper">
 					<?php
 					the_posts_pagination(
 						array(

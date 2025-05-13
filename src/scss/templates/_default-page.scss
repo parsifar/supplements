@@ -1,11 +1,38 @@
+@use "../base/variables" as *;
+
 body.page-template-default {
   .entry-content {
-    p {
+    padding-block: 3rem;
+
+    &:has(.wp-block-cover.alignfull) {
+      padding-top: 0;
+    }
+
+    p,
+    li {
       font-size: 1.25rem;
+    }
+
+    & > h2 {
+      margin-top: 3rem;
+      margin-bottom: 1rem;
     }
 
     ul.wp-block-list > li {
       margin-bottom: 0.5rem;
+    }
+
+    .wp-block-columns {
+      margin-block: 3rem;
+      padding: 0;
+    }
+
+    .wp-block-group.alignfull.has-background {
+      padding-block: 3rem;
+
+      & > div:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }

@@ -1,0 +1,54 @@
+@use "../../base/variables" as *;
+@use "../../base/typography" as *;
+
+.wp-block-columns.title-text-columns {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+
+  .wp-block-column {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    background-color: white;
+    padding: 1.5rem;
+    box-shadow: $shadow;
+    border-radius: $radius;
+    overflow: hidden;
+    position: relative;
+    transition: box-shadow 0.2s;
+
+    .title,
+    .content,
+    .learn-more-link {
+      margin: 0;
+    }
+    .title {
+      font-size: 1.5rem;
+    }
+
+    .content,
+    .learn-more-link {
+      font-size: 1rem;
+    }
+    .learn-more-link {
+      margin-top: auto;
+      @extend .inline-link;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    & a:first-of-type::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    &:has(a):hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+}

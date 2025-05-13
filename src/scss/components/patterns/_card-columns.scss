@@ -1,0 +1,17 @@
+@use "../../base/variables" as *;
+
+.wp-block-columns.card-columns {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  .wp-block-column {
+    background-color: white;
+    box-shadow: $shadow;
+    border-radius: $radius;
+    overflow: hidden;
+
+    .card-content {
+      padding: 1rem;
+    }
+  }
+}

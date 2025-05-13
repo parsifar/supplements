@@ -1,21 +1,30 @@
 @use "../base/variables" as *;
 
 .pagination {
-  display: flex;
-  justify-content: center;
-  gap: $spacing-sm;
   margin-top: $spacing-lg;
 
-  button {
+  .nav-links {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+
+  .page-numbers {
+    font-size: 1rem;
     border: 1px solid $color-border;
-    padding: $spacing-sm $spacing-md;
+    padding: 4px 15px;
     background: white;
     border-radius: $radius;
     cursor: pointer;
 
-    &.active {
-      background-color: $color-primary;
+    &:hover {
+      background-color: $color-light-blue;
+    }
+
+    &.current {
+      background-color: $color-secondary;
       color: white;
+      cursor: default;
     }
   }
 }

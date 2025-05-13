@@ -1,0 +1,29 @@
+@use "../../base/variables" as *;
+// Image-Text Pattern
+.wp-block-columns.image-text-col {
+  margin-block: 3rem;
+  gap: 80px;
+  align-items: center !important;
+
+  & + .wp-block-columns.image-text-col {
+    margin-top: 5rem;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    gap: 2rem;
+
+    & + .wp-block-columns.image-text-col {
+      margin-top: 3rem;
+    }
+
+    &.img-left {
+      .wp-block-column:first-child {
+        order: 2;
+      }
+    }
+  }
+
+  figure.wp-block-image img {
+    border-radius: $radius;
+  }
+}
