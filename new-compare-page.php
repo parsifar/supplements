@@ -88,19 +88,21 @@ get_header();
 	<!-- Category-Specific Information -->
 	<div class="mb-6">
 		<h3 class="font-semibold text-xl mb-2">Category-Specific Info</h3>
-		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-		<div class="font-bold">Field</div>
-		<template x-for="(product, index) in selectedProducts" :key="'category-' + index">
-			<div x-show="product">
-			<template x-if="product?.category === 'Pre-Workout'">
-				<div><strong>Caffeine:</strong> <span x-text="product?.total_caffeine_content + ' mg'"></span></div>
-			</template>
-			<template x-if="product?.category === 'protein'">
-				<div><strong>Protein/Serving:</strong> <span x-text="product?.protein_per_serving + ' g'"></span></div>
-			</template>
+		<template x-for="(field, fieldIndex) in ['Caffeine', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
+			<div x-show="shouldShowCategoryField(field)" class="border-b py-2">
+				<div class="font-bold" x-text="field"></div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<template x-for="(product, pIndex) in selectedProducts" :key="'category-product-' + pIndex">
+						<div x-show="product">
+							<span 
+								x-text="getCategoryValue(product, field)"
+								:class="{ 'text-green-600 font-bold': isMaxCategoryValue(product, field) }"
+							></span>
+						</div>
+					</template>
+				</div>
 			</div>
 		</template>
-		</div>
 	</div>
 
 	<!-- Ingredients Comparison -->
@@ -246,6 +248,60 @@ function comparePage() {
 			default:
 				return '—';
 		}
+	},
+
+	getCategoryValue(product, field) {
+		if (!product) return '—';
+		
+		switch(field) {
+			case 'Caffeine':
+				return product?.category === 'Pre-Workout' ? (product?.total_caffeine_content ? product.total_caffeine_content + ' mg' : '—') : '—';
+			case 'Protein/Serving':
+				return product?.category === 'protein' ? (product?.protein_per_serving ? product.protein_per_serving + ' g' : '—') : '—';
+			default:
+				return '—';
+		}
+	},
+
+	getCategoryNumericValue(product, field) {
+		if (!product) return 0;
+		
+		switch(field) {
+			case 'Caffeine':
+				return product?.category === 'Pre-Workout' ? parseFloat(product?.total_caffeine_content) || 0 : 0;
+			case 'Protein/Serving':
+				return product?.category === 'protein' ? parseFloat(product?.protein_per_serving) || 0 : 0;
+			default:
+				return 0;
+		}
+	},
+
+	isMaxCategoryValue(product, field) {
+		if (!product) return false;
+		
+		const currentValue = this.getCategoryNumericValue(product, field);
+		if (currentValue === 0) return false;
+
+		return this.selectedProducts.every(p => {
+			if (!p) return true;
+			return currentValue >= this.getCategoryNumericValue(p, field);
+		});
+	},
+
+	shouldShowCategoryField(field) {
+		// Check if any product has a non-empty value for this field
+		return this.selectedProducts.some(product => {
+			if (!product) return false;
+			
+			switch(field) {
+				case 'Caffeine':
+					return product.category === 'Pre-Workout' && product.total_caffeine_content;
+				case 'Protein/Serving':
+					return product.category === 'protein' && product.protein_per_serving;
+				default:
+					return false;
+			}
+		});
 	}
 	}
 }
