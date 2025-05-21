@@ -1,16 +1,28 @@
 <?php
-/* Template Name: New Compare Page */
+/**
+ * Template Name: New Compare Page
+ *
+ * This template creates a supplement comparison page that allows users to:
+ * - Search for supplements
+ * - Compare up to 3 supplements side by side
+ * - View detailed information including calories, servings, ratings, and prices
+ * - Compare ingredients across selected supplements
+ * - View category-specific information (e.g., caffeine for pre-workouts, protein content for protein supplements)
+ */
+
 get_header();
 ?>
 
+<!-- Required JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-<!-- Comparison Page Wrapper -->
+<!-- Main Comparison Interface -->
 <div x-data="comparePage()" class="container mx-auto px-4 py-8">
 	<h1 class="text-2xl font-bold mb-4">Compare Supplements</h1>
 
-	<!-- Search Bar -->
+	<!-- Search Interface -->
+	<!-- Allows users to search for supplements and displays results in a dropdown -->
 	<div class="mb-6">
 	<input
 		x-model="searchQuery"
@@ -34,6 +46,7 @@ get_header();
 	</div>
 
 	<!-- Comparison Slots -->
+	<!-- Displays up to 3 selected supplements with their basic information -->
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
 	<template x-for="(product, index) in selectedProducts" :key="'slot-' + index">
 		<div class="border p-4 min-h-[150px]">
@@ -53,8 +66,10 @@ get_header();
 	</div>
 
 	<!-- Comparison Table -->
+	<!-- Only shows when at least one product is selected -->
 	<div x-show="selectedProducts.filter(p => p).length">
 	<!-- Overview Section -->
+	<!-- Displays basic product information in a grid layout -->
 	<div class="mb-6">
 		<h3 class="font-semibold text-xl mb-2">Overview</h3>
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -71,7 +86,8 @@ get_header();
 		</div>
 	</div>
 
-	<!-- Conditional Fields -->
+	<!-- Category-Specific Information -->
+	<!-- Shows different information based on supplement category -->
 	<div class="mb-6">
 		<h3 class="font-semibold text-xl mb-2">Category-Specific Info</h3>
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -90,6 +106,7 @@ get_header();
 	</div>
 
 	<!-- Ingredients Comparison -->
+	<!-- Displays a detailed comparison of ingredients across all selected supplements -->
 	<div>
 		<h3 class="font-semibold text-xl mb-2">Ingredients</h3>
 		<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
@@ -111,14 +128,24 @@ get_header();
 	</div>
 </div>
 
+<!-- Alpine.js Component -->
 <script>
+/**
+ * Main comparison page component
+ * Handles all the logic for the supplement comparison functionality
+ */
 function comparePage() {
 	return {
-	searchQuery: '',
-	searchResults: [],
-	selectedProducts: [null, null, null],
-	sortedIngredients: [],
+	// State variables
+	searchQuery: '', // Current search input
+	searchResults: [], // Results from the search API
+	selectedProducts: [null, null, null], // Array of up to 3 selected products
+	sortedIngredients: [], // Sorted list of ingredients for comparison
 
+	/**
+	 * Fetches search results from the WordPress API
+	 * Triggered on search input with debounce
+	 */
 	fetchSearchResults() {
 		if (!this.searchQuery) return;
 		fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}`)
@@ -128,6 +155,10 @@ function comparePage() {
 		});
 	},
 
+	/**
+	 * Adds a product to the comparison
+	 * Fetches full product details and updates the comparison
+	 */
 	addToCompare(id) {
 		if (this.selectedProducts.filter(Boolean).length >= 3) return;
 
@@ -164,11 +195,19 @@ function comparePage() {
 		});
 	},
 
+	/**
+	 * Removes a product from the comparison
+	 */
 	removeFromCompare(index) {
 		this.selectedProducts[index] = null;
 		this.recalculateIngredients();
 	},
 
+	/**
+	 * Recalculates the ingredients comparison
+	 * Creates a map of all ingredients and their amounts across products
+	 * Sorts ingredients by frequency and name
+	 */
 	recalculateIngredients() {
 		const ingredientsMap = {};
 
@@ -197,6 +236,7 @@ function comparePage() {
 </script>
 
 <style>
+/* Basic styling for the comparison interface */
 .container {
 	max-width: 1200px;
 }
@@ -212,8 +252,6 @@ button {
 	cursor: pointer;
 }
 </style>
-
-
 
 <?php
 get_footer();
