@@ -69,25 +69,23 @@ get_header();
 	<!-- Only shows when at least one product is selected -->
 	<div x-show="selectedProducts.filter(p => p).length">
 	<!-- Overview Section -->
-	<!-- Displays basic product information in a grid layout -->
 	<div class="mb-6">
 		<h3 class="font-semibold text-xl mb-2">Overview</h3>
-		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-		<div class="font-bold">Field</div>
-		<template x-for="(product, index) in selectedProducts" :key="'overview-' + index">
-			<div x-show="product">
-			<div><strong>Calories:</strong> <span x-text="product?.calories || '—'"></span></div>
-			<div><strong>Servings:</strong> <span x-text="product?.servings || '—'"></span></div>
-			<div><strong>Rating:</strong> <span x-text="product?.amazon_rating || '—'"></span></div>
-			<div><strong>Price:</strong> $<span x-text="product?.price || '—'"></span></div>
-			<div><strong>Price/Serving:</strong> $<span x-text="product?.price_per_serving || '—'"></span></div>
+		<template x-for="(field, fieldIndex) in ['Calories', 'Servings', 'Rating', 'Price', 'Price/Serving']" :key="'overview-field-' + fieldIndex">
+			<div class="border-b py-2">
+				<div class="font-bold" x-text="field"></div>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<template x-for="(product, pIndex) in selectedProducts" :key="'overview-product-' + pIndex">
+						<div x-show="product">
+							<span x-text="getOverviewValue(product, field)"></span>
+						</div>
+					</template>
+				</div>
 			</div>
 		</template>
-		</div>
 	</div>
 
 	<!-- Category-Specific Information -->
-	<!-- Shows different information based on supplement category -->
 	<div class="mb-6">
 		<h3 class="font-semibold text-xl mb-2">Category-Specific Info</h3>
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -106,7 +104,6 @@ get_header();
 	</div>
 
 	<!-- Ingredients Comparison -->
-	<!-- Displays a detailed comparison of ingredients across all selected supplements -->
 	<div>
 		<h3 class="font-semibold text-xl mb-2">Ingredients</h3>
 		<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
@@ -232,6 +229,23 @@ function comparePage() {
 		const bCount = Object.keys(b.amounts).length;
 		return bCount - aCount || a.name.localeCompare(b.name);
 		});
+	},
+
+	getOverviewValue(product, field) {
+		switch(field) {
+			case 'Calories':
+				return product?.calories || '—';
+			case 'Servings':
+				return product?.servings || '—';
+			case 'Rating':
+				return product?.amazon_rating || '—';
+			case 'Price':
+				return product?.price ? '$' + product.price : '—';
+			case 'Price/Serving':
+				return product?.price_per_serving ? '$' + product.price_per_serving : '—';
+			default:
+				return '—';
+		}
 	}
 	}
 }
