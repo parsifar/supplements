@@ -94,7 +94,7 @@ get_header();
 		<div class="font-bold">Field</div>
 		<template x-for="(product, index) in selectedProducts" :key="'category-' + index">
 			<div x-show="product">
-			<template x-if="product?.category === 8">
+			<template x-if="product?.category === 'Pre-Workout'">
 				<div><strong>Caffeine:</strong> <span x-text="product?.total_caffeine_content + ' mg'"></span></div>
 			</template>
 			<template x-if="product?.category === 'protein'">
@@ -166,7 +166,8 @@ function comparePage() {
 		const index = this.selectedProducts.findIndex(p => p === null);
 		if (index !== -1) {
 			const acf = data.acf || {};
-			const category = data['supplement-category']?.[0] || '';
+			const category = data['supplement-category']?.[0]?.name || '';
+			const brand = data.brand?.[0]?.name || '';
 			const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
 			const ingredients = dosages.map(d => ({
 			name: d.ingredient?.post_title || 'Unknown',
@@ -185,6 +186,7 @@ function comparePage() {
 			price_per_serving: acf.price_per_serving || '',
 			affiliate_url: acf.affiliate_url || '',
 			category,
+			brand,
 			total_caffeine_content: acf.total_caffeine_content || '',
 			protein_per_serving: acf.protein_per_serving || '',
 			ingredients
