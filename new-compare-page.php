@@ -213,6 +213,10 @@ function comparePage() {
 			};
 
 			this.recalculateIngredients();
+			
+			// Clear search field and results
+			this.searchQuery = '';
+			this.searchResults = [];
 		}
 		});
 	},
