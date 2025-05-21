@@ -36,9 +36,10 @@ get_header();
 		<li>
 			<button
 			@click="addToCompare(result.id)"
-			class="block w-full text-left p-2 hover:bg-gray-100"
+			class="block w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
 			>
-			<span x-text="result.title.rendered"></span>
+			<img :src="getThumbnailUrl(result)" class="w-8 h-8 object-contain" />
+			<span x-text="getBrandName(result) + ' - ' + result.title.rendered"></span>
 			</button>
 		</li>
 		</template>
@@ -52,7 +53,7 @@ get_header();
 		<div class="border p-4 min-h-[150px]">
 		<template x-if="product">
 			<div>
-			<h2 class="font-bold text-lg mb-2" x-text="product.title"></h2>
+			<h2 class="font-bold text-lg mb-2" x-text="product.brand + ' - ' + product.title"></h2>
 			<img :src="product.image" class="h-32 object-contain mx-auto mb-2" />
 			<a :href="product.affiliate_url" target="_blank" class="text-blue-500">Buy</a>
 			<button @click="removeFromCompare(index)" class="block text-sm text-red-500 mt-2">Remove</button>
@@ -147,7 +148,7 @@ function comparePage() {
 	 */
 	fetchSearchResults() {
 		if (!this.searchQuery) return;
-		fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}`)
+		fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}&_embed`)
 		.then(res => res.json())
 		.then(data => {
 			this.searchResults = data;
@@ -231,6 +232,17 @@ function comparePage() {
 		const bCount = Object.keys(b.amounts).length;
 		return bCount - aCount || a.name.localeCompare(b.name);
 		});
+	},
+
+	getBrandName(result) {
+		return result.brand?.[0]?.name || 'Unknown Brand';
+	},
+
+	getThumbnailUrl(result) {
+		if (!result._embedded || !result._embedded['wp:featuredmedia']) {
+			return '/wp-content/themes/supp-pick/assets/images/placeholder.png';
+		}
+		return result._embedded['wp:featuredmedia'][0].source_url;
 	},
 
 	getOverviewValue(product, field) {
