@@ -148,11 +148,31 @@ function comparePage() {
 	 */
 	fetchSearchResults() {
 		if (!this.searchQuery) return;
-		fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}&_embed`)
-		.then(res => res.json())
-		.then(data => {
-			this.searchResults = data;
-		});
+		
+		// First search in titles
+		const titleSearch = fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}&_embed&acf=true&per_page=20`)
+			.then(res => res.json());
+
+		// Then search in brands
+		const brandSearch = fetch(`/wp-json/wp/v2/brand?search=${this.searchQuery}&per_page=20`)
+			.then(res => res.json())
+			.then(brands => {
+				if (brands.length === 0) return Promise.resolve([]);
+				const brandIds = brands.map(brand => brand.id);
+				return fetch(`/wp-json/wp/v2/supplement?brand=${brandIds.join(',')}&_embed&acf=true&per_page=20`)
+					.then(res => res.json());
+			});
+
+		// Combine both results
+		Promise.all([titleSearch, brandSearch])
+			.then(([titleResults, brandResults]) => {
+				// Combine results and remove duplicates
+				const allResults = [...titleResults, ...brandResults];
+				const uniqueResults = allResults.filter((result, index, self) =>
+					index === self.findIndex((r) => r.id === result.id)
+				);
+				this.searchResults = uniqueResults;
+			});
 	},
 
 	/**
