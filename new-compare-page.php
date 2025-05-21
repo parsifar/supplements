@@ -31,7 +31,7 @@ get_header();
 		class="border border-gray-300 p-2 w-full"
 		placeholder="Search for supplements..."
 	/>
-	<ul x-show="searchResults.length" class="border mt-2 bg-white">
+	<ul x-show="searchResults.length" id="search-results" class="border mt-2 bg-white">
 		<template x-for="(result, index) in searchResults" :key="'search-' + index">
 		<li>
 			<button
@@ -341,9 +341,7 @@ function comparePage() {
 
 <style>
 /* Basic styling for the comparison interface */
-.container {
-	max-width: 1200px;
-}
+
 input[type="text"] {
 	border-radius: 4px;
 	font-size: 1rem;
@@ -354,6 +352,15 @@ input[type="text"] {
 }
 button {
 	cursor: pointer;
+}
+
+ul#search-results{
+	margin:0;
+	list-style: none;
+
+	button{
+	background: none;
+	}
 }
 </style>
 
