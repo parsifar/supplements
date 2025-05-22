@@ -136,11 +136,31 @@ get_header();
  */
 function comparePage() {
 	return {
-	// State variables
-	searchQuery: '', // Current search input
-	searchResults: [], // Results from the search API
-	selectedProducts: [null, null, null], // Array of up to 3 selected products
-	sortedIngredients: [], // Sorted list of ingredients for comparison
+	searchQuery: '',
+	searchResults: [],
+	selectedProducts: [null, null, null],
+	sortedIngredients: [],
+
+	init() {
+		// Check local storage for comparison IDs on page load
+		const storedIds = JSON.parse(localStorage.getItem('compareIds') || '[]');
+		if (storedIds.length > 0) {
+			// Load each product from stored IDs
+			storedIds.forEach(id => {
+				this.addToCompare(id);
+			});
+		}
+	},
+
+	updateLocalStorage() {
+		// Get all non-null product IDs
+		const productIds = this.selectedProducts
+			.filter(p => p !== null)
+			.map(p => p.id.toString());
+		
+		// Update local storage
+		localStorage.setItem('compareIds', JSON.stringify(productIds));
+	},
 
 	/**
 	 * Fetches search results from the WordPress API
@@ -217,6 +237,9 @@ function comparePage() {
 			// Clear search field and results
 			this.searchQuery = '';
 			this.searchResults = [];
+
+			// Update local storage
+			this.updateLocalStorage();
 		}
 		});
 	},
@@ -227,6 +250,8 @@ function comparePage() {
 	removeFromCompare(index) {
 		this.selectedProducts[index] = null;
 		this.recalculateIngredients();
+		// Update local storage
+		this.updateLocalStorage();
 	},
 
 	/**
