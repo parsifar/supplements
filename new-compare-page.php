@@ -480,6 +480,11 @@ function comparePage() {
 		// If no valid amounts to compare, return false
 		if (amountsWithIndices.length === 0) return false;
 
+		// If there's only one positive amount, highlight it
+		if (amountsWithIndices.length === 1) {
+			return currentAmount === amountsWithIndices[0].amount;
+		}
+
 		// Find the highest amount
 		const maxAmount = Math.max(...amountsWithIndices.map(item => item.amount));
 
