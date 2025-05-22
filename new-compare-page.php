@@ -31,21 +31,30 @@ get_header();
 				type="text"
 				class="search-field p-2 w-full"
 				placeholder="Search for supplements..."
+				:disabled="selectedProducts.filter(Boolean).length >= 3"
 			/>
 			<button 
 				@click="clearSearch" 
 				class="search-icon"
 				x-show="searchQuery"
+				:disabled="selectedProducts.filter(Boolean).length >= 3"
 			>
 				<i class="bi bi-x-lg"></i>
 			</button>
 			<button 
 				class="search-icon"
 				x-show="!searchQuery"
+				:disabled="selectedProducts.filter(Boolean).length >= 3"
 			>
 				<i class="bi bi-search"></i>
 			</button>
 		</div>
+		<p 
+			x-show="selectedProducts.filter(Boolean).length >= 3" 
+			class="search-message"
+		>
+			Please remove a supplement in order to select a different one
+		</p>
 		<ul x-show="searchResults.length" id="search-results" class="bg-white">
 			<template x-for="(result, index) in searchResults" :key="'search-' + index">
 			<li class="search-result">

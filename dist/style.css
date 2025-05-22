@@ -1566,6 +1566,13 @@ body.page-template-new-compare-page .search-wrapper .search-field-wrapper .searc
 body.page-template-new-compare-page .search-wrapper .search-field-wrapper .search-icon:hover {
   color: #2563eb;
 }
+body.page-template-new-compare-page .search-wrapper .search-field-wrapper .search-icon:disabled {
+  color: #e5e7eb;
+  cursor: not-allowed;
+}
+body.page-template-new-compare-page .search-wrapper .search-field-wrapper .search-icon:disabled:hover {
+  color: #e5e7eb;
+}
 body.page-template-new-compare-page .search-wrapper input.search-field {
   border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
@@ -1576,6 +1583,15 @@ body.page-template-new-compare-page .search-wrapper input.search-field {
 }
 body.page-template-new-compare-page .search-wrapper input.search-field:focus {
   border: 2px solid #2563eb;
+}
+body.page-template-new-compare-page .search-wrapper input.search-field:disabled {
+  background-color: #eaeaea;
+  cursor: not-allowed;
+}
+body.page-template-new-compare-page .search-wrapper .search-message {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
 }
 body.page-template-new-compare-page .search-wrapper ul#search-results {
   border: 1px solid #e5e7eb;
