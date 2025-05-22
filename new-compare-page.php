@@ -368,6 +368,11 @@ function comparePage() {
 
 				// Update local storage
 				this.updateLocalStorage();
+
+				// Force a re-render of the ingredients section
+				this.$nextTick(() => {
+					this.recalculateIngredients();
+				});
 			}
 		});
 	},
@@ -381,8 +386,14 @@ function comparePage() {
 		
 		this.selectedProducts[index] = null;
 		this.recalculateIngredients();
+
 		// Update local storage
 		this.updateLocalStorage();
+
+		// Force a re-render of the ingredients section
+		this.$nextTick(() => {
+			this.recalculateIngredients();
+		});
 	},
 
 	/**
@@ -414,6 +425,11 @@ function comparePage() {
 			const bCount = Object.keys(b.amounts).length;
 			return bCount - aCount || a.name.localeCompare(b.name);
 		});
+
+		// If price normalized is active, recalculate amounts
+		if (this.isPriceNormalized) {
+			this.togglePriceNormalized();
+		}
 	},
 
 	togglePriceNormalized() {
