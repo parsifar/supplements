@@ -180,7 +180,7 @@ get_header();
 									<template x-if="getIngredientAmount(ingredient, product) !== '—'">
 										<span
 											x-text="getIngredientAmount(ingredient, product)"
-											:class="isMaxIngredientAmount(ingredient, product) ? 'text-green-600 font-bold' : ''"
+											:class="shouldHighlightAmount(ingredient, product) ? 'text-green-600 font-bold' : ''"
 										></span>
 									</template>
 									<template x-if="getIngredientAmount(ingredient, product) === '—'">
@@ -420,6 +420,7 @@ function comparePage() {
 			});
 		});
 
+		// Sort ingredients by frequency and name
 		this.sortedIngredients = Object.values(ingredientsMap).sort((a, b) => {
 			const aCount = Object.keys(a.amounts).length;
 			const bCount = Object.keys(b.amounts).length;
@@ -479,39 +480,38 @@ function comparePage() {
 		}
 	},
 
-	isMaxIngredientAmount(ingredient, product) {
+	shouldHighlightAmount(ingredient, product) {
 		if (!product || !ingredient.amounts[product.id]) return false;
 		
 		const currentAmount = parseFloat(ingredient.amounts[product.id]);
 		if (isNaN(currentAmount) || currentAmount <= 0) return false;
 
-		// Get all valid amounts with their indices
-		const amountsWithIndices = this.selectedProducts
-			.map((p, index) => ({
-				amount: p && ingredient.amounts[p.id] ? parseFloat(ingredient.amounts[p.id]) : 0,
-				index: index
-			}))
-			.filter(item => !isNaN(item.amount) && item.amount > 0);
+		// Get all valid amounts
+		const validAmounts = this.selectedProducts
+			.filter(p => p && ingredient.amounts[p.id])
+			.map(p => parseFloat(ingredient.amounts[p.id]))
+			.filter(amount => !isNaN(amount) && amount > 0);
 
-		// If no valid amounts to compare, return false
-		if (amountsWithIndices.length === 0) return false;
+		// If no valid amounts, return false
+		if (validAmounts.length === 0) return false;
 
-		// If there's only one positive amount, highlight it
-		if (amountsWithIndices.length === 1) {
-			return currentAmount === amountsWithIndices[0].amount;
+		// If there's only one valid amount, highlight it
+		if (validAmounts.length === 1) {
+			return currentAmount === validAmounts[0];
 		}
 
-		// Find the highest amount
-		const maxAmount = Math.max(...amountsWithIndices.map(item => item.amount));
+		// Find the maximum amount
+		const maxAmount = Math.max(...validAmounts);
 
-		// Find the first occurrence of the maximum amount
-		const firstMaxIndex = amountsWithIndices.findIndex(item => item.amount === maxAmount);
+		// If this is the maximum amount, check if it's the first occurrence
+		if (currentAmount === maxAmount) {
+			const firstMaxIndex = this.selectedProducts.findIndex(p => 
+				p && parseFloat(ingredient.amounts[p.id]) === maxAmount
+			);
+			return firstMaxIndex === this.selectedProducts.findIndex(p => p && p.id === product.id);
+		}
 
-		// Get the current product's index
-		const currentIndex = this.selectedProducts.findIndex(p => p && p.id === product.id);
-
-		// Only highlight if this is the first occurrence of the maximum amount
-		return currentAmount === maxAmount && currentIndex === firstMaxIndex;
+		return false;
 	},
 
 	removeHighlights() {
