@@ -18,113 +18,127 @@ get_header();
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 <!-- Main Comparison Interface -->
-<div x-data="comparePage()" class="container mx-auto px-4 py-8">
+<div x-data="comparePage()" class="compare-container mx-auto px-4 py-8">
 	<h1 class="text-2xl font-bold mb-4">Compare Supplements</h1>
 
 	<!-- Search Interface -->
 	<!-- Allows users to search for supplements and displays results in a dropdown -->
-	<div class="mb-6">
-	<input
-		x-model="searchQuery"
-		@input.debounce.300ms="fetchSearchResults"
-		type="text"
-		class="border border-gray-300 p-2 w-full"
-		placeholder="Search for supplements..."
-	/>
-	<ul x-show="searchResults.length" id="search-results" class="border mt-2 bg-white">
-		<template x-for="(result, index) in searchResults" :key="'search-' + index">
-		<li>
-			<button
-			@click="addToCompare(result.id)"
-			class="block w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
-			>
-			<img :src="getThumbnailUrl(result)" class="w-8 h-8 object-contain" />
-			<span x-text="getBrandName(result) + ' - ' + result.title.rendered"></span>
-			</button>
-		</li>
-		</template>
-	</ul>
+	<div class="search-wrapper mb-6">
+		<input
+			x-model="searchQuery"
+			@input.debounce.300ms="fetchSearchResults"
+			type="text"
+			class="search-field p-2 w-full"
+			placeholder="Search for supplements..."
+		/>
+		<ul x-show="searchResults.length" id="search-results" class="bg-white">
+			<template x-for="(result, index) in searchResults" :key="'search-' + index">
+			<li class="search-result">
+				<button
+				@click="addToCompare(result.id)"
+				class="block w-full text-left p-2 flex items-center"
+				>
+				<img :src="getThumbnailUrl(result)" class="object-contain" />
+				
+				<span class="title-wrapper">
+					<span class="brand" x-text="getBrandName(result)"></span>
+					<span class="title" x-text="result.title.rendered"></span>
+				</span>
+				
+				</button>
+			</li>
+			</template>
+		</ul>
 	</div>
 
 	<!-- Comparison Slots -->
 	<!-- Displays up to 3 selected supplements with their basic information -->
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-	<template x-for="(product, index) in selectedProducts" :key="'slot-' + index">
-		<div class="border p-4 min-h-[150px]">
-		<template x-if="product">
-			<div>
-			<h2 class="font-bold text-lg mb-2" x-text="product.brand + ' - ' + product.title"></h2>
-			<img :src="product.image" class="h-32 object-contain mx-auto mb-2" />
-			<a :href="product.affiliate_url" target="_blank" class="text-blue-500">Buy</a>
-			<button @click="removeFromCompare(index)" class="block text-sm text-red-500 mt-2">Remove</button>
+	<div class="header-grid grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+		<template x-for="(product, index) in selectedProducts" :key="'slot-' + index">
+			<div class="supplement-header min-h-[150px]">
+				
+				<template x-if="product">
+					<div class="full slot">
+						<button @click="removeFromCompare(index)" class="remove-btn">Remove supplement</button>
+
+						<img :src="product.image" class="h-32 object-contain mx-auto mb-2" />
+
+						<div class="title-wrapper">
+							<p class="brand" x-text="product.brand"></p>
+							<h2 class="title" x-text="product.title"></h2>
+						</div>
+						<a :href="product.affiliate_url" target="_blank" class="buy-btn btn btn-primary"><i class="bi bi-amazon"></i>View on Amazon</a>
+						
+						
+					</div>
+				</template>
+
+				<template x-if="!product">
+					<div class="empty slot text-gray-400">Empty slot</div>
+				</template>
 			</div>
 		</template>
-		<template x-if="!product">
-			<div class="text-gray-400">Empty slot</div>
-		</template>
-		</div>
-	</template>
 	</div>
 
 	<!-- Comparison Table -->
 	<!-- Only shows when at least one product is selected -->
-	<div x-show="selectedProducts.filter(p => p).length">
-	<!-- Overview Section -->
-	<div class="mb-6">
-		<h3 class="font-semibold text-xl mb-2">Overview</h3>
-		<template x-for="(field, fieldIndex) in ['Calories', 'Servings', 'Rating', 'Price', 'Price/Serving']" :key="'overview-field-' + fieldIndex">
-			<div class="border-b py-2">
-				<div class="font-bold" x-text="field"></div>
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-					<template x-for="(product, pIndex) in selectedProducts" :key="'overview-product-' + pIndex">
-						<div x-show="product">
-							<span x-text="getOverviewValue(product, field)"></span>
-						</div>
-					</template>
-				</div>
-			</div>
-		</template>
-	</div>
-
-	<!-- Category-Specific Information -->
-	<div class="mb-6">
-		<h3 class="font-semibold text-xl mb-2">Category-Specific Info</h3>
-		<template x-for="(field, fieldIndex) in ['Caffeine', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
-			<div x-show="shouldShowCategoryField(field)" class="border-b py-2">
-				<div class="font-bold" x-text="field"></div>
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-					<template x-for="(product, pIndex) in selectedProducts" :key="'category-product-' + pIndex">
-						<div x-show="product">
-							<span 
-								x-text="getCategoryValue(product, field)"
-								:class="{ 'text-green-600 font-bold': isMaxCategoryValue(product, field) }"
-							></span>
-						</div>
-					</template>
-				</div>
-			</div>
-		</template>
-	</div>
-
-	<!-- Ingredients Comparison -->
-	<div>
-		<h3 class="font-semibold text-xl mb-2">Ingredients</h3>
-		<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
-		<div class="border-b py-2">
-			<div class="font-bold" x-text="ingredient.name"></div>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-			<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
-				<div x-show="product">
-				<span
-					x-text="ingredient.amounts[product?.id] || '—'"
-					:class="{ 'text-green-600 font-bold': ingredient.max === parseFloat(ingredient.amounts[product?.id]) }"
-				></span>
+	<div class="tables-wrapper" x-show="selectedProducts.filter(p => p).length">
+		<!-- Overview Section -->
+		<div  class="section overview">
+			<h3 class="section-title">Overview</h3>
+			<template x-for="(field, fieldIndex) in ['Calories', 'Servings', 'Rating', 'Price', 'Price/Serving']" :key="'overview-field-' + fieldIndex">
+				<div class="row">
+					<div class="row-title" x-text="field"></div>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<template x-for="(product, pIndex) in selectedProducts" :key="'overview-product-' + pIndex">
+							<div class="column" x-show="product">
+								<span x-text="getOverviewValue(product, field)"></span>
+							</div>
+						</template>
+					</div>
 				</div>
 			</template>
-			</div>
 		</div>
-		</template>
-	</div>
+
+		<!-- Category-Specific Information -->
+		<div class="section highlights">
+			<h3 class="section-title">Highlights</h3>
+			<template x-for="(field, fieldIndex) in ['Caffeine', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
+				<div x-show="shouldShowCategoryField(field)" class="row">
+					<div class="row-title" x-text="field"></div>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<template x-for="(product, pIndex) in selectedProducts" :key="'category-product-' + pIndex">
+							<div class="column" x-show="product">
+								<span 
+									x-text="getCategoryValue(product, field)"
+									:class="{ 'text-green-600 font-bold': isMaxCategoryValue(product, field) }"
+								></span>
+							</div>
+						</template>
+					</div>
+				</div>
+			</template>
+		</div>
+
+		<!-- Ingredients Comparison -->
+		<div class="section ingredients">
+			<h3 class="section-title">Ingredients</h3>
+			<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
+				<div class="row">
+					<div class="row-title" x-text="ingredient.name"></div>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
+							<div class="column" x-show="product">
+								<span
+									x-text="ingredient.amounts[product?.id] || '—'"
+									:class="{ 'text-green-600 font-bold': ingredient.max === parseFloat(ingredient.amounts[product?.id]) }"
+								></span>
+							</div>
+						</template>
+					</div>
+				</div>
+			</template>
+		</div>
 	</div>
 </div>
 
@@ -368,30 +382,6 @@ function comparePage() {
 }
 </script>
 
-<style>
-/* Basic styling for the comparison interface */
-
-input[type="text"] {
-	border-radius: 4px;
-	font-size: 1rem;
-}
-.border, .border {
-	border: 1px solid #ddd;
-	border-radius: 6px;
-}
-button {
-	cursor: pointer;
-}
-
-ul#search-results{
-	margin:0;
-	list-style: none;
-
-	button{
-	background: none;
-	}
-}
-</style>
 
 <?php
 get_footer();
