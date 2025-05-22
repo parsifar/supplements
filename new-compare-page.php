@@ -160,22 +160,38 @@ get_header();
 
 		<!-- Ingredients Comparison -->
 		<div class="section ingredients">
-			<h3 class="section-title">Ingredients</h3>
-			<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
-				<div class="row">
-					<div class="row-title" x-text="ingredient.name"></div>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-						<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
-							<div class="column" x-show="product">
-								<span
-									x-text="ingredient.amounts[product?.id] || '—'"
-									:class="{ 'text-green-600 font-bold': ingredient.max === parseFloat(ingredient.amounts[product?.id]) }"
-								></span>
-							</div>
-						</template>
+			<div class="section-header">
+				<h3 class="section-title">Ingredients</h3>
+				<button 
+					@click="togglePriceNormalized()" 
+					class="normalize-btn"
+					:class="{ 'active': isPriceNormalized }"
+				>
+					<span x-text="isPriceNormalized ? 'Show Actual Amounts' : 'Compare at Equal Price'"></span>
+				</button>
+			</div>
+			<div :key="'ingredients-' + isPriceNormalized + '-' + selectedProducts.filter(Boolean).map(p => p.id).join('-')">
+				<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
+					<div class="row">
+						<div class="row-title" x-text="ingredient.name"></div>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+							<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
+								<div class="column" x-show="product">
+									<template x-if="getIngredientAmount(ingredient, product) !== '—'">
+										<span
+											x-text="getIngredientAmount(ingredient, product)"
+											:class="isMaxIngredientAmount(ingredient, product) ? 'text-green-600 font-bold' : ''"
+										></span>
+									</template>
+									<template x-if="getIngredientAmount(ingredient, product) === '—'">
+										<span>—</span>
+									</template>
+								</div>
+							</template>
+						</div>
 					</div>
-				</div>
-			</template>
+				</template>
+			</div>
 		</div>
 	</div>
 </div>
@@ -192,6 +208,8 @@ function comparePage() {
 	searchResults: [],
 	selectedProducts: [null, null, null],
 	sortedIngredients: [],
+	isPriceNormalized: false,
+	originalIngredients: [],
 
 	clearSearch() {
 		this.searchQuery = '';
@@ -202,9 +220,53 @@ function comparePage() {
 		// Check local storage for comparison IDs on page load
 		const storedIds = JSON.parse(localStorage.getItem('compareIds') || '[]');
 		if (storedIds.length > 0) {
-			// Load each product from stored IDs
-			storedIds.forEach(id => {
-				this.addToCompare(id);
+			// Create an array of promises for loading each product
+			const loadPromises = storedIds.map(id => 
+				fetch(`/wp-json/wp/v2/supplement/${id}?_embed`)
+					.then(res => res.json())
+					.then(data => {
+						const acf = data.acf || {};
+						const category = data['supplement-category']?.map(term => term.name).join(', ') || '';
+						const brand = data.brand?.[0]?.name || '';
+						const product_form = data['product-form']?.map(term => term.name).join(', ') || '';
+						const certification = data.certification?.map(term => term.name).join(', ') || '';
+						const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
+						const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
+						const ingredients = dosages.map(d => ({
+							name: d.ingredient?.post_title || 'Unknown',
+							amount: parseFloat(d.amount) || 0,
+							unit: d.unit || ''
+						}));
+
+						return {
+							id: data.id,
+							title: data.title?.rendered || 'Untitled',
+							image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
+							calories: acf.calories || '',
+							servings: acf.servings_per_container || '',
+							amazon_rating: acf.amazon_rating || '',
+							price: acf.price || '',
+							price_per_serving: acf.price_per_serving || '',
+							affiliate_url: acf.affiliate_url || '',
+							category,
+							brand,
+							product_form,
+							certification,
+							dietary_tag,
+							total_caffeine_content: acf.total_caffeine_content || '',
+							protein_per_serving: acf.protein_per_serving || '',
+							ingredients
+						};
+					})
+			);
+
+			// Load all products in parallel and maintain order
+			Promise.all(loadPromises).then(products => {
+				// Fill the selectedProducts array in order
+				products.forEach((product, index) => {
+					this.selectedProducts[index] = product;
+				});
+				this.recalculateIngredients();
 			});
 		}
 	},
@@ -259,51 +321,54 @@ function comparePage() {
 	addToCompare(id) {
 		if (this.selectedProducts.filter(Boolean).length >= 3) return;
 
+		// Remove all highlights first
+		this.removeHighlights();
+
 		fetch(`/wp-json/wp/v2/supplement/${id}?_embed`).then(res => res.json()).then(data => {
-		const index = this.selectedProducts.findIndex(p => p === null);
-		if (index !== -1) {
-			const acf = data.acf || {};
-			const category = data['supplement-category']?.map(term => term.name).join(', ') || '';
-			const brand = data.brand?.[0]?.name || '';
-			const product_form = data['product-form']?.map(term => term.name).join(', ') || '';
-			const certification = data.certification?.map(term => term.name).join(', ') || '';
-			const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
-			const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
-			const ingredients = dosages.map(d => ({
-				name: d.ingredient?.post_title || 'Unknown',
-				amount: parseFloat(d.amount) || 0,
-				unit: d.unit || ''
-			}));
+			const index = this.selectedProducts.findIndex(p => p === null);
+			if (index !== -1) {
+				const acf = data.acf || {};
+				const category = data['supplement-category']?.map(term => term.name).join(', ') || '';
+				const brand = data.brand?.[0]?.name || '';
+				const product_form = data['product-form']?.map(term => term.name).join(', ') || '';
+				const certification = data.certification?.map(term => term.name).join(', ') || '';
+				const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
+				const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
+				const ingredients = dosages.map(d => ({
+					name: d.ingredient?.post_title || 'Unknown',
+					amount: parseFloat(d.amount) || 0,
+					unit: d.unit || ''
+				}));
 
-			this.selectedProducts[index] = {
-				id: data.id,
-				title: data.title?.rendered || 'Untitled',
-				image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
-				calories: acf.calories || '',
-				servings: acf.servings_per_container || '',
-				amazon_rating: acf.amazon_rating || '',
-				price: acf.price || '',
-				price_per_serving: acf.price_per_serving || '',
-				affiliate_url: acf.affiliate_url || '',
-				category,
-				brand,
-				product_form,
-				certification,
-				dietary_tag,
-				total_caffeine_content: acf.total_caffeine_content || '',
-				protein_per_serving: acf.protein_per_serving || '',
-				ingredients
-			};
+				this.selectedProducts[index] = {
+					id: data.id,
+					title: data.title?.rendered || 'Untitled',
+					image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
+					calories: acf.calories || '',
+					servings: acf.servings_per_container || '',
+					amazon_rating: acf.amazon_rating || '',
+					price: acf.price || '',
+					price_per_serving: acf.price_per_serving || '',
+					affiliate_url: acf.affiliate_url || '',
+					category,
+					brand,
+					product_form,
+					certification,
+					dietary_tag,
+					total_caffeine_content: acf.total_caffeine_content || '',
+					protein_per_serving: acf.protein_per_serving || '',
+					ingredients
+				};
 
-			this.recalculateIngredients();
-			
-			// Clear search field and results
-			this.searchQuery = '';
-			this.searchResults = [];
+				this.recalculateIngredients();
+				
+				// Clear search field and results
+				this.searchQuery = '';
+				this.searchResults = [];
 
-			// Update local storage
-			this.updateLocalStorage();
-		}
+				// Update local storage
+				this.updateLocalStorage();
+			}
 		});
 	},
 
@@ -311,6 +376,9 @@ function comparePage() {
 	 * Removes a product from the comparison
 	 */
 	removeFromCompare(index) {
+		// Remove all highlights first
+		this.removeHighlights();
+		
 		this.selectedProducts[index] = null;
 		this.recalculateIngredients();
 		// Update local storage
@@ -326,24 +394,123 @@ function comparePage() {
 		const ingredientsMap = {};
 
 		this.selectedProducts.filter(Boolean).forEach(p => {
-		(p.ingredients || []).forEach(ing => {
-			const key = ing.name.toLowerCase();
-			if (!ingredientsMap[key]) {
-			ingredientsMap[key] = { name: ing.name, amounts: {}, max: 0 };
-			}
-			const numericAmount = parseFloat(ing.amount) || 0;
-			ingredientsMap[key].amounts[p.id] = `${numericAmount} ${ing.unit}`;
-			if (numericAmount > ingredientsMap[key].max) {
-			ingredientsMap[key].max = numericAmount;
-			}
-		});
+			(p.ingredients || []).forEach(ing => {
+				const key = ing.name.toLowerCase();
+				if (!ingredientsMap[key]) {
+					ingredientsMap[key] = { 
+						name: ing.name, 
+						amounts: {}, 
+						originalAmounts: {} // Store original amounts
+					};
+				}
+				const numericAmount = parseFloat(ing.amount) || 0;
+				ingredientsMap[key].amounts[p.id] = `${numericAmount} ${ing.unit}`;
+				ingredientsMap[key].originalAmounts[p.id] = `${numericAmount} ${ing.unit}`; // Store original
+			});
 		});
 
 		this.sortedIngredients = Object.values(ingredientsMap).sort((a, b) => {
-		const aCount = Object.keys(a.amounts).length;
-		const bCount = Object.keys(b.amounts).length;
-		return bCount - aCount || a.name.localeCompare(b.name);
+			const aCount = Object.keys(a.amounts).length;
+			const bCount = Object.keys(b.amounts).length;
+			return bCount - aCount || a.name.localeCompare(b.name);
 		});
+	},
+
+	togglePriceNormalized() {
+		this.isPriceNormalized = !this.isPriceNormalized;
+		
+		if (this.isPriceNormalized) {
+			// Find the product with highest price per serving
+			const products = this.selectedProducts.filter(Boolean);
+			
+			// Group products by price per serving
+			const priceGroups = products.reduce((groups, product) => {
+				const price = parseFloat(product.price_per_serving) || 0;
+				if (!groups[price]) {
+					groups[price] = [];
+				}
+				groups[price].push(product);
+				return groups;
+			}, {});
+
+			// Get the highest price
+			const highestPrice = Math.max(...Object.keys(priceGroups).map(Number));
+
+			// Recalculate amounts based on price ratio
+			this.sortedIngredients.forEach(ingredient => {
+				products.forEach(product => {
+					// Skip products that already have the highest price
+					if (parseFloat(product.price_per_serving) === highestPrice) return;
+
+					const originalAmount = ingredient.originalAmounts[product.id];
+					if (!originalAmount) return;
+
+					const [amount, unit] = originalAmount.split(' ');
+					const numericAmount = parseFloat(amount);
+					if (isNaN(numericAmount)) return;
+
+					const priceRatio = highestPrice / parseFloat(product.price_per_serving);
+					const normalizedAmount = Math.round(numericAmount * priceRatio);
+					
+					ingredient.amounts[product.id] = `${normalizedAmount} ${unit}`;
+				});
+			});
+		} else {
+			// Restore original amounts
+			this.sortedIngredients.forEach(ingredient => {
+				ingredient.amounts = { ...ingredient.originalAmounts };
+			});
+		}
+	},
+
+	isMaxIngredientAmount(ingredient, product) {
+		if (!product || !ingredient.amounts[product.id]) return false;
+		
+		const currentAmount = parseFloat(ingredient.amounts[product.id]);
+		if (isNaN(currentAmount) || currentAmount <= 0) return false;
+
+		// Get all valid amounts with their indices
+		const amountsWithIndices = this.selectedProducts
+			.map((p, index) => ({
+				amount: p && ingredient.amounts[p.id] ? parseFloat(ingredient.amounts[p.id]) : 0,
+				index: index
+			}))
+			.filter(item => !isNaN(item.amount) && item.amount > 0);
+
+		// If no valid amounts to compare, return false
+		if (amountsWithIndices.length === 0) return false;
+
+		// Find the highest amount
+		const maxAmount = Math.max(...amountsWithIndices.map(item => item.amount));
+
+		// Find the first occurrence of the maximum amount
+		const firstMaxIndex = amountsWithIndices.findIndex(item => item.amount === maxAmount);
+
+		// Get the current product's index
+		const currentIndex = this.selectedProducts.findIndex(p => p && p.id === product.id);
+
+		// Only highlight if this is the first occurrence of the maximum amount
+		return currentAmount === maxAmount && currentIndex === firstMaxIndex;
+	},
+
+	removeHighlights() {
+		// Remove all highlight classes from the DOM
+		document.querySelectorAll('.text-green-600').forEach(el => {
+			el.classList.remove('text-green-600', 'font-bold');
+		});
+	},
+
+	getIngredientAmount(ingredient, product) {
+		if (!product || !ingredient.amounts[product.id]) return '—';
+		const amount = parseFloat(ingredient.amounts[product.id]);
+		if (isNaN(amount) || amount <= 0) return '—';
+		return ingredient.amounts[product.id];
+	},
+
+	getIngredientClass(ingredient, product) {
+		return {
+			'text-green-600 font-bold': this.isMaxIngredientAmount(ingredient, product)
+		};
 	},
 
 	getBrandName(result) {

@@ -1662,6 +1662,38 @@ body.page-template-new-compare-page .header-grid .supplement-header .slot.full .
 body.page-template-new-compare-page .tables-wrapper .section {
   margin-bottom: 3rem;
 }
+body.page-template-new-compare-page .tables-wrapper .section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #2563eb;
+  margin-bottom: 1rem;
+}
+body.page-template-new-compare-page .tables-wrapper .section .section-header .section-title {
+  color: #2563eb;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+body.page-template-new-compare-page .tables-wrapper .section .section-header .normalize-btn {
+  background: none;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+body.page-template-new-compare-page .tables-wrapper .section .section-header .normalize-btn:hover {
+  background-color: #2563eb;
+  color: white;
+}
+body.page-template-new-compare-page .tables-wrapper .section .section-header .normalize-btn.active {
+  background-color: #2563eb;
+  color: white;
+}
 body.page-template-new-compare-page .tables-wrapper .section > h3 {
   color: #2563eb;
   padding-bottom: 10px;
