@@ -9,12 +9,34 @@ body.page-template-new-compare-page {
   }
 
   .search-wrapper {
+    .search-field-wrapper {
+      position: relative;
+
+      .search-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 1.2rem;
+        color: $color-gray;
+        cursor: pointer;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+
     input.search-field {
       border: 2px solid $color-border;
       border-radius: $radius;
       color: $body-text-color;
       font-size: $font-size-lg;
       height: unset;
+      padding-right: 3rem;
 
       &:focus {
         border: 2px solid $color-primary;

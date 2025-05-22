@@ -24,13 +24,28 @@ get_header();
 	<!-- Search Interface -->
 	<!-- Allows users to search for supplements and displays results in a dropdown -->
 	<div class="search-wrapper mb-6">
-		<input
-			x-model="searchQuery"
-			@input.debounce.300ms="fetchSearchResults"
-			type="text"
-			class="search-field p-2 w-full"
-			placeholder="Search for supplements..."
-		/>
+		<div class="search-field-wrapper">
+			<input
+				x-model="searchQuery"
+				@input.debounce.300ms="fetchSearchResults"
+				type="text"
+				class="search-field p-2 w-full"
+				placeholder="Search for supplements..."
+			/>
+			<button 
+				@click="clearSearch" 
+				class="search-icon"
+				x-show="searchQuery"
+			>
+				<i class="bi bi-x-lg"></i>
+			</button>
+			<button 
+				class="search-icon"
+				x-show="!searchQuery"
+			>
+				<i class="bi bi-search"></i>
+			</button>
+		</div>
 		<ul x-show="searchResults.length" id="search-results" class="bg-white">
 			<template x-for="(result, index) in searchResults" :key="'search-' + index">
 			<li class="search-result">
@@ -154,6 +169,11 @@ function comparePage() {
 	searchResults: [],
 	selectedProducts: [null, null, null],
 	sortedIngredients: [],
+
+	clearSearch() {
+		this.searchQuery = '';
+		this.searchResults = [];
+	},
 
 	init() {
 		// Check local storage for comparison IDs on page load
