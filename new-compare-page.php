@@ -110,7 +110,7 @@ get_header();
 		<!-- Overview Section -->
 		<div  class="section overview">
 			<h3 class="section-title">Overview</h3>
-			<template x-for="(field, fieldIndex) in ['Calories', 'Servings', 'Rating', 'Price', 'Price/Serving']" :key="'overview-field-' + fieldIndex">
+			<template x-for="(field, fieldIndex) in ['Servings per container','Price',  'Price per serving',  'Rating','Calories']" :key="'overview-field-' + fieldIndex">
 				<div class="row">
 					<div class="row-title" x-text="field"></div>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -127,7 +127,7 @@ get_header();
 		<!-- Category-Specific Information -->
 		<div class="section highlights">
 			<h3 class="section-title">Highlights</h3>
-			<template x-for="(field, fieldIndex) in ['Caffeine', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
+			<template x-for="(field, fieldIndex) in ['Total Caffeine per serving', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
 				<div x-show="shouldShowCategoryField(field)" class="row">
 					<div class="row-title" x-text="field"></div>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -341,13 +341,13 @@ function comparePage() {
 		switch(field) {
 			case 'Calories':
 				return product?.calories || '—';
-			case 'Servings':
+			case 'Servings per container':
 				return product?.servings || '—';
 			case 'Rating':
-				return product?.amazon_rating || '—';
+				return product?.amazon_rating + ' out of 5' || '—';
 			case 'Price':
 				return product?.price ? '$' + product.price : '—';
-			case 'Price/Serving':
+			case 'Price per serving':
 				return product?.price_per_serving ? '$' + product.price_per_serving : '—';
 			default:
 				return '—';
@@ -358,7 +358,7 @@ function comparePage() {
 		if (!product) return '—';
 		
 		switch(field) {
-			case 'Caffeine':
+			case 'Total Caffeine per serving':
 				return product?.category === 'Pre-Workout' ? (product?.total_caffeine_content ? product.total_caffeine_content + ' mg' : '—') : '—';
 			case 'Protein/Serving':
 				return product?.category === 'protein' ? (product?.protein_per_serving ? product.protein_per_serving + ' g' : '—') : '—';
@@ -398,7 +398,7 @@ function comparePage() {
 			if (!product) return false;
 			
 			switch(field) {
-				case 'Caffeine':
+				case 'Total Caffeine per serving':
 					return product.category === 'Pre-Workout' && product.total_caffeine_content;
 				case 'Protein/Serving':
 					return product.category === 'protein' && product.protein_per_serving;
