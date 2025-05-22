@@ -122,6 +122,20 @@ get_header();
 					</div>
 				</div>
 			</template>
+
+			<!-- Taxonomy Rows -->
+			<template x-for="(field, fieldIndex) in ['Category', 'Form', 'Certification', 'Dietary']" :key="'taxonomy-field-' + fieldIndex">
+				<div class="row">
+					<div class="row-title" x-text="field"></div>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<template x-for="(product, pIndex) in selectedProducts" :key="'taxonomy-product-' + pIndex">
+							<div class="column" x-show="product">
+								<span x-text="getTaxonomyValue(product, field)"></span>
+							</div>
+						</template>
+					</div>
+				</div>
+			</template>
 		</div>
 
 		<!-- Category-Specific Information -->
@@ -249,30 +263,36 @@ function comparePage() {
 		const index = this.selectedProducts.findIndex(p => p === null);
 		if (index !== -1) {
 			const acf = data.acf || {};
-			const category = data['supplement-category']?.[0]?.name || '';
+			const category = data['supplement-category']?.map(term => term.name).join(', ') || '';
 			const brand = data.brand?.[0]?.name || '';
+			const product_form = data['product-form']?.map(term => term.name).join(', ') || '';
+			const certification = data.certification?.map(term => term.name).join(', ') || '';
+			const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
 			const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
 			const ingredients = dosages.map(d => ({
-			name: d.ingredient?.post_title || 'Unknown',
-			amount: parseFloat(d.amount) || 0,
-			unit: d.unit || ''
+				name: d.ingredient?.post_title || 'Unknown',
+				amount: parseFloat(d.amount) || 0,
+				unit: d.unit || ''
 			}));
 
 			this.selectedProducts[index] = {
-			id: data.id,
-			title: data.title?.rendered || 'Untitled',
-			image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
-			calories: acf.calories || '',
-			servings: acf.servings_per_container || '',
-			amazon_rating: acf.amazon_rating || '',
-			price: acf.price || '',
-			price_per_serving: acf.price_per_serving || '',
-			affiliate_url: acf.affiliate_url || '',
-			category,
-			brand,
-			total_caffeine_content: acf.total_caffeine_content || '',
-			protein_per_serving: acf.protein_per_serving || '',
-			ingredients
+				id: data.id,
+				title: data.title?.rendered || 'Untitled',
+				image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
+				calories: acf.calories || '',
+				servings: acf.servings_per_container || '',
+				amazon_rating: acf.amazon_rating || '',
+				price: acf.price || '',
+				price_per_serving: acf.price_per_serving || '',
+				affiliate_url: acf.affiliate_url || '',
+				category,
+				brand,
+				product_form,
+				certification,
+				dietary_tag,
+				total_caffeine_content: acf.total_caffeine_content || '',
+				protein_per_serving: acf.protein_per_serving || '',
+				ingredients
 			};
 
 			this.recalculateIngredients();
@@ -406,6 +426,23 @@ function comparePage() {
 					return false;
 			}
 		});
+	},
+
+	getTaxonomyValue(product, field) {
+		if (!product) return '—';
+		
+		switch(field) {
+			case 'Category':
+				return product?.category || '—';
+			case 'Form':
+				return product?.product_form || '—';
+			case 'Certification':
+				return product?.certification || '—';
+			case 'Dietary':
+				return product?.dietary_tag || '—';
+			default:
+				return '—';
+		}
 	}
 	}
 }
