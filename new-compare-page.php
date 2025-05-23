@@ -109,7 +109,7 @@ get_header();
 	<div class="tables-wrapper" x-show="selectedProducts.filter(p => p).length">
 		<!-- Overview Section -->
 		<div  class="section overview">
-			<h3 class="section-title">Overview</h3>
+			<h3 class="section-title"><i class="bi bi-check-circle"></i> </i>Overview</h3>
 			<template x-for="(field, fieldIndex) in ['Servings per container','Price',  'Price per serving',  'Rating','Calories']" :key="'overview-field-' + fieldIndex">
 				<div class="row">
 					<div class="row-title" x-text="field"></div>
@@ -140,7 +140,7 @@ get_header();
 
 		<!-- Category-Specific Information -->
 		<div class="section highlights">
-			<h3 class="section-title">Highlights</h3>
+			<h3 class="section-title"><i class="bi bi-rocket-takeoff"></i> Highlights</h3>
 			<template x-for="(field, fieldIndex) in ['Total Caffeine per serving', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
 				<div x-show="shouldShowCategoryField(field)" class="row">
 					<div class="row-title" x-text="field"></div>
@@ -161,7 +161,7 @@ get_header();
 		<!-- Ingredients Comparison -->
 		<div class="section ingredients">
 			<div class="section-header">
-				<h3 class="section-title">Ingredients</h3>
+				<h3 class="section-title"><i class="bi bi-flask"></i> Ingredients</h3>
 				<button 
 					@click="togglePriceNormalized()" 
 					class="normalize-btn btn btn-secondary"
