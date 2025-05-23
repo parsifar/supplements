@@ -126,6 +126,7 @@ body.page-template-new-compare-page {
 
           img {
             aspect-ratio: 1;
+            width: 250px;
           }
 
           .title-wrapper {
@@ -206,6 +207,72 @@ body.page-template-new-compare-page {
 
         .column {
           padding: 10px 1rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    .ast-container {
+      padding-inline: 10px;
+    }
+
+    .header-grid {
+      gap: 5px;
+
+      .supplement-header {
+        .slot {
+          padding: 15px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .header-grid {
+      gap: 1px;
+
+      .supplement-header {
+        .slot {
+          padding: 10px;
+
+          &.full {
+            .remove-btn {
+              padding: 8px;
+              font-size: 14px;
+            }
+
+            .title-wrapper {
+              .brand {
+                font-size: 14px;
+              }
+              .title {
+                font-size: 1rem;
+              }
+            }
+
+            .buy-btn {
+              font-size: 14px;
+              line-height: 1.3;
+              i {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    .tables-wrapper {
+      .section {
+        .row {
+          .grid.gap-4 {
+            gap: 0;
+          }
+
+          .column {
+            padding: 10px 10px;
+            font-size: 16px;
+          }
         }
       }
     }

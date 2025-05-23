@@ -18,7 +18,7 @@ get_header();
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 <!-- Main Comparison Interface -->
-<div x-data="comparePage()" class="compare-container mx-auto px-4 py-8">
+<div x-data="comparePage()" class="compare-container mx-auto py-8">
 	<h1 class="text-2xl font-bold mb-4">Compare Supplements</h1>
 
 	<!-- Search Interface -->
@@ -77,7 +77,7 @@ get_header();
 
 	<!-- Comparison Slots -->
 	<!-- Displays up to 3 selected supplements with their basic information -->
-	<div class="header-grid grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+	<div class="header-grid grid grid-cols-3 gap-4 mb-8">
 		<template x-for="(product, index) in selectedProducts" :key="'slot-' + index">
 			<div class="supplement-header min-h-[150px]">
 				
@@ -113,7 +113,7 @@ get_header();
 			<template x-for="(field, fieldIndex) in ['Servings per container','Price',  'Price per serving',  'Rating','Calories']" :key="'overview-field-' + fieldIndex">
 				<div class="row">
 					<div class="row-title" x-text="field"></div>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'overview-product-' + pIndex">
 							<div class="column" x-show="product">
 								<span x-text="getOverviewValue(product, field)"></span>
@@ -127,7 +127,7 @@ get_header();
 			<template x-for="(field, fieldIndex) in ['Category', 'Form', 'Certification', 'Dietary']" :key="'taxonomy-field-' + fieldIndex">
 				<div class="row">
 					<div class="row-title" x-text="field"></div>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'taxonomy-product-' + pIndex">
 							<div class="column" x-show="product">
 								<span x-text="getTaxonomyValue(product, field)"></span>
@@ -144,7 +144,7 @@ get_header();
 			<template x-for="(field, fieldIndex) in ['Total Caffeine per serving', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
 				<div x-show="shouldShowCategoryField(field)" class="row">
 					<div class="row-title" x-text="field"></div>
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'category-product-' + pIndex">
 							<div class="column" x-show="product">
 								<span 
@@ -174,7 +174,7 @@ get_header();
 				<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
 					<div class="row">
 						<div class="row-title" x-text="ingredient.name"></div>
-						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<div class="grid grid-cols-3 gap-4">
 							<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
 								<div class="column" x-show="product">
 									<template x-if="getIngredientAmount(ingredient, product) !== '—'">
