@@ -1677,6 +1677,8 @@ body.page-template-new-compare-page .tables-wrapper .section {
 }
 body.page-template-new-compare-page .tables-wrapper .section .section-header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
@@ -1704,6 +1706,7 @@ body.page-template-new-compare-page .tables-wrapper .section .row {
 body.page-template-new-compare-page .tables-wrapper .section .row .row-title {
   padding-top: 10px;
   font-weight: bold;
+  color: #4b5563;
 }
 body.page-template-new-compare-page .tables-wrapper .section .row .column {
   padding: 10px 1rem;
@@ -1745,6 +1748,12 @@ body.page-template-new-compare-page .page-content ol > li {
   }
   body.page-template-new-compare-page .header-grid .supplement-header .slot.full .buy-btn i {
     display: none;
+  }
+  body.page-template-new-compare-page .tables-wrapper .section .section-header {
+    justify-content: center;
+  }
+  body.page-template-new-compare-page .tables-wrapper .section .section-title {
+    text-align: center;
   }
   body.page-template-new-compare-page .tables-wrapper .section .row .grid.gap-4 {
     gap: 0;

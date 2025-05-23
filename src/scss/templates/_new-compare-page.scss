@@ -155,6 +155,8 @@ body.page-template-new-compare-page {
 
       .section-header {
         display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
         justify-content: space-between;
         align-items: center;
         padding-bottom: 10px;
@@ -188,6 +190,7 @@ body.page-template-new-compare-page {
         .row-title {
           padding-top: 10px;
           font-weight: bold;
+          color: $color-secondary;
         }
 
         .column {
@@ -257,6 +260,12 @@ body.page-template-new-compare-page {
     }
     .tables-wrapper {
       .section {
+        .section-header {
+          justify-content: center;
+        }
+        .section-title {
+          text-align: center;
+        }
         .row {
           .grid.gap-4 {
             gap: 0;
