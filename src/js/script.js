@@ -31,7 +31,7 @@ document.querySelectorAll(".rating-bar").forEach((bar) => {
 
 // Compare Bar
 (function () {
-  const maxCompare = 4;
+  const maxCompare = 3;
   const compareBar = document.getElementById("compare-bar");
   const compareLink = document.getElementById("compare-link");
   const compareMessage = document.getElementById("compare-message");

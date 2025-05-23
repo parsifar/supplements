@@ -290,3 +290,32 @@ function supplement_ajax_search() {
 
 	wp_die();
 }
+
+/**
+ * Modify REST API response to include full term data for taxonomies (for the new compare page)
+ */
+function modify_supplement_rest_response( $response, $post, $request ) {
+	// Get taxonomies we want to modify
+	$taxonomies = array( 'brand', 'supplement-category', 'certification', 'dietary-tag', 'product-form' );
+
+	foreach ( $taxonomies as $taxonomy ) {
+		$terms = get_the_terms( $post->ID, $taxonomy );
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			$response->data[ $taxonomy ] = array_map(
+				function ( $term ) {
+					return array(
+						'id'   => $term->term_id,
+						'name' => $term->name,
+						'slug' => $term->slug,
+					);
+				},
+				$terms
+			);
+		} else {
+			$response->data[ $taxonomy ] = array();
+		}
+	}
+
+	return $response;
+}
+add_filter( 'rest_prepare_supplement', 'modify_supplement_rest_response', 10, 3 );

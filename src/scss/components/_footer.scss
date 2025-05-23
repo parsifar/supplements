@@ -2,11 +2,10 @@
 .site-footer {
   background-color: $color-dark;
   color: #fff;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
   font-size: 0.875rem;
 
   .footer-inner {
-    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -47,6 +46,18 @@
           }
         }
       }
+    }
+  }
+
+  .disclaimer {
+    flex-basis: 100%;
+    h6 {
+      color: #eee;
+    }
+    p {
+      color: #eee;
+      font-size: 0.7rem;
+      margin-bottom: 0.5rem;
     }
   }
 
