@@ -50,6 +50,18 @@
     }
   }
 
+  .disclaimer {
+    flex-basis: 100%;
+    h6 {
+      color: #eee;
+    }
+    p {
+      color: #eee;
+      font-size: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
   .footer-copy {
     flex-basis: 100%;
     text-align: center;

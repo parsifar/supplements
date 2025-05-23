@@ -26,6 +26,15 @@
 		</ul>
 	</nav>
 
+	<div class="disclaimer">
+		<h6>Disclaimer</h6>
+		<p>We strive to provide accurate and up-to-date information about dietary supplements, including ingredients, pricing, and availability. Product data—such as price, servings, and ratings—is updated daily and may reflect information from Amazon and other third-party sources. However, we cannot guarantee the accuracy, completeness, or reliability of any information presented on this site.</p>
+		<p>This website does not provide medical advice. All content is for informational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult your physician or other qualified health provider before starting any new supplement, especially if you have a medical condition or are taking medication.</p>
+		<p>The inclusion of a product on this site does not constitute an endorsement or guarantee. Product availability, ingredients, pricing, and ratings may change without notice. Please refer to the manufacturer’s or retailer’s official site for the most current product information.</p>
+		<p>Affiliate Disclosure: Some links on this site may be affiliate links, meaning we may earn a commission if you purchase through them, at no extra cost to you.</p>
+		<p>Use this site at your own risk. We assume no liability for any errors or omissions, or for any actions taken based on the content provided.</p>
+	</div>
+
 	<div class="footer-copy">
 		&copy; <?php echo date( 'Y' ); ?> <?php bloginfo( 'name' ); ?>. All rights reserved.
 	</div>

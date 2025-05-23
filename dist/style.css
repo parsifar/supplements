@@ -836,6 +836,17 @@ input[type=range]:focus::-moz-range-track {
 .site-footer .footer-nav ul li a:hover {
   text-decoration: underline;
 }
+.site-footer .disclaimer {
+  flex-basis: 100%;
+}
+.site-footer .disclaimer h6 {
+  color: #eee;
+}
+.site-footer .disclaimer p {
+  color: #eee;
+  font-size: 0.7rem;
+  margin-bottom: 0.5rem;
+}
 .site-footer .footer-copy {
   flex-basis: 100%;
   text-align: center;
