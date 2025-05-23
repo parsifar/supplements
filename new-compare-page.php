@@ -174,7 +174,9 @@ get_header();
 			<div :key="'ingredients-' + isPriceNormalized + '-' + selectedProducts.filter(Boolean).map(p => p.id).join('-')">
 				<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
 					<div class="row">
-						<div class="row-title" x-text="ingredient.name"></div>
+						<div class="row-title">
+							<a :href="ingredient.permalink" class="text-primary hover:underline" x-text="ingredient.name"></a>
+						</div>
 						<div class="grid grid-cols-3 gap-4">
 							<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
 								<div class="column" x-show="product">
@@ -251,31 +253,43 @@ function comparePage() {
 						const certification = data.certification?.map(term => term.name).join(', ') || '';
 						const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
 						const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
-						const ingredients = dosages.map(d => ({
-							name: d.ingredient?.post_title || 'Unknown',
-							amount: parseFloat(d.amount) || 0,
-							unit: d.unit || ''
-						}));
+						
+						// Create an array of promises for fetching ingredient details
+						const ingredientPromises = dosages.map(d => {
+							if (!d.ingredient?.ID) return Promise.resolve(null);
+							return fetch(`/wp-json/wp/v2/ingredient/${d.ingredient.ID}`)
+								.then(res => res.json())
+								.then(ingredientData => ({
+									name: d.ingredient?.post_title || 'Unknown',
+									amount: parseFloat(d.amount) || 0,
+									unit: d.unit || '',
+									permalink: ingredientData.link || ''
+								}));
+						});
 
-						return {
-							id: data.id,
-							title: data.title?.rendered || 'Untitled',
-							image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
-							calories: acf.calories || '',
-							servings: acf.servings_per_container || '',
-							amazon_rating: acf.amazon_rating || '',
-							price: acf.price || '',
-							price_per_serving: acf.price_per_serving || '',
-							affiliate_url: acf.affiliate_url || '',
-							category,
-							brand,
-							product_form,
-							certification,
-							dietary_tag,
-							total_caffeine_content: acf.total_caffeine_content || '',
-							protein_per_serving: acf.protein_per_serving || '',
-							ingredients
-						};
+						// Wait for all ingredient details to be fetched
+						return Promise.all(ingredientPromises)
+							.then(ingredients => {
+								return {
+									id: data.id,
+									title: data.title?.rendered || 'Untitled',
+									image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
+									calories: acf.calories || '',
+									servings: acf.servings_per_container || '',
+									amazon_rating: acf.amazon_rating || '',
+									price: acf.price || '',
+									price_per_serving: acf.price_per_serving || '',
+									affiliate_url: acf.affiliate_url || '',
+									category,
+									brand,
+									product_form,
+									certification,
+									dietary_tag,
+									total_caffeine_content: acf.total_caffeine_content || '',
+									protein_per_serving: acf.protein_per_serving || '',
+									ingredients: ingredients.filter(Boolean)
+								};
+							});
 					})
 			);
 
@@ -446,6 +460,7 @@ function comparePage() {
 				if (!ingredientsMap[key]) {
 					ingredientsMap[key] = { 
 						name: ing.name, 
+						permalink: ing.permalink,
 						amounts: {}, 
 						originalAmounts: {} // Store original amounts
 					};
