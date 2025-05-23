@@ -161,7 +161,10 @@ get_header();
 		<!-- Ingredients Comparison -->
 		<div class="section ingredients">
 			<div class="section-header">
-				<h3 class="section-title"><i class="bi bi-flask"></i> Ingredients</h3>
+				<h3 class="section-title">
+					<i class="bi bi-flask"></i> 
+					<span x-text="isPriceNormalized ? 'Ingredients (Price Normalized)' : 'Ingredients'"></span>
+				</h3>
 				<button 
 					@click="togglePriceNormalized()" 
 					class="normalize-btn btn btn-secondary"
