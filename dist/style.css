@@ -799,11 +799,10 @@ input[type=range]:focus::-moz-range-track {
 .site-footer {
   background-color: #111827;
   color: #fff;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
   font-size: 0.875rem;
 }
 .site-footer .footer-inner {
-  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
