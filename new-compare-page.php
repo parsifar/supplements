@@ -296,8 +296,15 @@ function comparePage() {
 			.filter(p => p !== null)
 			.map(p => p.id.toString());
 		
-		// Update local storage
+		// Update local storage with IDs
 		localStorage.setItem('compareIds', JSON.stringify(productIds));
+
+		// Store titles for each product
+		this.selectedProducts.forEach(product => {
+			if (product) {
+				localStorage.setItem(`compareTitle-${product.id}`, product.title);
+			}
+		});
 	},
 
 	/**
@@ -403,7 +410,17 @@ function comparePage() {
 		// Remove all highlights first
 		this.removeHighlights();
 		
+		// Get the product before removing it
+		const product = this.selectedProducts[index];
+		
+		// Remove the product
 		this.selectedProducts[index] = null;
+		
+		// If there was a product, remove its title from local storage
+		if (product) {
+			localStorage.removeItem(`compareTitle-${product.id}`);
+		}
+
 		this.recalculateIngredients();
 
 		// Update local storage
