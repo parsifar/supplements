@@ -218,6 +218,7 @@ button {
   border: 2px solid #2563eb;
 }
 .btn-outline:hover, .btn-outline:focus {
+  border: 2px solid #2563eb;
   background-color: #d8e5ff;
   color: #2563eb;
 }
@@ -1676,20 +1677,6 @@ body.page-template-new-compare-page .tables-wrapper .section .section-header .se
   margin: 0;
   padding: 0;
   border: none;
-}
-body.page-template-new-compare-page .tables-wrapper .section .section-header .normalize-btn {
-  background: none;
-  border: 1px solid #2563eb;
-  color: #2563eb;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-body.page-template-new-compare-page .tables-wrapper .section .section-header .normalize-btn:hover {
-  background-color: #2563eb;
-  color: white;
 }
 body.page-template-new-compare-page .tables-wrapper .section .section-header .normalize-btn.active {
   background-color: #2563eb;

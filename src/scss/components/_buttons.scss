@@ -50,6 +50,7 @@
 
   &:hover,
   &:focus {
+    border: 2px solid $color-primary;
     background-color: $color-light-blue;
     color: $color-primary;
   }

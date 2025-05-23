@@ -164,9 +164,10 @@ get_header();
 				<h3 class="section-title">Ingredients</h3>
 				<button 
 					@click="togglePriceNormalized()" 
-					class="normalize-btn"
+					class="normalize-btn btn btn-secondary"
 					:class="{ 'active': isPriceNormalized }"
 				>
+					<i class="bi bi-calculator-fill"></i>
 					<span x-text="isPriceNormalized ? 'Show Actual Amounts' : 'Compare at Equal Price'"></span>
 				</button>
 			</div>
