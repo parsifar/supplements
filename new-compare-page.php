@@ -175,7 +175,10 @@ get_header();
 				<template x-for="(ingredient, index) in sortedIngredients" :key="'ingredient-' + index">
 					<div class="row">
 						<div class="row-title">
-							<a :href="ingredient.permalink" class="text-primary hover:underline" x-text="ingredient.name"></a>
+							<span class="tooltip-wrapper">
+								<a :href="ingredient.permalink" class="text-primary hover:underline" x-text="ingredient.name"></a>
+								<span class="tooltip-text" x-text="ingredient.excerpt || 'No description available'"></span>
+							</span>
 						</div>
 						<div class="grid grid-cols-3 gap-4">
 							<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
@@ -263,7 +266,10 @@ function comparePage() {
 									name: d.ingredient?.post_title || 'Unknown',
 									amount: parseFloat(d.amount) || 0,
 									unit: d.unit || '',
-									permalink: ingredientData.link || ''
+									permalink: ingredientData.link || '',
+									excerpt: ingredientData.excerpt?.rendered ? 
+										ingredientData.excerpt.rendered.replace(/<[^>]*>/g, '') : 
+										'No description available'
 								}));
 						});
 
@@ -461,6 +467,7 @@ function comparePage() {
 					ingredientsMap[key] = { 
 						name: ing.name, 
 						permalink: ing.permalink,
+						excerpt: ing.excerpt,
 						amounts: {}, 
 						originalAmounts: {} // Store original amounts
 					};
