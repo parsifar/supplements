@@ -19,7 +19,7 @@ get_header();
 
 <!-- Main Comparison Interface -->
 <div x-data="comparePage()" class="compare-container mx-auto py-8">
-	<h1 class="text-2xl font-bold mb-4">Compare Supplements</h1>
+	<h1 class="mb-4">Compare Supplements Side-by-Side</h1>
 
 	<!-- Search Interface -->
 	<!-- Allows users to search for supplements and displays results in a dropdown -->
@@ -194,6 +194,11 @@ get_header();
 				</template>
 			</div>
 		</div>
+	</div>
+
+	<!-- Page Content -->
+	<div class="page-content">
+		<?php the_content(); ?>
 	</div>
 </div>
 

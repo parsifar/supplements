@@ -1697,6 +1697,9 @@ body.page-template-new-compare-page .tables-wrapper .section .row .row-title {
 body.page-template-new-compare-page .tables-wrapper .section .row .column {
   padding: 10px 1rem;
 }
+body.page-template-new-compare-page .page-content ol > li {
+  margin-bottom: 1rem;
+}
 @media (max-width: 700px) {
   body.page-template-new-compare-page .ast-container {
     padding-inline: 10px;
