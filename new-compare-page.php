@@ -223,11 +223,24 @@ function comparePage() {
 	},
 
 	init() {
-		// Check local storage for comparison IDs on page load
-		const storedIds = JSON.parse(localStorage.getItem('compareIds') || '[]');
-		if (storedIds.length > 0) {
+		// First check URL for product IDs
+		const urlParams = new URLSearchParams(window.location.search);
+		const urlIds = urlParams.get('ids');
+		
+		let productIds = [];
+		
+		if (urlIds) {
+			// If URL has IDs, use those and update local storage
+			productIds = urlIds.split(',').map(id => id.trim());
+			localStorage.setItem('compareIds', JSON.stringify(productIds));
+		} else {
+			// If no URL IDs, check local storage
+			productIds = JSON.parse(localStorage.getItem('compareIds') || '[]');
+		}
+
+		if (productIds.length > 0) {
 			// Create an array of promises for loading each product
-			const loadPromises = storedIds.map(id => 
+			const loadPromises = productIds.map(id => 
 				fetch(`/wp-json/wp/v2/supplement/${id}?_embed`)
 					.then(res => res.json())
 					.then(data => {
