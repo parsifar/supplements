@@ -4,7 +4,7 @@
   .similar-supplements-grid {
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
   .similar-supplement-item {
     position: relative;
@@ -20,5 +20,11 @@
     font-weight: bold;
     z-index: 1;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .supplement-card {
+    height: 100%;
+    .card-link {
+      text-decoration: none;
+    }
   }
 }

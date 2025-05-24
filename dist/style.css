@@ -1170,7 +1170,7 @@ input[type=range]:focus::-moz-range-track {
 .similar-supplements-shortcode .similar-supplements-grid {
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 .similar-supplements-shortcode .similar-supplement-item {
   position: relative;
@@ -1185,6 +1185,12 @@ input[type=range]:focus::-moz-range-track {
   font-weight: bold;
   z-index: 1;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.similar-supplements-shortcode .supplement-card {
+  height: 100%;
+}
+.similar-supplements-shortcode .supplement-card .card-link {
+  text-decoration: none;
 }
 
 .wp-block-columns.image-text-col {
