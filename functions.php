@@ -12,6 +12,7 @@ require_once 'admin/variant-logic.php';
 
 // shortcodes
 require_once 'shorcodes/top-supplements.php';
+require_once 'shorcodes/compare-shortcode.php';
 
 
 function pp( $data ) {
