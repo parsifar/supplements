@@ -429,12 +429,8 @@ function comparePage() {
 				const certification = data.certification?.map(term => term.name).join(', ') || '';
 				const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
 				const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
-				const ingredients = dosages.map(d => ({
-					name: d.ingredient?.post_title || 'Unknown',
-					amount: parseFloat(d.amount) || 0,
-					unit: d.unit || ''
-				}));
-
+				
+				// First add the supplement with basic information
 				this.selectedProducts[index] = {
 					id: data.id,
 					title: data.title?.rendered || 'Untitled',
@@ -452,11 +448,15 @@ function comparePage() {
 					dietary_tag,
 					total_caffeine_content: acf.total_caffeine_content || '',
 					protein_per_serving: acf.protein_per_serving || '',
-					ingredients
+					ingredients: dosages.map(d => ({
+						name: d.ingredient?.post_title || 'Unknown',
+						amount: parseFloat(d.amount) || 0,
+						unit: d.unit || '',
+						permalink: '',
+						excerpt: 'Loading...'
+					}))
 				};
 
-				this.recalculateIngredients();
-				
 				// Clear search field and results
 				this.searchQuery = '';
 				this.searchResults = [];
@@ -464,11 +464,33 @@ function comparePage() {
 				// Update local storage
 				this.updateLocalStorage();
 
-				// Force a re-render of the ingredients section and initialize rating bars
+				// Initialize rating bars immediately
 				this.$nextTick(() => {
-					this.recalculateIngredients();
 					window.initializeRatingBars();
 				});
+
+				// Then fetch ingredient details in the background
+				const ingredientPromises = dosages.map(d => {
+					if (!d.ingredient?.ID) return Promise.resolve(null);
+					return fetch(`/wp-json/wp/v2/ingredient/${d.ingredient.ID}`)
+						.then(res => res.json())
+						.then(ingredientData => ({
+							name: d.ingredient?.post_title || 'Unknown',
+							amount: parseFloat(d.amount) || 0,
+							unit: d.unit || '',
+							permalink: ingredientData.link || '',
+							excerpt: ingredientData.excerpt?.rendered ? 
+								ingredientData.excerpt.rendered.replace(/<[^>]*>/g, '') : 
+								'No description available'
+						}));
+				});
+
+				// Update ingredients when details are loaded
+				Promise.all(ingredientPromises)
+					.then(ingredients => {
+						this.selectedProducts[index].ingredients = ingredients.filter(Boolean);
+						this.recalculateIngredients();
+					});
 			}
 		});
 	},
