@@ -266,6 +266,8 @@ function comparePage() {
 	return {
 	searchQuery: '',
 	searchResults: [],
+	searchTimeout: null,
+	searchCache: new Map(),
 	selectedProducts: [null, null, null],
 	sortedIngredients: [],
 	isPriceNormalized: false,
@@ -306,55 +308,77 @@ function comparePage() {
 						const dietary_tag = data['dietary-tag']?.map(term => term.name).join(', ') || '';
 						const dosages = Array.isArray(acf.dosages) ? acf.dosages : [];
 						
-						// Create an array of promises for fetching ingredient details
-						const ingredientPromises = dosages.map(d => {
-							if (!d.ingredient?.ID) return Promise.resolve(null);
-							return fetch(`/wp-json/wp/v2/ingredient/${d.ingredient.ID}`)
-								.then(res => res.json())
-								.then(ingredientData => ({
-									name: d.ingredient?.post_title || 'Unknown',
-									amount: parseFloat(d.amount) || 0,
-									unit: d.unit || '',
-									permalink: ingredientData.link || '',
-									excerpt: ingredientData.excerpt?.rendered ? 
-										ingredientData.excerpt.rendered.replace(/<[^>]*>/g, '') : 
-										'No description available'
-								}));
-						});
+						// First create the product with basic information
+						const product = {
+							id: data.id,
+							title: data.title?.rendered || 'Untitled',
+							image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
+							calories: acf.calories || '',
+							servings: acf.servings_per_container || '',
+							amazon_rating: acf.amazon_rating || '',
+							price: acf.price || '',
+							price_per_serving: acf.price_per_serving || '',
+							affiliate_url: acf.affiliate_url || '',
+							category,
+							brand,
+							product_form,
+							certification,
+							dietary_tag,
+							total_caffeine_content: acf.total_caffeine_content || '',
+							protein_per_serving: acf.protein_per_serving || '',
+							ingredients: dosages.map(d => ({
+								name: d.ingredient?.post_title || 'Unknown',
+								amount: parseFloat(d.amount) || 0,
+								unit: d.unit || '',
+								permalink: '',
+								excerpt: 'Loading...'
+							}))
+						};
 
-						// Wait for all ingredient details to be fetched
-						return Promise.all(ingredientPromises)
-							.then(ingredients => {
-								return {
-									id: data.id,
-									title: data.title?.rendered || 'Untitled',
-									image: data._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
-									calories: acf.calories || '',
-									servings: acf.servings_per_container || '',
-									amazon_rating: acf.amazon_rating || '',
-									price: acf.price || '',
-									price_per_serving: acf.price_per_serving || '',
-									affiliate_url: acf.affiliate_url || '',
-									category,
-									brand,
-									product_form,
-									certification,
-									dietary_tag,
-									total_caffeine_content: acf.total_caffeine_content || '',
-									protein_per_serving: acf.protein_per_serving || '',
-									ingredients: ingredients.filter(Boolean)
-								};
-							});
+						// Return both the product and a promise for its ingredient details
+						return {
+							product,
+							ingredientPromise: Promise.all(dosages.map(d => {
+								if (!d.ingredient?.ID) return Promise.resolve(null);
+								return fetch(`/wp-json/wp/v2/ingredient/${d.ingredient.ID}`)
+									.then(res => res.json())
+									.then(ingredientData => ({
+										name: d.ingredient?.post_title || 'Unknown',
+										amount: parseFloat(d.amount) || 0,
+										unit: d.unit || '',
+										permalink: ingredientData.link || '',
+										excerpt: ingredientData.excerpt?.rendered ? 
+											ingredientData.excerpt.rendered.replace(/<[^>]*>/g, '') : 
+											'No description available'
+									}));
+							}))
+						};
 					})
 			);
 
 			// Load all products in parallel and maintain order
-			Promise.all(loadPromises).then(products => {
-				// Fill the selectedProducts array in order
-				products.forEach((product, index) => {
-					this.selectedProducts[index] = product;
+			Promise.all(loadPromises).then(results => {
+				// First add all products with basic information
+				results.forEach((result, index) => {
+					this.selectedProducts[index] = result.product;
 				});
-				this.recalculateIngredients();
+
+				// Initialize rating bars immediately
+				this.$nextTick(() => {
+					window.initializeRatingBars();
+				});
+
+				// Then load all ingredient details in parallel
+				Promise.all(results.map(result => result.ingredientPromise))
+					.then(allIngredients => {
+						// Update each product with its complete ingredient information
+						allIngredients.forEach((ingredients, index) => {
+							if (this.selectedProducts[index]) {
+								this.selectedProducts[index].ingredients = ingredients.filter(Boolean);
+							}
+						});
+						this.recalculateIngredients();
+					});
 			});
 		}
 	},
@@ -381,32 +405,52 @@ function comparePage() {
 	 * Triggered on search input with debounce
 	 */
 	fetchSearchResults() {
-		if (!this.searchQuery) return;
-		
-		// First search in titles
-		const titleSearch = fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}&_embed&acf=true&per_page=20`)
-			.then(res => res.json());
+		if (!this.searchQuery) {
+			this.searchResults = [];
+			return;
+		}
 
-		// Then search in brands
-		const brandSearch = fetch(`/wp-json/wp/v2/brand?search=${this.searchQuery}&per_page=20`)
-			.then(res => res.json())
-			.then(brands => {
-				if (brands.length === 0) return Promise.resolve([]);
-				const brandIds = brands.map(brand => brand.id);
-				return fetch(`/wp-json/wp/v2/supplement?brand=${brandIds.join(',')}&_embed&acf=true&per_page=20`)
-					.then(res => res.json());
-			});
+		// Clear any pending timeout
+		if (this.searchTimeout) {
+			clearTimeout(this.searchTimeout);
+		}
 
-		// Combine both results
-		Promise.all([titleSearch, brandSearch])
-			.then(([titleResults, brandResults]) => {
-				// Combine results and remove duplicates
-				const allResults = [...titleResults, ...brandResults];
-				const uniqueResults = allResults.filter((result, index, self) =>
-					index === self.findIndex((r) => r.id === result.id)
-				);
-				this.searchResults = uniqueResults;
-			});
+		// Check cache first
+		if (this.searchCache.has(this.searchQuery)) {
+			this.searchResults = this.searchCache.get(this.searchQuery);
+			return;
+		}
+
+		// Set a new timeout
+		this.searchTimeout = setTimeout(() => {
+			// First search in titles
+			const titleSearch = fetch(`/wp-json/wp/v2/supplement?search=${this.searchQuery}&_embed&acf=true&per_page=20`)
+				.then(res => res.json());
+
+			// Then search in brands
+			const brandSearch = fetch(`/wp-json/wp/v2/brand?search=${this.searchQuery}&per_page=20`)
+				.then(res => res.json())
+				.then(brands => {
+					if (brands.length === 0) return Promise.resolve([]);
+					const brandIds = brands.map(brand => brand.id);
+					return fetch(`/wp-json/wp/v2/supplement?brand=${brandIds.join(',')}&_embed&acf=true&per_page=20`)
+						.then(res => res.json());
+				});
+
+			// Combine both results
+			Promise.all([titleSearch, brandSearch])
+				.then(([titleResults, brandResults]) => {
+					// Combine results and remove duplicates
+					const allResults = [...titleResults, ...brandResults];
+					const uniqueResults = allResults.filter((result, index, self) =>
+						index === self.findIndex((r) => r.id === result.id)
+					);
+					
+					// Cache the results
+					this.searchCache.set(this.searchQuery, uniqueResults);
+					this.searchResults = uniqueResults;
+				});
+		}, 300); // 300ms debounce
 	},
 
 	/**
