@@ -150,11 +150,11 @@ document.addEventListener('alpine:init', () => {
 					<div class="row-title" x-text="field"></div>
 					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'overview-product-' + pIndex">
-							<div class="column" x-show="product">
-								<template x-if="field === 'Rating'">
+							<div class="column">
+								<template x-if="product && field === 'Rating'">
 									<div x-html="getOverviewValue(product, field)"></div>
 								</template>
-								<template x-if="field !== 'Rating'">
+								<template x-if="product && field !== 'Rating'">
 									<span x-text="getOverviewValue(product, field)"></span>
 								</template>
 							</div>
@@ -169,8 +169,10 @@ document.addEventListener('alpine:init', () => {
 					<div class="row-title" x-text="field"></div>
 					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'taxonomy-product-' + pIndex">
-							<div class="column" x-show="product">
-								<span x-text="getTaxonomyValue(product, field)"></span>
+							<div class="column">
+								<template x-if="product">
+									<span x-text="getTaxonomyValue(product, field)"></span>
+								</template>
 							</div>
 						</template>
 					</div>
@@ -186,11 +188,13 @@ document.addEventListener('alpine:init', () => {
 					<div class="row-title" x-text="field"></div>
 					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'category-product-' + pIndex">
-							<div class="column" x-show="product">
-								<span 
-									x-text="getCategoryValue(product, field)"
-									:class="{ 'text-green-600 font-bold': isMaxCategoryValue(product, field) }"
-								></span>
+							<div class="column">
+								<template x-if="product">
+									<span 
+										x-text="getCategoryValue(product, field)"
+										:class="{ 'text-green-600 font-bold': isMaxCategoryValue(product, field) }"
+									></span>
+								</template>
 							</div>
 						</template>
 					</div>
@@ -225,15 +229,17 @@ document.addEventListener('alpine:init', () => {
 						</div>
 						<div class="grid grid-cols-3 gap-4">
 							<template x-for="(product, pIndex) in selectedProducts" :key="'ingredient-product-' + pIndex">
-								<div class="column" x-show="product">
-									<template x-if="getIngredientAmount(ingredient, product) !== '—'">
-										<span
-											x-text="getIngredientAmount(ingredient, product)"
-											:class="shouldHighlightAmount(ingredient, product) ? 'text-green-600 font-bold' : ''"
-										></span>
-									</template>
-									<template x-if="getIngredientAmount(ingredient, product) === '—'">
-										<span>—</span>
+								<div class="column">
+									<template x-if="product">
+										<template x-if="getIngredientAmount(ingredient, product) !== '—'">
+											<span
+												x-text="getIngredientAmount(ingredient, product)"
+												:class="shouldHighlightAmount(ingredient, product) ? 'text-green-600 font-bold' : ''"
+											></span>
+										</template>
+										<template x-if="getIngredientAmount(ingredient, product) === '—'">
+											<span>—</span>
+										</template>
 									</template>
 								</div>
 							</template>
