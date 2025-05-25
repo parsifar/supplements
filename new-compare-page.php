@@ -17,6 +17,41 @@ get_header();
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
+<!-- Alpine.js Rating Bar Directive -->
+<script>
+document.addEventListener('alpine:init', () => {
+	Alpine.directive('rating-bar', (el, { expression }) => {
+		const rating = parseFloat(el.getAttribute("data-rating"));
+		const barFill = el.querySelector(".bar-fill");
+
+		// Segment widths in percentage (total 100%)
+		const segments = [
+			{ min: 0, max: 1, width: 14.2857 },
+			{ min: 1, max: 2, width: 14.2857 },
+			{ min: 2, max: 3, width: 14.2857 },
+			{ min: 3, max: 4, width: 14.2857 },
+			{ min: 4, max: 5, width: 42.8571 },
+		];
+
+		let fillPercent = 0;
+		for (let i = 0; i < segments.length; i++) {
+			const seg = segments[i];
+			if (rating >= seg.max) {
+				fillPercent += seg.width;
+			} else if (rating > seg.min) {
+				const portion = (rating - seg.min) / (seg.max - seg.min);
+				fillPercent += seg.width * portion;
+				break;
+			} else {
+				break;
+			}
+		}
+
+		barFill.style.width = `${fillPercent}%`;
+	});
+});
+</script>
+
 <!-- Main Comparison Interface -->
 <div x-data="comparePage()" class="compare-container mx-auto py-8">
 	<h1 class="mb-4">Compare Supplements Side-by-Side</h1>
@@ -106,7 +141,7 @@ get_header();
 
 	<!-- Comparison Table -->
 	<!-- Only shows when at least one product is selected -->
-	<div class="tables-wrapper" x-show="selectedProducts.filter(p => p).length">
+	<div class="tables-wrapper" x-show="selectedProducts.filter(p => p).length" x-effect="initializeRatingBars()">
 		<!-- Overview Section -->
 		<div  class="section overview">
 			<h3 class="section-title"><i class="bi bi-check-circle"></i> </i>Overview</h3>
@@ -116,7 +151,12 @@ get_header();
 					<div class="grid grid-cols-3 gap-4">
 						<template x-for="(product, pIndex) in selectedProducts" :key="'overview-product-' + pIndex">
 							<div class="column" x-show="product">
-								<span x-text="getOverviewValue(product, field)"></span>
+								<template x-if="field === 'Rating'">
+									<div x-html="getOverviewValue(product, field)"></div>
+								</template>
+								<template x-if="field !== 'Rating'">
+									<span x-text="getOverviewValue(product, field)"></span>
+								</template>
 							</div>
 						</template>
 					</div>
@@ -418,9 +458,10 @@ function comparePage() {
 				// Update local storage
 				this.updateLocalStorage();
 
-				// Force a re-render of the ingredients section
+				// Force a re-render of the ingredients section and initialize rating bars
 				this.$nextTick(() => {
 					this.recalculateIngredients();
+					window.initializeRatingBars();
 				});
 			}
 		});
@@ -449,9 +490,10 @@ function comparePage() {
 		// Update local storage
 		this.updateLocalStorage();
 
-		// Force a re-render of the ingredients section
+		// Force a re-render of the ingredients section and initialize rating bars
 		this.$nextTick(() => {
 			this.recalculateIngredients();
+			window.initializeRatingBars();
 		});
 	},
 
@@ -613,7 +655,22 @@ function comparePage() {
 			case 'Servings per container':
 				return product?.servings || '—';
 			case 'Rating':
-				return product?.amazon_rating + ' out of 5' || '—';
+				if (!product?.amazon_rating) return '—';
+				return `<div class="rating-bar" data-rating="${product.amazon_rating}" x-rating-bar>
+					<div class="bar-label">${product.amazon_rating} out of 5</div>
+					<div class="bar-wrapper">
+						<div class="bar-bg">
+							<div class="bar-fill"></div>
+							<div class="bar-ticks">
+								<div class="segment" data-label="1"></div>
+								<div class="segment" data-label="2"></div>
+								<div class="segment" data-label="3"></div>
+								<div class="segment" data-label="4"></div>
+								<div class="segment last" data-label="5"></div>
+							</div>
+						</div>
+					</div>
+				</div>`;
 			case 'Price':
 				return product?.price ? '$' + product.price : '—';
 			case 'Price per serving':
