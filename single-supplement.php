@@ -277,6 +277,12 @@
 					</a>
 				</div>
 				<?php endif; ?>
+
+				<!-- Similar Supplements -->
+				<section class="similar-wrapper">
+					<h2>Supplements with Similar Ingredients</h2>
+					<?php echo do_shortcode( '[similar_supplements id="' . get_the_ID() . '"]' ); ?>
+				</section>
 			</article>
 
 			<?php
