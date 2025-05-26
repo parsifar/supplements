@@ -30,99 +30,99 @@ body.single-supplement {
       flex-direction: row;
       justify-content: space-between;
     }
-  }
 
-  .supplement-thumbnail {
-    flex-basis: 40%;
-    aspect-ratio: 1;
-    overflow: hidden;
-    position: relative;
+    .supplement-thumbnail {
+      flex-basis: 40%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      position: relative;
 
-    @media (max-width: $breakpoint-md) {
-      max-width: 400px;
-    }
-
-    .thumbnail-image {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-  }
-
-  .supplement-meta {
-    flex-basis: 50%;
-    flex-grow: 1;
-
-    .brand {
-      color: $color-primary;
-    }
-    .supplement-title {
-      margin-bottom: 1rem;
-    }
-
-    .rating-bar {
-      justify-content: flex-start;
-      margin-bottom: 2rem;
-
-      .bar-label {
-        font-size: 1rem;
+      @media (max-width: $breakpoint-md) {
+        max-width: 400px;
       }
-      .bar-wrapper {
-        max-width: 300px;
+
+      .thumbnail-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
       }
     }
 
-    .price-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $spacing-md;
-      margin-bottom: 1rem;
+    .supplement-meta {
+      flex-basis: 50%;
+      flex-grow: 1;
 
-      & > div {
-        flex-basis: 200px;
-        flex-grow: 1;
-        padding: $spacing-md;
-        background-color: $color-gray-light;
-        border-radius: $radius;
+      .brand {
+        color: $color-primary;
+      }
+      .supplement-title {
+        margin-bottom: 1rem;
       }
 
-      .price-label {
-        @include heading-style(6);
-        margin-bottom: 0.5rem;
-      }
+      .rating-bar {
+        justify-content: flex-start;
+        margin-bottom: 2rem;
 
-      .price-amount {
-        margin-bottom: 0;
-      }
-
-      .amount {
-        @include heading-style(3);
-      }
-    }
-
-    .quick-facts {
-      display: flex;
-      flex-direction: column;
-      gap: $spacing-sm;
-      margin-bottom: 1rem;
-
-      & > p {
-        margin-bottom: 0;
-      }
-    }
-
-    .badges {
-      .badge {
-        @include badge;
-
-        &.certification-badge {
-          background: #d1fae5;
+        .bar-label {
+          font-size: 1rem;
+        }
+        .bar-wrapper {
+          max-width: 300px;
         }
       }
-    }
 
-    .affiliate-wrapper {
-      margin-top: 1rem;
+      .price-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-md;
+        margin-bottom: 1rem;
+
+        & > div {
+          flex-basis: 200px;
+          flex-grow: 1;
+          padding: $spacing-md;
+          background-color: $color-gray-light;
+          border-radius: $radius;
+        }
+
+        .price-label {
+          @include heading-style(6);
+          margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+          margin-bottom: 0;
+        }
+
+        .amount {
+          @include heading-style(3);
+        }
+      }
+
+      .quick-facts {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+        margin-bottom: 1rem;
+
+        & > p {
+          margin-bottom: 0;
+        }
+      }
+
+      .badges {
+        .badge {
+          @include badge;
+
+          &.certification-badge {
+            background: #d1fae5;
+          }
+        }
+      }
+
+      .affiliate-wrapper {
+        margin-top: 1rem;
+      }
     }
   }
 

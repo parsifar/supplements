@@ -155,6 +155,10 @@ body.ast-plain-container {
   display: block;
 }
 
+.ast-article-single img {
+  box-shadow: none;
+}
+
 p {
   margin-bottom: 1rem;
 }
@@ -1160,6 +1164,35 @@ input[type=range]:focus::-moz-range-track {
     font-size: 16px;
   }
 }
+.similar-supplements-shortcode {
+  margin: 2rem 0;
+}
+.similar-supplements-shortcode .similar-supplements-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+.similar-supplements-shortcode .similar-supplement-item {
+  position: relative;
+}
+.similar-supplements-shortcode .similarity-score {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #2563eb;
+  color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.similar-supplements-shortcode .supplement-card {
+  height: 100%;
+}
+.similar-supplements-shortcode .supplement-card .card-link {
+  text-decoration: none;
+}
+
 .wp-block-columns.image-text-col {
   margin-block: 3rem;
   gap: 80px;
@@ -1410,56 +1443,56 @@ body.single-supplement .supplement-header {
     justify-content: space-between;
   }
 }
-body.single-supplement .supplement-thumbnail {
+body.single-supplement .supplement-header .supplement-thumbnail {
   flex-basis: 40%;
   aspect-ratio: 1;
   overflow: hidden;
   position: relative;
 }
 @media (max-width: 782px) {
-  body.single-supplement .supplement-thumbnail {
+  body.single-supplement .supplement-header .supplement-thumbnail {
     max-width: 400px;
   }
 }
-body.single-supplement .supplement-thumbnail .thumbnail-image {
+body.single-supplement .supplement-header .supplement-thumbnail .thumbnail-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
-body.single-supplement .supplement-meta {
+body.single-supplement .supplement-header .supplement-meta {
   flex-basis: 50%;
   flex-grow: 1;
 }
-body.single-supplement .supplement-meta .brand {
+body.single-supplement .supplement-header .supplement-meta .brand {
   color: #2563eb;
 }
-body.single-supplement .supplement-meta .supplement-title {
+body.single-supplement .supplement-header .supplement-meta .supplement-title {
   margin-bottom: 1rem;
 }
-body.single-supplement .supplement-meta .rating-bar {
+body.single-supplement .supplement-header .supplement-meta .rating-bar {
   justify-content: flex-start;
   margin-bottom: 2rem;
 }
-body.single-supplement .supplement-meta .rating-bar .bar-label {
+body.single-supplement .supplement-header .supplement-meta .rating-bar .bar-label {
   font-size: 1rem;
 }
-body.single-supplement .supplement-meta .rating-bar .bar-wrapper {
+body.single-supplement .supplement-header .supplement-meta .rating-bar .bar-wrapper {
   max-width: 300px;
 }
-body.single-supplement .supplement-meta .price-section {
+body.single-supplement .supplement-header .supplement-meta .price-section {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 }
-body.single-supplement .supplement-meta .price-section > div {
+body.single-supplement .supplement-header .supplement-meta .price-section > div {
   flex-basis: 200px;
   flex-grow: 1;
   padding: 1rem;
   background-color: #eaeaea;
   border-radius: 0.5rem;
 }
-body.single-supplement .supplement-meta .price-section .price-label {
+body.single-supplement .supplement-header .supplement-meta .price-section .price-label {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: #111827;
@@ -1468,26 +1501,26 @@ body.single-supplement .supplement-meta .price-section .price-label {
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
-body.single-supplement .supplement-meta .price-section .price-amount {
+body.single-supplement .supplement-header .supplement-meta .price-section .price-amount {
   margin-bottom: 0;
 }
-body.single-supplement .supplement-meta .price-section .amount {
+body.single-supplement .supplement-header .supplement-meta .price-section .amount {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: #111827;
   line-height: 1.25;
   font-size: 1.5rem;
 }
-body.single-supplement .supplement-meta .quick-facts {
+body.single-supplement .supplement-header .supplement-meta .quick-facts {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
-body.single-supplement .supplement-meta .quick-facts > p {
+body.single-supplement .supplement-header .supplement-meta .quick-facts > p {
   margin-bottom: 0;
 }
-body.single-supplement .supplement-meta .badges .badge {
+body.single-supplement .supplement-header .supplement-meta .badges .badge {
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1498,13 +1531,13 @@ body.single-supplement .supplement-meta .badges .badge {
   background: #eaeaea;
   color: #4b5563;
 }
-body.single-supplement .supplement-meta .badges .badge i {
+body.single-supplement .supplement-header .supplement-meta .badges .badge i {
   margin-right: 4px;
 }
-body.single-supplement .supplement-meta .badges .badge.certification-badge {
+body.single-supplement .supplement-header .supplement-meta .badges .badge.certification-badge {
   background: #d1fae5;
 }
-body.single-supplement .supplement-meta .affiliate-wrapper {
+body.single-supplement .supplement-header .supplement-meta .affiliate-wrapper {
   margin-top: 1rem;
 }
 body.single-supplement .supplement-content :is(p, li) {
