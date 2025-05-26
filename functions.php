@@ -296,7 +296,13 @@ function supplement_ajax_search() {
  * Modify REST API response to include full term data for taxonomies (for the new compare page)
  */
 function modify_supplement_rest_response( $response, $post, $request ) {
-	// Get taxonomies we want to modify
+
+	// Only run this for front-end requests (context=view) to avoid breaking the editor (context=edit).
+	if ( $request->get_param( 'context' ) !== 'view' ) {
+		return $response;
+	}
+
+	// Get taxonomies we want to modify.
 	$taxonomies = array( 'brand', 'supplement-category', 'certification', 'dietary-tag', 'product-form' );
 
 	foreach ( $taxonomies as $taxonomy ) {
