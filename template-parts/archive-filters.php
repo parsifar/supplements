@@ -1,4 +1,10 @@
 <?php
+/**
+ * Template part for displaying archive filters.
+ *
+ * @package Supp_Pick
+ */
+
 // Get max price
 $max_price_post = get_posts(
 	array(
@@ -31,6 +37,35 @@ $current_pps   = isset( $_GET['max_pps'] ) ? floatval( $_GET['max_pps'] ) : $pps
 
 $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] ) : 1;
 
+/**
+ * Recursively displays taxonomy terms in a hierarchical structure.
+ *
+ * @param array  $terms    Array of term objects.
+ * @param string $taxonomy Taxonomy name.
+ * @param int    $depth    Current depth level for indentation.
+ */
+function supp_pick_display_terms_hierarchically( $terms, $taxonomy, $depth = 0 ) {
+	foreach ( $terms as $term ) {
+		$indent = str_repeat( '— ', $depth );
+		?>
+		<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( wp_unslash( $_GET[ 'selected_' . $taxonomy ] ?? '' ), $term->slug ); ?>>
+			<?php echo esc_html( $indent . $term->name ); ?>
+		</option>
+		<?php
+		// Get child terms.
+		$child_terms = get_terms(
+			array(
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => true,
+				'parent'     => $term->term_id,
+			)
+		);
+		if ( ! empty( $child_terms ) && ! is_wp_error( $child_terms ) ) {
+			supp_pick_display_terms_hierarchically( $child_terms, $taxonomy, $depth + 1 );
+		}
+	}
+}
+
 ?>
 <form method="GET" id="filter-form" class="supplements-filter-form">
 	<?php
@@ -52,6 +87,7 @@ $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] )
 			array(
 				'taxonomy'   => $taxonomy,
 				'hide_empty' => true,
+				'parent'     => 0, // Get only top-level terms.
 			)
 		);
 
@@ -61,15 +97,11 @@ $current_rating = isset( $_GET['min_rating'] ) ? floatval( $_GET['min_rating'] )
 			<label for="<?php echo esc_attr( $taxonomy ); ?>" class="filter-label"><?php echo esc_html( $label ); ?></label>
 			<select name="<?php echo 'selected_' . esc_attr( $taxonomy ); ?>" id="<?php echo esc_attr( $taxonomy ); ?>" class="filter-select">
 				<option value="">All <?php echo esc_html( $label ); ?></option>
-				<?php foreach ( $terms as $term ) : ?>
-					<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $_GET[ 'selected_' . $taxonomy ] ?? '', $term->slug ); ?>>
-						<?php echo esc_html( $term->name ); ?>
-					</option>
-				<?php endforeach; ?>
+				<?php supp_pick_display_terms_hierarchically( $terms, $taxonomy ); ?>
 			</select>
 		</div>
 			<?php
-	endif;
+		endif;
 	endforeach;
 	?>
 
