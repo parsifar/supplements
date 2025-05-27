@@ -51,7 +51,7 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 			// Display protein per serving if available.
 			$protein = get_field( 'protein_per_serving' );
 			if ( $protein ) {
-				$highlight = "{$protein} g protein";
+				$highlight = "<strong>{$protein}</strong>g protein per serving";
 			}
 			break;
 

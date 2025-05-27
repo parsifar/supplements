@@ -153,12 +153,27 @@ function analyze_uploaded_json( $file ) {
 			// add the current variant asin to the $found_asins array.
 			$found_asins[] = $asin;
 
-			// add the parent of the current variant to the $supplement_updates array.
-			$supplement_updates[ $parent_id ] = array(
-				'post_id'    => $parent_id,
-				'post_title' => $parent->post_title,
-			);
+			// Check if parent is a protein supplement and calculate protein per dollar
+			if ( $parent_id ) {
+				$is_protein  = has_term( 'protein', 'supplement-category', $parent_id );
+				$update_data = array(
+					'post_id'    => $parent_id,
+					'post_title' => $parent->post_title,
+				);
 
+				if ( $is_protein ) {
+					$protein_per_serving = floatval( get_field( 'protein_per_serving', $parent_id ) );
+					$protein_per_dollar  = $protein_per_serving > 0 ? round( $protein_per_serving / $new_pps, 2 ) : 0;
+
+					// Only add protein_per_dollar if it's a valid number
+					if ( is_numeric( $protein_per_dollar ) && $protein_per_dollar > 0 ) {
+						$update_data['protein_per_dollar'] = $protein_per_dollar;
+					}
+				}
+
+				// Add the parent supplement to updates
+				$supplement_updates[ $parent_id ] = $update_data;
+			}
 		}
 
 		wp_reset_postdata();
@@ -194,11 +209,21 @@ function analyze_uploaded_json( $file ) {
 
 	// Supplement preview table
 	echo '<h3>Supplement Updates</h3>';
-	echo '<table class="widefat"><thead><tr><th>Title</th><th>Last updated</th></tr></thead><tbody>';
+	echo '<table class="widefat"><thead><tr><th>Title</th><th>Last updated</th><th>Old Protein/$</th><th>New Protein/$</th></tr></thead><tbody>';
 	foreach ( $supplement_updates as $update ) {
 		echo '<tr>';
 		echo '<td><a href="' . get_edit_post_link( $update['post_id'] ) . '" target="_blank">' . esc_html( $update['post_title'] ) . '</a></td>';
 		echo '<td>' . esc_html( get_field( 'last_update_date', $update['post_id'] ) ) . '</td>';
+
+		// Show protein per dollar values if it's a protein supplement
+		if ( has_term( 'protein', 'supplement-category', $update['post_id'] ) ) {
+			$old_protein_per_dollar = get_field( 'protein_per_dollar', $update['post_id'] );
+			echo '<td>' . esc_html( $old_protein_per_dollar ) . '</td>';
+			echo '<td>' . esc_html( $update['protein_per_dollar'] ?? '' ) . '</td>';
+		} else {
+			echo '<td>-</td><td>-</td>';
+		}
+
 		echo '</tr>';
 	}
 	echo '</tbody></table>';
@@ -284,6 +309,11 @@ add_action(
 
 		update_post_meta( $supplement_id, 'last_update_date', current_time( 'Y-m-d' ) );
 		update_post_meta( $supplement_id, 'last_update_time', current_time( 'H:i:s' ) );
+
+		// Update protein_per_dollar if it exists in the updates
+		if ( isset( $update['protein_per_dollar'] ) ) {
+			update_field( 'protein_per_dollar', $update['protein_per_dollar'], $supplement_id );
+		}
 
 		// reset the best variant of this supplement
 		update_best_variant_fields_from_function( $supplement_id );
