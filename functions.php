@@ -142,7 +142,7 @@ function filter_supplement_query( $query ) {
 	}
 
 	// Sorting.
-	$sort = sanitize_text_field( $_GET['sort'] ?? '' );
+	$sort = sanitize_text_field( wp_unslash( $_GET['sort'] ?? '' ) );
 	switch ( $sort ) {
 		case 'price_asc':
 			$query->set( 'orderby', 'meta_value_num' );
@@ -172,6 +172,48 @@ function filter_supplement_query( $query ) {
 		case 'rating_desc':
 			$query->set( 'orderby', 'meta_value_num' );
 			$query->set( 'meta_key', 'amazon_rating' );
+			$query->set( 'order', 'DESC' );
+			break;
+		// Protein-specific sorting options
+		case 'protein_per_serving_asc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'protein_per_serving' );
+			$query->set( 'order', 'ASC' );
+			break;
+		case 'protein_per_serving_desc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'protein_per_serving' );
+			$query->set( 'order', 'DESC' );
+			break;
+		case 'calorie_protein_ratio_asc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'calorie_protein_ratio' );
+			$query->set( 'order', 'ASC' );
+			break;
+		case 'calorie_protein_ratio_desc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'calorie_protein_ratio' );
+			$query->set( 'order', 'DESC' );
+			break;
+		case 'protein_per_dollar_asc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'protein_per_dollar' );
+			$query->set( 'order', 'ASC' );
+			break;
+		case 'protein_per_dollar_desc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'protein_per_dollar' );
+			$query->set( 'order', 'DESC' );
+			break;
+		// Pre-workout specific sorting options
+		case 'caffeine_asc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'total_caffeine_content' );
+			$query->set( 'order', 'ASC' );
+			break;
+		case 'caffeine_desc':
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'total_caffeine_content' );
 			$query->set( 'order', 'DESC' );
 			break;
 	}

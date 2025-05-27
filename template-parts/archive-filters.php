@@ -130,12 +130,50 @@ function supp_pick_display_terms_hierarchically( $terms, $taxonomy, $depth = 0 )
 		<label for="sort" class="filter-label">Sort By</label>
 		<select name="sort" id="sort" class="filter-select">
 			<option value="">Default</option>
-			<option value="price_asc" <?php selected( $_GET['sort'] ?? '', 'price_asc' ); ?>>Price: Low to High</option>
-			<option value="price_desc" <?php selected( $_GET['sort'] ?? '', 'price_desc' ); ?>>Price: High to Low</option>
-			<option value="pps_asc" <?php selected( $_GET['sort'] ?? '', 'pps_asc' ); ?>>Price per serving: Low to High</option>
-			<option value="pps_desc" <?php selected( $_GET['sort'] ?? '', 'pps_desc' ); ?>>Price per serving: High to Low</option>
-			<option value="rating_asc" <?php selected( $_GET['sort'] ?? '', 'rating_asc' ); ?>>Rating: Low to High</option>
-			<option value="rating_desc" <?php selected( $_GET['sort'] ?? '', 'rating_desc' ); ?>>Rating: High to Low</option>
+			<option value="price_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'price_asc' ); ?>>Price: Low to High</option>
+			<option value="price_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'price_desc' ); ?>>Price: High to Low</option>
+			<option value="pps_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'pps_asc' ); ?>>Price per serving: Low to High</option>
+			<option value="pps_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'pps_desc' ); ?>>Price per serving: High to Low</option>
+			<option value="rating_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'rating_asc' ); ?>>Rating: Low to High</option>
+			<option value="rating_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'rating_desc' ); ?>>Rating: High to Low</option>
+			<?php
+			// Add protein-specific sorting options if we're on a protein-related term
+			if ( is_tax( 'supplement-category' ) ) {
+				$current_term       = get_queried_object();
+				$is_protein_related = false;
+				$is_preworkout      = false;
+
+				// Check if current term is protein or a child of protein
+				if ( $current_term && ! is_wp_error( $current_term ) ) {
+					$ancestors    = get_ancestors( $current_term->term_id, 'supplement-category' );
+					$protein_term = get_term_by( 'slug', 'protein', 'supplement-category' );
+
+					if ( $protein_term && ! is_wp_error( $protein_term ) ) {
+						$is_protein_related = ( $current_term->term_id === $protein_term->term_id || in_array( $protein_term->term_id, $ancestors ) );
+					}
+
+					$is_preworkout = ( $current_term->slug === 'pre-workout' );
+				}
+
+				if ( $is_protein_related ) {
+					?>
+					<option value="protein_per_serving_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'protein_per_serving_asc' ); ?>>Protein per serving: Low to High</option>
+					<option value="protein_per_serving_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'protein_per_serving_desc' ); ?>>Protein per serving: High to Low</option>
+					<option value="calorie_protein_ratio_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'calorie_protein_ratio_asc' ); ?>>Calorie/Protein ratio: Low to High</option>
+					<option value="calorie_protein_ratio_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'calorie_protein_ratio_desc' ); ?>>Calorie/Protein ratio: High to Low</option>
+					<option value="protein_per_dollar_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'protein_per_dollar_asc' ); ?>>Protein per dollar: Low to High</option>
+					<option value="protein_per_dollar_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'protein_per_dollar_desc' ); ?>>Protein per dollar: High to Low</option>
+					<?php
+				}
+
+				if ( $is_preworkout ) {
+					?>
+					<option value="caffeine_asc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'caffeine_asc' ); ?>>Caffeine content: Low to High</option>
+					<option value="caffeine_desc" <?php selected( wp_unslash( $_GET['sort'] ?? '' ), 'caffeine_desc' ); ?>>Caffeine content: High to Low</option>
+					<?php
+				}
+			}
+			?>
 		</select>
 	</div>
 
