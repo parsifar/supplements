@@ -20,6 +20,30 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 			$caffeine = get_field( 'total_caffeine_content' );
 			if ( $caffeine ) {
 				$highlight = "<strong>{$caffeine}</strong>mg caffeine per serving";
+			} else {
+				// Check for L-Citrulline or L-Citrulline Malate
+				$dosages = get_field( 'dosages' );
+				if ( $dosages ) {
+					$citrulline_amount        = 0;
+					$citrulline_malate_amount = 0;
+
+					foreach ( $dosages as $dosage ) {
+						$ingredient = $dosage['ingredient'];
+						if ( $ingredient ) {
+							if ( $ingredient->ID === 63 ) { // L-Citrulline
+								$citrulline_amount = $dosage['amount'];
+							} elseif ( $ingredient->ID === 55 ) { // L-Citrulline Malate
+								$citrulline_malate_amount = $dosage['amount'];
+							}
+						}
+					}
+
+					if ( $citrulline_amount > 0 ) {
+						$highlight = "<strong>{$citrulline_amount}</strong>mg L-Citrulline per serving";
+					} elseif ( $citrulline_malate_amount > 0 ) {
+						$highlight = "<strong>{$citrulline_malate_amount}</strong>mg L-Citrulline Malate per serving";
+					}
+				}
 			}
 			break;
 
