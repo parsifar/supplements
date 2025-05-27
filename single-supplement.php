@@ -192,6 +192,61 @@
 					<?php the_content(); ?>
 				</div>
 
+				<!-- Nutrition Facts -->
+				<div class="nutrition-facts">
+					<?php if ( $is_protein ) : ?>
+						<?php
+						$calories    = get_field( 'calories' );
+						$protein     = get_field( 'protein_per_serving' );
+						$carbs       = get_field( 'total_carbohydrate' );
+						$fat         = get_field( 'total_fat' );
+						$cholesterol = get_field( 'cholesterol' );
+
+						if ( $calories || $protein || $carbs || $fat || $cholesterol ) :
+							?>
+							<h2>Nutrition Facts</h2>
+							<table class="nutrition-table">
+								<tbody>
+									<?php if ( $calories ) : ?>
+										<tr>
+											<td>Calories</td>
+											<td><?php echo esc_html( $calories ); ?></td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $protein ) : ?>
+										<tr>
+											<td>Protein</td>
+											<td><?php echo esc_html( $protein ); ?>g</td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $carbs ) : ?>
+										<tr>
+											<td>Total Carbohydrate</td>
+											<td><?php echo esc_html( $carbs ); ?>g</td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $fat ) : ?>
+										<tr>
+											<td>Total Fat</td>
+											<td><?php echo esc_html( $fat ); ?>g</td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $cholesterol ) : ?>
+										<tr>
+											<td>Cholesterol</td>
+											<td><?php echo esc_html( $cholesterol ); ?>mg</td>
+										</tr>
+									<?php endif; ?>
+								</tbody>
+							</table>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+
 				<!-- Ingredients -->
 				<?php
 				$dosages = get_field( 'dosages' );

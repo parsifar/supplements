@@ -70,6 +70,75 @@
             "step": "",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_6835af90ff4b2",
+            "label": "Total Carbohydrate",
+            "name": "total_carbohydrate",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Total Carbohydrate (g)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6835afc1ff4b3",
+            "label": "Total Fat",
+            "name": "total_fat",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Total Fat (g)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6835afcfff4b4",
+            "label": "Cholesterol",
+            "name": "cholesterol",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Cholesterol (mg)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -90,5 +159,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1748308479
+    "modified": 1748349009
 }
