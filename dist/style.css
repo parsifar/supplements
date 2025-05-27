@@ -1479,20 +1479,23 @@ body.single-supplement .supplement-header .supplement-meta .rating-bar .bar-labe
 body.single-supplement .supplement-header .supplement-meta .rating-bar .bar-wrapper {
   max-width: 300px;
 }
-body.single-supplement .supplement-header .supplement-meta .price-section {
+body.single-supplement .supplement-header .supplement-meta .price-section,
+body.single-supplement .supplement-header .supplement-meta .protein-section {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 }
-body.single-supplement .supplement-header .supplement-meta .price-section > div {
+body.single-supplement .supplement-header .supplement-meta .price-section > div,
+body.single-supplement .supplement-header .supplement-meta .protein-section > div {
   flex-basis: 200px;
   flex-grow: 1;
   padding: 1rem;
   background-color: #eaeaea;
   border-radius: 0.5rem;
 }
-body.single-supplement .supplement-header .supplement-meta .price-section .price-label {
+body.single-supplement .supplement-header .supplement-meta .price-section .price-label,
+body.single-supplement .supplement-header .supplement-meta .protein-section .price-label {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: #111827;
@@ -1501,10 +1504,12 @@ body.single-supplement .supplement-header .supplement-meta .price-section .price
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
-body.single-supplement .supplement-header .supplement-meta .price-section .price-amount {
+body.single-supplement .supplement-header .supplement-meta .price-section .price-amount,
+body.single-supplement .supplement-header .supplement-meta .protein-section .price-amount {
   margin-bottom: 0;
 }
-body.single-supplement .supplement-header .supplement-meta .price-section .amount {
+body.single-supplement .supplement-header .supplement-meta .price-section .amount,
+body.single-supplement .supplement-header .supplement-meta .protein-section .amount {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: #111827;

@@ -87,7 +87,7 @@
 								if ( $price_per_serving ) {
 									?>
 									<div class="pps-wrapper">
-										<p class="price-label">price per serving</p>
+										<p class="price-label">Price per serving</p>
 										<p class="price-amount"><span class="amount">$<?php echo esc_html( $price_per_serving ); ?></span> /serving</p>
 									</div>
 									<?php
@@ -96,6 +96,41 @@
 								
 							</div>
 							
+							<?php
+						}
+
+						// Protein specific info
+						$is_protein = has_term( 'protein', 'supplement-category' );
+
+						if ( $is_protein ) {
+							$protein_per_serving   = get_field( 'protein_per_serving' );
+							$calorie_protein_ratio = get_field( 'calorie_protein_ratio' );
+							$protein_per_dollar    = get_field( 'protein_per_dollar' );
+
+							?>
+							<div class="protein-section">
+								<?php
+								if ( $calorie_protein_ratio ) {
+									?>
+									<div class="cp-ratio-wrapper">
+										<p class="price-label">Calories/protein ratio</p>
+										<p class="price-amount"><span class="amount"><?php echo esc_html( $calorie_protein_ratio ); ?></span>cal / 1g protein</p>
+									</div>
+									<?php
+								}
+
+								if ( $protein_per_dollar ) {
+									?>
+									<div class="cp-ratio-wrapper">
+										<p class="price-label">Protein per Dollar</p>
+										<p class="price-amount"><span class="amount"><?php echo esc_html( $protein_per_dollar ); ?></span>g protein per $1</p>
+									</div>
+									<?php
+								}
+								?>
+
+							</div>
+
 							<?php
 						}
 
