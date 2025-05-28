@@ -202,40 +202,40 @@
 						$fat         = get_field( 'total_fat' );
 						$cholesterol = get_field( 'cholesterol' );
 
-						if ( $calories || $protein || $carbs || $fat || $cholesterol ) :
+						if ( $calories !== null || $protein !== null || $carbs !== null || $fat !== null || $cholesterol !== null ) :
 							?>
 							<h2>Nutrition Facts</h2>
 							<table class="nutrition-table">
 								<tbody>
-									<?php if ( $calories ) : ?>
+									<?php if ( $calories !== null ) : ?>
 										<tr>
 											<td>Calories</td>
 											<td><?php echo esc_html( $calories ); ?></td>
 										</tr>
 									<?php endif; ?>
 									
-									<?php if ( $protein ) : ?>
+									<?php if ( $protein !== null ) : ?>
 										<tr>
 											<td>Protein</td>
 											<td><?php echo esc_html( $protein ); ?>g</td>
 										</tr>
 									<?php endif; ?>
 									
-									<?php if ( $carbs ) : ?>
+									<?php if ( $carbs !== null ) : ?>
 										<tr>
 											<td>Total Carbohydrate</td>
 											<td><?php echo esc_html( $carbs ); ?>g</td>
 										</tr>
 									<?php endif; ?>
 									
-									<?php if ( $fat ) : ?>
+									<?php if ( $fat !== null ) : ?>
 										<tr>
 											<td>Total Fat</td>
 											<td><?php echo esc_html( $fat ); ?>g</td>
 										</tr>
 									<?php endif; ?>
 									
-									<?php if ( $cholesterol ) : ?>
+									<?php if ( $cholesterol !== null ) : ?>
 										<tr>
 											<td>Cholesterol</td>
 											<td><?php echo esc_html( $cholesterol ); ?>mg</td>
