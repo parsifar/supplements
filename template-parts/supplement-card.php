@@ -151,7 +151,6 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 				foreach ( array( 'supplement-category', 'certification', 'product-form' ) as $tax ) {
 					$terms = get_the_terms( get_the_ID(), $tax );
 					if ( $terms && ! is_wp_error( $terms ) ) {
-
 						$icon = '';
 						if ( $tax === 'certification' ) {
 							$icon = '<i class="bi bi-award"></i>';
@@ -161,8 +160,35 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 							$icon = '<i class="bi bi-flask"></i>';
 						}
 
+						// Find the deepest child term
+						$deepest_term = null;
+						$max_depth    = -1;
+
 						foreach ( $terms as $term ) {
-							echo '<span class="badge ' . $tax . '-badge">' . $icon . esc_html( $term->name ) . '</span>';
+							$ancestors = get_ancestors( $term->term_id, $tax );
+							$depth     = count( $ancestors );
+
+							if ( $depth > $max_depth ) {
+								$max_depth    = $depth;
+								$deepest_term = $term;
+							}
+						}
+
+						// If no child terms found, use the first parent term
+						if ( $max_depth === 0 ) {
+							$parent_terms = array_filter(
+								$terms,
+								function ( $term ) {
+									return $term->parent === 0;
+								}
+							);
+							if ( ! empty( $parent_terms ) ) {
+								$deepest_term = reset( $parent_terms );
+							}
+						}
+
+						if ( $deepest_term ) {
+							echo '<span class="badge ' . esc_attr( $tax ) . '-badge">' . wp_kses_post( $icon ) . esc_html( $deepest_term->name ) . '</span>';
 						}
 					}
 				}
