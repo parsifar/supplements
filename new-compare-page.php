@@ -326,6 +326,8 @@ function comparePage() {
 							dietary_tag,
 							total_caffeine_content: acf.total_caffeine_content || '',
 							protein_per_serving: acf.protein_per_serving || '',
+							calorie_protein_ratio: acf.calorie_protein_ratio || '',
+							protein_per_dollar: acf.protein_per_dollar || '',
 							ingredients: dosages.map(d => ({
 								name: d.ingredient?.post_title || 'Unknown',
 								amount: parseFloat(d.amount) || 0,
@@ -492,6 +494,8 @@ function comparePage() {
 					dietary_tag,
 					total_caffeine_content: acf.total_caffeine_content || '',
 					protein_per_serving: acf.protein_per_serving || '',
+					calorie_protein_ratio: acf.calorie_protein_ratio || '',
+					protein_per_dollar: acf.protein_per_dollar || '',
 					ingredients: dosages.map(d => ({
 						name: d.ingredient?.post_title || 'Unknown',
 						amount: parseFloat(d.amount) || 0,
@@ -761,17 +765,9 @@ function comparePage() {
 			case 'Protein/Serving':
 				return product?.category?.toLowerCase().includes('protein') ? (product?.protein_per_serving ? product.protein_per_serving + ' g' : '—') : '—';
 			case 'Calories per gram of protein':
-				if (!product?.category?.toLowerCase().includes('protein') || !product?.protein_per_serving || !product?.calories) return '—';
-				const proteinGrams = parseFloat(product.protein_per_serving);
-				const calories = parseFloat(product.calories);
-				if (isNaN(proteinGrams) || isNaN(calories) || proteinGrams === 0) return '—';
-				return (calories / proteinGrams).toFixed(1) + ' cal/g';
+				return product?.category?.toLowerCase().includes('protein') ? (product?.calorie_protein_ratio ? product.calorie_protein_ratio + ' cal/g' : '—') : '—';
 			case 'Protein per dollar':
-				if (!product?.category?.toLowerCase().includes('protein') || !product?.protein_per_serving || !product?.price_per_serving) return '—';
-				const proteinAmount = parseFloat(product.protein_per_serving);
-				const pricePerServing = parseFloat(product.price_per_serving);
-				if (isNaN(proteinAmount) || isNaN(pricePerServing) || pricePerServing === 0) return '—';
-				return (proteinAmount / pricePerServing).toFixed(1) + ' g/$';
+				return product?.category?.toLowerCase().includes('protein') ? (product?.protein_per_dollar ? product.protein_per_dollar + ' g/$' : '—') : '—';
 			default:
 				return '—';
 		}
@@ -786,17 +782,9 @@ function comparePage() {
 			case 'Protein/Serving':
 				return product?.category?.toLowerCase().includes('protein') ? parseFloat(product?.protein_per_serving) || 0 : 0;
 			case 'Calories per gram of protein':
-				if (!product?.category?.toLowerCase().includes('protein') || !product?.protein_per_serving || !product?.calories) return 0;
-				const proteinGrams = parseFloat(product.protein_per_serving);
-				const calories = parseFloat(product.calories);
-				if (isNaN(proteinGrams) || isNaN(calories) || proteinGrams === 0) return 0;
-				return calories / proteinGrams;
+				return product?.category?.toLowerCase().includes('protein') ? parseFloat(product?.calorie_protein_ratio) || 0 : 0;
 			case 'Protein per dollar':
-				if (!product?.category?.toLowerCase().includes('protein') || !product?.protein_per_serving || !product?.price_per_serving) return 0;
-				const proteinAmount = parseFloat(product.protein_per_serving);
-				const pricePerServing = parseFloat(product.price_per_serving);
-				if (isNaN(proteinAmount) || isNaN(pricePerServing) || pricePerServing === 0) return 0;
-				return proteinAmount / pricePerServing;
+				return product?.category?.toLowerCase().includes('protein') ? parseFloat(product?.protein_per_dollar) || 0 : 0;
 			default:
 				return 0;
 		}
