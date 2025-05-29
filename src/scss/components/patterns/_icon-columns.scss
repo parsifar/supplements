@@ -1,0 +1,30 @@
+@use "../../base/variables" as *;
+// Icon Cards Pattern
+.wp-block-columns.icon-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  .wp-block-column {
+    background-color: white;
+    padding: 1rem;
+    box-shadow: $shadow-lg;
+    border-radius: $radius;
+    overflow: hidden;
+    text-align: center;
+
+    .icon img {
+      height: 80px;
+      width: auto;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: $color-secondary;
+    }
+    p {
+      margin-top: 0;
+      font-size: 1rem;
+    }
+  }
+}
