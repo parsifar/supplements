@@ -1,4 +1,5 @@
 @use "../base/variables" as *;
+@use "../components/buttons" as *;
 
 body.page-template-default {
   .entry-content {
@@ -6,6 +7,62 @@ body.page-template-default {
 
     &:has(.wp-block-cover.alignfull) {
       padding-top: 0;
+    }
+    // Cover block
+    & > .wp-block-cover.alignfull {
+      .wp-block-cover__inner-container {
+        @media (max-width: 1440px) and (min-width: 921px) {
+          padding-inline: 30px;
+        }
+      }
+    }
+
+    // Groups
+    & > .wp-block-group {
+      margin-block: 3rem;
+
+      &.alignfull {
+        @media (max-width: 1440px) and (min-width: 921px) {
+          & > * {
+            padding-inline: 30px;
+          }
+        }
+      }
+
+      &.alignfull.has-background {
+        padding-block: 4rem;
+
+        & > div:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .wp-block-columns {
+      //   margin-block: 3rem;
+      padding: 0;
+    }
+
+    .wp-block-button {
+      .wp-block-button__link {
+        @extend .btn;
+      }
+
+      .wp-block-button__link {
+        @extend .btn-primary;
+      }
+
+      &.outline {
+        .wp-block-button__link {
+          @extend .btn-outline;
+        }
+      }
+
+      &.secondary {
+        .wp-block-button__link {
+          @extend .btn-secondary;
+        }
+      }
     }
 
     p,
@@ -20,19 +77,6 @@ body.page-template-default {
 
     ul.wp-block-list > li {
       margin-bottom: 0.5rem;
-    }
-
-    .wp-block-columns {
-      margin-block: 3rem;
-      padding: 0;
-    }
-
-    .wp-block-group.alignfull.has-background {
-      padding-block: 3rem;
-
-      & > div:last-child {
-        margin-bottom: 0;
-      }
     }
   }
 }

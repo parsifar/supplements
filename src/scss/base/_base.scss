@@ -38,34 +38,3 @@ button {
 .main-header-menu .sub-menu {
   width: max-content;
 }
-
-// Gutenberg blocks styles
-body.page-template-default {
-  div.entry-content {
-    & > .wp-block-group {
-      margin-block: 4rem;
-    }
-
-    .wp-block-button {
-      .wp-block-button__link {
-        @extend .btn;
-      }
-
-      .wp-block-button__link {
-        @extend .btn-primary;
-      }
-
-      &.outline {
-        .wp-block-button__link {
-          @extend .btn-outline;
-        }
-      }
-
-      &.secondary {
-        .wp-block-button__link {
-          @extend .btn-secondary;
-        }
-      }
-    }
-  }
-}
