@@ -1302,6 +1302,59 @@ input[type=range]:focus::-moz-range-track {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.image-links-group > .wp-block-columns {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.image-links-group > .wp-block-columns .wp-block-column {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.image-links-group > .wp-block-columns .wp-block-column h3 {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: #111827;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+.image-links-group > .wp-block-columns .wp-block-column img {
+  transition: all 0.2s ease;
+}
+.image-links-group > .wp-block-columns .wp-block-column a:hover img {
+  scale: 1.05;
+}
+
+.boxed-text-image.wp-block-group {
+  padding: 0;
+}
+.boxed-text-image.wp-block-group .wp-block-columns {
+  border-radius: 1rem;
+}
+.boxed-text-image.wp-block-group .wp-block-columns .content-col.wp-block-column {
+  padding: 2rem;
+  flex-grow: 1;
+}
+.boxed-text-image.wp-block-group .wp-block-columns .image-col.wp-block-column {
+  flex-basis: 300px;
+  align-self: flex-end;
+}
+.boxed-text-image.wp-block-group .wp-block-columns .image-col.wp-block-column img {
+  position: relative;
+  right: -20px;
+  bottom: -20px;
+  filter: drop-shadow(5px 5px 10px #999);
+}
+@media (max-width: 782px) {
+  .boxed-text-image.wp-block-group .wp-block-columns .image-col.wp-block-column {
+    display: none;
+  }
+}
+
 #main .wp-block-stackable-accordion {
   margin-bottom: 0;
 }
@@ -1322,9 +1375,6 @@ input[type=range]:focus::-moz-range-track {
   fill: #2563eb;
 }
 
-body.page-template-default .entry-content {
-  padding-block: 3rem;
-}
 body.page-template-default .entry-content:has(.wp-block-cover.alignfull) {
   padding-top: 0;
 }
@@ -1342,6 +1392,7 @@ body.page-template-default .entry-content > .wp-block-group {
   }
 }
 body.page-template-default .entry-content > .wp-block-group.alignfull.has-background {
+  margin-block: 0;
   padding-block: 4rem;
 }
 body.page-template-default .entry-content > .wp-block-group.alignfull.has-background > div:last-child {

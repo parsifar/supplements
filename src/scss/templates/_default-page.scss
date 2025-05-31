@@ -3,7 +3,7 @@
 
 body.page-template-default {
   .entry-content {
-    padding-block: 3rem;
+    // padding-block: 3rem;
 
     &:has(.wp-block-cover.alignfull) {
       padding-top: 0;
@@ -30,6 +30,7 @@ body.page-template-default {
       }
 
       &.alignfull.has-background {
+        margin-block: 0;
         padding-block: 4rem;
 
         & > div:last-child {
@@ -38,11 +39,12 @@ body.page-template-default {
       }
     }
 
+    // Columns
     .wp-block-columns {
-      //   margin-block: 3rem;
       padding: 0;
     }
 
+    // Buttons
     .wp-block-button {
       .wp-block-button__link {
         @extend .btn;
