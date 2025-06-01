@@ -183,7 +183,7 @@ document.addEventListener('alpine:init', () => {
 		<!-- Category-Specific Information -->
 		<div class="section highlights">
 			<h3 class="section-title"><i class="bi bi-rocket-takeoff"></i> Highlights</h3>
-			<template x-for="(field, fieldIndex) in ['Total Caffeine per serving', 'Protein/Serving']" :key="'category-field-' + fieldIndex">
+			<template x-for="(field, fieldIndex) in ['Total Caffeine per serving', 'Protein/Serving', 'Calories per gram of protein', 'Protein per dollar']" :key="'category-field-' + fieldIndex">
 				<div x-show="shouldShowCategoryField(field)" class="row">
 					<div class="row-title" x-text="field"></div>
 					<div class="grid grid-cols-3 gap-4">
@@ -326,6 +326,8 @@ function comparePage() {
 							dietary_tag,
 							total_caffeine_content: acf.total_caffeine_content || '',
 							protein_per_serving: acf.protein_per_serving || '',
+							calorie_protein_ratio: acf.calorie_protein_ratio || '',
+							protein_per_dollar: acf.protein_per_dollar || '',
 							ingredients: dosages.map(d => ({
 								name: d.ingredient?.post_title || 'Unknown',
 								amount: parseFloat(d.amount) || 0,
@@ -492,6 +494,8 @@ function comparePage() {
 					dietary_tag,
 					total_caffeine_content: acf.total_caffeine_content || '',
 					protein_per_serving: acf.protein_per_serving || '',
+					calorie_protein_ratio: acf.calorie_protein_ratio || '',
+					protein_per_dollar: acf.protein_per_dollar || '',
 					ingredients: dosages.map(d => ({
 						name: d.ingredient?.post_title || 'Unknown',
 						amount: parseFloat(d.amount) || 0,
@@ -759,7 +763,11 @@ function comparePage() {
 			case 'Total Caffeine per serving':
 				return product?.category === 'Pre-Workout' ? (product?.total_caffeine_content ? product.total_caffeine_content + ' mg' : '—') : '—';
 			case 'Protein/Serving':
-				return product?.category === 'protein' ? (product?.protein_per_serving ? product.protein_per_serving + ' g' : '—') : '—';
+				return product?.category?.toLowerCase().includes('protein') ? (product?.protein_per_serving ? product.protein_per_serving + ' g' : '—') : '—';
+			case 'Calories per gram of protein':
+				return product?.category?.toLowerCase().includes('protein') ? (product?.calorie_protein_ratio ? product.calorie_protein_ratio + ' cal/g' : '—') : '—';
+			case 'Protein per dollar':
+				return product?.category?.toLowerCase().includes('protein') ? (product?.protein_per_dollar ? product.protein_per_dollar + ' g/$' : '—') : '—';
 			default:
 				return '—';
 		}
@@ -772,7 +780,11 @@ function comparePage() {
 			case 'Caffeine':
 				return product?.category === 'Pre-Workout' ? parseFloat(product?.total_caffeine_content) || 0 : 0;
 			case 'Protein/Serving':
-				return product?.category === 'protein' ? parseFloat(product?.protein_per_serving) || 0 : 0;
+				return product?.category?.toLowerCase().includes('protein') ? parseFloat(product?.protein_per_serving) || 0 : 0;
+			case 'Calories per gram of protein':
+				return product?.category?.toLowerCase().includes('protein') ? parseFloat(product?.calorie_protein_ratio) || 0 : 0;
+			case 'Protein per dollar':
+				return product?.category?.toLowerCase().includes('protein') ? parseFloat(product?.protein_per_dollar) || 0 : 0;
 			default:
 				return 0;
 		}
@@ -784,6 +796,16 @@ function comparePage() {
 		const currentValue = this.getCategoryNumericValue(product, field);
 		if (currentValue === 0) return false;
 
+		// For 'Calories per gram of protein', we want to highlight the lowest value
+		if (field === 'Calories per gram of protein') {
+			return this.selectedProducts.every(p => {
+				if (!p) return true;
+				const otherValue = this.getCategoryNumericValue(p, field);
+				return currentValue <= otherValue;
+			});
+		}
+
+		// For all other fields, highlight the highest value
 		return this.selectedProducts.every(p => {
 			if (!p) return true;
 			return currentValue >= this.getCategoryNumericValue(p, field);
@@ -799,7 +821,11 @@ function comparePage() {
 				case 'Total Caffeine per serving':
 					return product.category === 'Pre-Workout' && product.total_caffeine_content;
 				case 'Protein/Serving':
-					return product.category === 'protein' && product.protein_per_serving;
+					return product.category?.toLowerCase().includes('protein') && product.protein_per_serving;
+				case 'Calories per gram of protein':
+					return product.category?.toLowerCase().includes('protein') && product.protein_per_serving && product.calories;
+				case 'Protein per dollar':
+					return product.category?.toLowerCase().includes('protein') && product.protein_per_serving && product.price_per_serving;
 				default:
 					return false;
 			}

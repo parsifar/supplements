@@ -87,7 +87,7 @@
 								if ( $price_per_serving ) {
 									?>
 									<div class="pps-wrapper">
-										<p class="price-label">price per serving</p>
+										<p class="price-label">Price per serving</p>
 										<p class="price-amount"><span class="amount">$<?php echo esc_html( $price_per_serving ); ?></span> /serving</p>
 									</div>
 									<?php
@@ -96,6 +96,41 @@
 								
 							</div>
 							
+							<?php
+						}
+
+						// Protein specific info
+						$is_protein = has_term( 'protein', 'supplement-category' );
+
+						if ( $is_protein ) {
+							$protein_per_serving   = get_field( 'protein_per_serving' );
+							$calorie_protein_ratio = get_field( 'calorie_protein_ratio' );
+							$protein_per_dollar    = get_field( 'protein_per_dollar' );
+
+							?>
+							<div class="protein-section">
+								<?php
+								if ( $calorie_protein_ratio ) {
+									?>
+									<div class="cp-ratio-wrapper">
+										<p class="price-label">Calories/protein ratio</p>
+										<p class="price-amount"><span class="amount"><?php echo esc_html( $calorie_protein_ratio ); ?></span>cal / 1g protein</p>
+									</div>
+									<?php
+								}
+
+								if ( $protein_per_dollar ) {
+									?>
+									<div class="cp-ratio-wrapper">
+										<p class="price-label">Protein per Dollar</p>
+										<p class="price-amount"><span class="amount"><?php echo esc_html( $protein_per_dollar ); ?></span>g protein per $1</p>
+									</div>
+									<?php
+								}
+								?>
+
+							</div>
+
 							<?php
 						}
 
@@ -155,6 +190,61 @@
 				<!-- Content -->
 				<div class="supplement-content">
 					<?php the_content(); ?>
+				</div>
+
+				<!-- Nutrition Facts -->
+				<div class="nutrition-facts">
+					<?php if ( $is_protein ) : ?>
+						<?php
+						$calories    = get_field( 'calories' );
+						$protein     = get_field( 'protein_per_serving' );
+						$carbs       = get_field( 'total_carbohydrate' );
+						$fat         = get_field( 'total_fat' );
+						$cholesterol = get_field( 'cholesterol' );
+
+						if ( $calories !== null || $protein !== null || $carbs !== null || $fat !== null || $cholesterol !== null ) :
+							?>
+							<h2>Nutrition Facts</h2>
+							<table class="nutrition-table">
+								<tbody>
+									<?php if ( $calories !== null ) : ?>
+										<tr>
+											<td>Calories</td>
+											<td><?php echo esc_html( $calories ); ?></td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $protein !== null ) : ?>
+										<tr>
+											<td>Protein</td>
+											<td><?php echo esc_html( $protein ); ?>g</td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $carbs !== null ) : ?>
+										<tr>
+											<td>Total Carbohydrate</td>
+											<td><?php echo esc_html( $carbs ); ?>g</td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $fat !== null ) : ?>
+										<tr>
+											<td>Total Fat</td>
+											<td><?php echo esc_html( $fat ); ?>g</td>
+										</tr>
+									<?php endif; ?>
+									
+									<?php if ( $cholesterol !== null ) : ?>
+										<tr>
+											<td>Cholesterol</td>
+											<td><?php echo esc_html( $cholesterol ); ?>mg</td>
+										</tr>
+									<?php endif; ?>
+								</tbody>
+							</table>
+						<?php endif; ?>
+					<?php endif; ?>
 				</div>
 
 				<!-- Ingredients -->

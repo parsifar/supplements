@@ -1,0 +1,34 @@
+@use "../../base/variables" as *;
+.boxed-text-image.wp-block-group {
+  padding: 0;
+  .wp-block-columns {
+    border-radius: $radius-lg;
+    .content-col.wp-block-column {
+      padding: 2rem;
+      flex-grow: 1;
+    }
+    .image-col.wp-block-column {
+      flex-basis: 300px;
+      align-self: flex-end;
+
+      img {
+        position: relative;
+        right: -20px;
+        bottom: -20px;
+        filter: drop-shadow(5px 5px 10px #999);
+
+        &:is(.flush img) {
+          right: 0;
+          bottom: 0;
+        }
+      }
+    }
+
+    // Mobile
+    @media (max-width: $breakpoint-md) {
+      .image-col.wp-block-column {
+        display: none;
+      }
+    }
+  }
+}

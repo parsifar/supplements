@@ -71,7 +71,8 @@ body.single-supplement {
         }
       }
 
-      .price-section {
+      .price-section,
+      .protein-section {
         display: flex;
         flex-wrap: wrap;
         gap: $spacing-md;
