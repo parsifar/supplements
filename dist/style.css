@@ -1349,6 +1349,10 @@ input[type=range]:focus::-moz-range-track {
   bottom: -20px;
   filter: drop-shadow(5px 5px 10px #999);
 }
+.boxed-text-image.wp-block-group .wp-block-columns .image-col.wp-block-column img:is(.flush img) {
+  right: 0;
+  bottom: 0;
+}
 @media (max-width: 782px) {
   .boxed-text-image.wp-block-group .wp-block-columns .image-col.wp-block-column {
     display: none;

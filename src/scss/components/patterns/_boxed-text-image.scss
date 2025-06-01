@@ -16,6 +16,11 @@
         right: -20px;
         bottom: -20px;
         filter: drop-shadow(5px 5px 10px #999);
+
+        &:is(.flush img) {
+          right: 0;
+          bottom: 0;
+        }
       }
     }
 
