@@ -80,7 +80,7 @@ function top_supplements_shortcode( $atts ) {
 		);
 	}
 
-	// Minimum rating filter
+	// Minimum rating filter.
 	if ( $atts['min_rating'] !== '' ) {
 		$args['meta_query'][] = array(
 			'key'     => 'amazon_rating',
@@ -104,7 +104,7 @@ function top_supplements_shortcode( $atts ) {
 			$primary_value   = 0;
 			$secondary_value = 0;
 
-			if ( in_array( $sort_by, array( 'price', 'price_per_serving', 'amazon_rating' ) ) ) {
+			if ( in_array( $sort_by, array( 'price', 'price_per_serving', 'amazon_rating', 'protein_per_serving', 'calorie_protein_ratio', 'protein_per_dollar', 'total_caffeine_content' ) ) ) {
 				$primary_value = floatval( get_field( $sort_by, $post->ID ) );
 			} elseif ( $sort_by === 'dosage' && ! empty( $atts['ingredient_for_dosage'] ) ) {
 				$dosages = get_field( 'dosages', $post->ID );
@@ -118,7 +118,7 @@ function top_supplements_shortcode( $atts ) {
 			}
 
 			if ( $secondary_sort_by ) {
-				if ( in_array( $secondary_sort_by, array( 'price', 'price_per_serving', 'amazon_rating' ) ) ) {
+				if ( in_array( $secondary_sort_by, array( 'price', 'price_per_serving', 'amazon_rating', 'protein_per_serving', 'calorie_protein_ratio', 'protein_per_dollar', 'total_caffeine_content' ) ) ) {
 					$secondary_value = floatval( get_field( $secondary_sort_by, $post->ID ) );
 				} elseif ( $secondary_sort_by === 'dosage' && ! empty( $atts['ingredient_for_dosage'] ) ) {
 					$dosages = get_field( 'dosages', $post->ID );
@@ -141,7 +141,7 @@ function top_supplements_shortcode( $atts ) {
 			);
 		}
 
-		// Sort by primary and secondary
+		// Sort by primary and secondary.
 		usort(
 			$results,
 			function ( $a, $b ) use ( $order, $secondary_order ) {
@@ -156,13 +156,6 @@ function top_supplements_shortcode( $atts ) {
 				: $a['secondary'] <=> $b['secondary'];
 			}
 		);
-
-		// foreach ( $results as $result ) {
-		// pp( $result['post']->post_title );
-		// pp( 'primary: ' . $result['primary'] );
-		// pp( 'secondary: ' . $result['secondary'] );
-
-		// }
 
 		$results = array_slice( $results, 0, intval( $atts['count'] ) );
 

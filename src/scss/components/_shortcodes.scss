@@ -56,7 +56,8 @@
       }
       .supplement-title {
         margin-bottom: 1rem;
-        font-size: 2rem;
+        font-size: 1.5rem;
+        margin-top: 0;
       }
 
       .rating-bar {
@@ -130,15 +131,10 @@
           flex-basis: calc(50% - 0.5rem);
         }
       }
-    }
 
-    .supplement-summary {
-      p,
-      li {
-        font-size: 1.25rem;
-
-        &:last-child {
-          margin-bottom: 0;
+      @media (max-width: $breakpoint-md) {
+        .links-wrapper a {
+          flex-basis: 100%;
         }
       }
     }

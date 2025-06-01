@@ -171,9 +171,5 @@ switch ( $index ) {
 
 	</header>
 
-	<!-- summary -->
-	<div class="supplement-summary">
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum laborum blanditiis quam provident voluptatem, amet esse atque distinctio! Atque illum magni possimus voluptas quas ipsa reiciendis rem fugiat nam cupiditate reprehenderit deleniti tempore inventore cum nesciunt sit eligendi odit officiis consequatur, amet veniam, laborum harum? Tempore, id? Architecto voluptate iste nisi laudantium eius? Ab itaque libero dolorum voluptate laudantium! Doloremque minus et eum deleniti veritatis mollitia assumenda id accusantium nemo. Qui, recusandae quisquam, expedita inventore adipisci repellendus quia necessitatibus beatae nulla delectus at animi velit repudiandae, aperiam quasi possimus perferendis facere eaque dolores et corporis veniam saepe vel. Tempore, laborum!</p>
-	</div>
 
 </article>

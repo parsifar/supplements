@@ -946,7 +946,8 @@ input[type=range]:focus::-moz-range-track {
 }
 .top-supplements-shortcode .supplement-grid .supplement-meta .supplement-title {
   margin-bottom: 1rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0;
 }
 .top-supplements-shortcode .supplement-grid .supplement-meta .rating-bar {
   justify-content: flex-start;
@@ -1026,13 +1027,10 @@ input[type=range]:focus::-moz-range-track {
 .top-supplements-shortcode .supplement-grid .supplement-meta .links-wrapper a {
   flex-basis: calc(50% - 0.5rem);
 }
-.top-supplements-shortcode .supplement-grid .supplement-summary p,
-.top-supplements-shortcode .supplement-grid .supplement-summary li {
-  font-size: 1.25rem;
-}
-.top-supplements-shortcode .supplement-grid .supplement-summary p:last-child,
-.top-supplements-shortcode .supplement-grid .supplement-summary li:last-child {
-  margin-bottom: 0;
+@media (max-width: 782px) {
+  .top-supplements-shortcode .supplement-grid .supplement-meta .links-wrapper a {
+    flex-basis: 100%;
+  }
 }
 
 .ranking-badge {
