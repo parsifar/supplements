@@ -896,14 +896,15 @@ input[type=range]:focus::-moz-range-track {
 }
 
 .top-supplements-shortcode .supplement-grid {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 .top-supplements-shortcode .supplement-grid article.top-supplement-card {
-  margin-block: 3rem;
   position: relative;
   background-color: #fff;
   border: 1px solid #e5e7eb;
-  padding: 3rem 1.5rem;
+  padding: 2rem 1.5rem 1.5rem;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -959,20 +960,23 @@ input[type=range]:focus::-moz-range-track {
 .top-supplements-shortcode .supplement-grid .supplement-meta .rating-bar .bar-wrapper {
   max-width: 300px;
 }
-.top-supplements-shortcode .supplement-grid .supplement-meta .price-section {
+.top-supplements-shortcode .supplement-grid .supplement-meta .price-section,
+.top-supplements-shortcode .supplement-grid .supplement-meta .protein-section {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 }
-.top-supplements-shortcode .supplement-grid .supplement-meta .price-section > div {
+.top-supplements-shortcode .supplement-grid .supplement-meta .price-section > div,
+.top-supplements-shortcode .supplement-grid .supplement-meta .protein-section > div {
   flex-basis: 200px;
   flex-grow: 1;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   background-color: #eaeaea;
   border-radius: 0.5rem;
 }
-.top-supplements-shortcode .supplement-grid .supplement-meta .price-section .price-label {
+.top-supplements-shortcode .supplement-grid .supplement-meta .price-section .price-label,
+.top-supplements-shortcode .supplement-grid .supplement-meta .protein-section .price-label {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: #111827;
@@ -981,10 +985,12 @@ input[type=range]:focus::-moz-range-track {
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
-.top-supplements-shortcode .supplement-grid .supplement-meta .price-section .price-amount {
+.top-supplements-shortcode .supplement-grid .supplement-meta .price-section .price-amount,
+.top-supplements-shortcode .supplement-grid .supplement-meta .protein-section .price-amount {
   margin-bottom: 0;
 }
-.top-supplements-shortcode .supplement-grid .supplement-meta .price-section .amount {
+.top-supplements-shortcode .supplement-grid .supplement-meta .price-section .amount,
+.top-supplements-shortcode .supplement-grid .supplement-meta .protein-section .amount {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: #111827;

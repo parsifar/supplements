@@ -4,14 +4,14 @@
 
 .top-supplements-shortcode {
   .supplement-grid {
-    display: block;
+    @include flex-column;
+    gap: 2.5rem;
 
     article.top-supplement-card {
-      margin-block: 3rem;
       position: relative;
       background-color: #fff;
       border: 1px solid $color-border;
-      padding: 3rem 1.5rem;
+      padding: 2rem 1.5rem 1.5rem;
       border-radius: $radius-lg;
       display: flex;
       flex-direction: column;
@@ -72,7 +72,8 @@
         }
       }
 
-      .price-section {
+      .price-section,
+      .protein-section {
         display: flex;
         flex-wrap: wrap;
         gap: $spacing-md;
@@ -81,7 +82,7 @@
         & > div {
           flex-basis: 200px;
           flex-grow: 1;
-          padding: $spacing-md;
+          padding: $spacing-sm $spacing-md;
           background-color: $color-gray-light;
           border-radius: $radius;
         }

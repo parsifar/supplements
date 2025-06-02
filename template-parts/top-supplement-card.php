@@ -4,13 +4,16 @@ $index = $args['supplement_index'] ?? 0;
 $badge_text = '';
 switch ( $index ) {
 	case 1:
-		$badge_text = '1st Place';
+		$badge_text = '1st';
 		break;
 	case 2:
-		$badge_text = '2nd Place';
+		$badge_text = '2nd';
 		break;
 	case 3:
-		$badge_text = '3rd Place';
+		$badge_text = '3rd';
+		break;
+	default:
+		$badge_text = $index . 'th';
 		break;
 }
 ?>
@@ -112,26 +115,61 @@ switch ( $index ) {
 				<?php
 			}
 
+			// Protein specific info
+			$is_protein = has_term( 'protein', 'supplement-category' );
+
+			if ( $is_protein ) {
+				$protein_per_serving   = get_field( 'protein_per_serving' );
+				$calorie_protein_ratio = get_field( 'calorie_protein_ratio' );
+				$protein_per_dollar    = get_field( 'protein_per_dollar' );
+
+				?>
+				<div class="protein-section">
+					<?php
+					if ( $calorie_protein_ratio ) {
+						?>
+						<div class="cp-ratio-wrapper">
+							<p class="price-label">Calories/protein ratio</p>
+							<p class="price-amount"><span class="amount"><?php echo esc_html( $calorie_protein_ratio ); ?></span>cal / 1g protein</p>
+						</div>
+						<?php
+					}
+
+					if ( $protein_per_dollar ) {
+						?>
+						<div class="cp-ratio-wrapper">
+							<p class="price-label">Protein per Dollar</p>
+							<p class="price-amount"><span class="amount"><?php echo esc_html( $protein_per_dollar ); ?></span>g protein per $1</p>
+						</div>
+						<?php
+					}
+					?>
+
+				</div>
+
+				<?php
+			}
+
 			?>
 			
 			<!-- Quick facts -->
 			<div class="quick-facts">
 				<?php
 
-				$category = get_the_terms( get_the_ID(), 'supplement-category' );
-				if ( ! empty( $category ) ) {
-					echo '<p class="quick-fact">Category: <strong>' . esc_html( $category[0]->name ) . '</strong></p>';
-				}
+				// $category = get_the_terms( get_the_ID(), 'supplement-category' );
+				// if ( ! empty( $category ) ) {
+				// echo '<p class="quick-fact">Category: <strong>' . esc_html( $category[0]->name ) . '</strong></p>';
+				// }
 
 				$servings = get_field( 'servings_per_container' );
 				if ( $servings ) {
 					echo '<p class="quick-fact">Servings per container: <strong>' . esc_html( $servings ) . '</strong></p>';
 				}
 
-				$product_form_terms = get_the_terms( get_the_ID(), 'product-form' );
-				if ( ! empty( $product_form_terms ) && ! is_wp_error( $product_form_terms ) ) {
-					echo '<p class="quick-fact">Supplement form: <strong>' . esc_html( $product_form_terms[0]->name ) . '</strong></p>';
-				}
+				// $product_form_terms = get_the_terms( get_the_ID(), 'product-form' );
+				// if ( ! empty( $product_form_terms ) && ! is_wp_error( $product_form_terms ) ) {
+				// echo '<p class="quick-fact">Supplement form: <strong>' . esc_html( $product_form_terms[0]->name ) . '</strong></p>';
+				// }
 				?>
 			</div>
 
