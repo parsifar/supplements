@@ -229,7 +229,7 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 
 	<div class="card-footer">
 		<?php if ( $affiliate = get_field( 'affiliate_url' ) ) : ?>
-			<a href="<?php echo esc_url( $affiliate ); ?>" class="btn btn-primary small" target="_blank" rel="nofollow noopener"><i class="bi bi-amazon"></i> View on Amazon</a>
+			<a href="<?php echo esc_url( $affiliate ); ?>" class="affiliate-button btn btn-primary small" target="_blank" rel="nofollow noopener"><i class="bi bi-amazon"></i> View on Amazon</a>
 		<?php endif; ?>
 	</div>
 </article>

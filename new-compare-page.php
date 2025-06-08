@@ -126,7 +126,7 @@ document.addEventListener('alpine:init', () => {
 							<p class="brand" x-text="product.brand"></p>
 							<h2 class="title" x-text="product.title"></h2>
 						</div>
-						<a :href="product.affiliate_url" target="_blank" class="buy-btn btn btn-primary"><i class="bi bi-amazon"></i>View on Amazon</a>
+						<a :href="product.affiliate_url" target="_blank" class="affiliate-button buy-btn btn btn-primary"><i class="bi bi-amazon"></i>View on Amazon</a>
 						
 						
 					</div>
