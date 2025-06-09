@@ -1,0 +1,25 @@
+ul.ranking-list.wp-block-list {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    position: relative;
+    padding-left: 45px; /* Adjust based on icon size */
+
+    a {
+      text-decoration: none;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.2em; /* Adjust vertically to align with text */
+      width: 30px; /* Match your SVG's dimensions */
+      height: 30px;
+      background-image: url("../src/images/icons/top-icon-blue.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  }
+}

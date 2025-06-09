@@ -1239,6 +1239,29 @@ input[type=range]:focus::-moz-range-track {
   text-decoration: none;
 }
 
+ul.ranking-list.wp-block-list {
+  list-style: none;
+  padding-left: 0;
+}
+ul.ranking-list.wp-block-list li {
+  position: relative;
+  padding-left: 45px; /* Adjust based on icon size */
+}
+ul.ranking-list.wp-block-list li a {
+  text-decoration: none;
+}
+ul.ranking-list.wp-block-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2em; /* Adjust vertically to align with text */
+  width: 30px; /* Match your SVG's dimensions */
+  height: 30px;
+  background-image: url("../src/images/icons/top-icon-blue.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 .wp-block-columns.image-text-col {
   gap: 80px;
   align-items: center !important;
