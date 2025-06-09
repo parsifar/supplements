@@ -37,4 +37,9 @@ button {
 // astra header
 .main-header-menu .sub-menu {
   width: max-content;
+  padding-block: 10px;
+
+  .menu-link {
+    padding: 5px 20px;
+  }
 }

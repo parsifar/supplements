@@ -225,6 +225,10 @@ button {
 
 .main-header-menu .sub-menu {
   width: max-content;
+  padding-block: 10px;
+}
+.main-header-menu .sub-menu .menu-link {
+  padding: 5px 20px;
 }
 
 .select-wrapper {
