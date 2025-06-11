@@ -203,11 +203,19 @@ function analyze_uploaded_json( $file ) {
 	echo '<h3>Variant Updates</h3>';
 	echo '<table class="widefat"><thead><tr><th>Title</th> <th>ASIN</th> <th>Old Price</th> <th>New Price</th> <th>Old PPS</th> <th>New PPS</th> <th>Old Protein/$</th> <th>New Protein/$</th> </tr></thead><tbody>';
 	foreach ( $variant_updates as $update ) {
+		$old_price_class = '';
+		$new_price_class = '';
+
+		if ( $update['old_price'] !== $update['new_price'] ) {
+			$old_price_class = 'red';
+			$new_price_class = 'green';
+		}
+
 		echo '<tr>';
 		echo '<td><a href="' . get_edit_post_link( $update['post_id'] ) . '" target="_blank">' . esc_html( $update['post_title'] ) . '</a></td>';
 		echo '<td>' . esc_html( $update['asin'] ) . '</td>';
-		echo '<td>' . esc_html( $update['old_price'] ) . '</td>';
-		echo '<td>' . esc_html( $update['new_price'] ) . '</td>';
+		echo '<td class="' . $old_price_class . '">' . esc_html( $update['old_price'] ) . '</td>';
+		echo '<td class="' . $new_price_class . '">' . esc_html( $update['new_price'] ) . '</td>';
 		echo '<td>' . esc_html( $update['old_pps'] ) . '</td>';
 		echo '<td>' . esc_html( $update['new_pps'] ) . '</td>';
 

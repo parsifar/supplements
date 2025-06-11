@@ -38,3 +38,12 @@
   margin-bottom: 10px;
   width: 300px;
 }
+
+td.green {
+  font-weight: bold;
+  color: rgb(35, 115, 35);
+}
+td.red {
+  font-weight: bold;
+  color: rgb(129, 14, 14);
+}
