@@ -163,12 +163,15 @@ add_action(
 
 		if ( $parent && is_array( $parent ) ) {
 			foreach ( $parent as $supplement ) {
-				delete_transient( 'best_variant_' . $supplement->ID );
+				// I think the commented code was redundant!
+				// delete_transient( 'best_variant_' . $supplement->ID );
 
-				$best_variant = get_best_variant_for_supplement( $supplement->ID );
-				if ( $best_variant ) {
-					update_best_variant_fields_from_function( $supplement->ID );
-				}
+				// $best_variant = get_best_variant_for_supplement( $supplement->ID );
+				// if ( $best_variant ) {
+				// update_best_variant_fields_from_function( $supplement->ID );
+				// }
+
+				update_best_variant_fields_from_function( $supplement->ID );
 			}
 		}
 	},
