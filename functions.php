@@ -64,6 +64,12 @@ function astra_child_enqueue_styles() {
 	);
 }
 
+// Admin CSS
+function my_custom_admin_styles() {
+	wp_enqueue_style( 'my-admin-css', get_stylesheet_directory_uri() . '/src/admin/admin-style.css' );
+}
+add_action( 'admin_enqueue_scripts', 'my_custom_admin_styles' );
+
 
 function filter_supplement_query( $query ) {
 	if ( is_admin() || ! $query->is_main_query() || ( ! is_post_type_archive( 'supplement' ) && ! is_tax( 'supplement-category' ) ) ) {

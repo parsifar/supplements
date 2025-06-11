@@ -97,21 +97,36 @@ function get_best_variant_for_supplement( $supplement_id ) {
 function update_best_variant_fields_from_function( $supplement_id ) {
 	delete_transient( 'best_variant_' . $supplement_id );
 
-	$variant = get_best_variant_for_supplement( $supplement_id );
+	$is_protein = has_term( 'protein', 'supplement-category', $supplement_id );
 
-	if ( ! $variant ) {
+	$best_variant = get_best_variant_for_supplement( $supplement_id );
+
+	if ( ! $best_variant ) {
 		return;
 	}
 
+	$best_variant_id = $best_variant->ID;
+
 	// Update parent fields with variant data
-	update_field( 'price', get_field( 'price', $variant->ID ), $supplement_id );
-	update_field( 'price_per_serving', get_field( 'price_per_serving', $variant->ID ), $supplement_id );
-	update_field( 'affiliate_url', get_field( 'affiliate_url', $variant->ID ), $supplement_id );
-	update_field( 'amazon_rating', get_field( 'amazon_rating', $variant->ID ), $supplement_id );
-	update_field( 'servings_per_container', get_field( 'servings_per_container', $variant->ID ), $supplement_id );
+	update_field( 'price', get_field( 'price', $best_variant_id ), $supplement_id );
+	update_field( 'price_per_serving', get_field( 'price_per_serving', $best_variant_id ), $supplement_id );
+	update_field( 'affiliate_url', get_field( 'affiliate_url', $best_variant_id ), $supplement_id );
+	update_field( 'amazon_rating', get_field( 'amazon_rating', $best_variant_id ), $supplement_id );
+	update_field( 'servings_per_container', get_field( 'servings_per_container', $best_variant_id ), $supplement_id );
+	update_field( 'calories', get_field( 'calories', $best_variant_id ), $supplement_id );
+
+	// If it's a Protein, update the protein specific fields on the parent.
+	if ( $is_protein ) {
+		update_field( 'total_carbohydrate', get_field( 'total_carbohydrate', $best_variant_id ), $supplement_id );
+		update_field( 'total_fat', get_field( 'total_fat', $best_variant_id ), $supplement_id );
+		update_field( 'cholesterol', get_field( 'cholesterol', $best_variant_id ), $supplement_id );
+		update_field( 'protein_per_serving', get_field( 'protein_per_serving', $best_variant_id ), $supplement_id );
+		update_field( 'calorie_protein_ratio', get_field( 'calorie_protein_ratio', $best_variant_id ), $supplement_id );
+		update_field( 'protein_per_dollar', get_field( 'protein_per_dollar', $best_variant_id ), $supplement_id );
+	}
 
 	// Copy featured image
-	$image_id = get_post_thumbnail_id( $variant->ID );
+	$image_id = get_post_thumbnail_id( $best_variant_id );
 
 	if ( $image_id ) {
 		// Update the parent supplement's featured image if $image_id is valid
@@ -148,12 +163,15 @@ add_action(
 
 		if ( $parent && is_array( $parent ) ) {
 			foreach ( $parent as $supplement ) {
-				delete_transient( 'best_variant_' . $supplement->ID );
+				// I think the commented code was redundant!
+				// delete_transient( 'best_variant_' . $supplement->ID );
 
-				$best_variant = get_best_variant_for_supplement( $supplement->ID );
-				if ( $best_variant ) {
-					update_best_variant_fields_from_function( $supplement->ID );
-				}
+				// $best_variant = get_best_variant_for_supplement( $supplement->ID );
+				// if ( $best_variant ) {
+				// update_best_variant_fields_from_function( $supplement->ID );
+				// }
+
+				update_best_variant_fields_from_function( $supplement->ID );
 			}
 		}
 	},
