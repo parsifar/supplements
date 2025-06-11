@@ -221,7 +221,7 @@ function analyze_uploaded_json( $file ) {
 
 		// Show protein per dollar values if it's a protein variant.
 		if ( has_term( 'protein', 'supplement-category', $update['parent_id'] ) ) {
-			$old_protein_per_dollar = get_field( 'protein_per_dollar', $update['post_id'] );
+			$old_protein_per_dollar = get_field( 'protein_per_dollar', $update['post_id'] ) ?? '?';
 			echo '<td>' . esc_html( $old_protein_per_dollar ) . '</td>';
 			echo '<td>' . esc_html( $update['protein_per_dollar'] ?? '?' ) . '</td>';
 		} else {
