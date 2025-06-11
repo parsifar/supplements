@@ -208,12 +208,12 @@
             "name": "calories",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "15",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -231,12 +231,12 @@
             "name": "servings_per_container",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "25",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -254,12 +254,12 @@
             "name": "amazon_rating",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "25",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -277,12 +277,12 @@
             "name": "price",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -300,12 +300,12 @@
             "name": "price_per_serving",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -323,12 +323,12 @@
             "name": "affiliate_url",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -349,7 +349,7 @@
             "conditional_logic": 0,
             "wrapper": {
                 "width": "25",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -370,7 +370,7 @@
             "conditional_logic": 0,
             "wrapper": {
                 "width": "25",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -511,7 +511,7 @@
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 5,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
@@ -520,5 +520,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1746897225
+    "modified": 1749662088
 }

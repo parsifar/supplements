@@ -8,12 +8,12 @@
             "name": "protein_per_serving",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -31,12 +31,12 @@
             "name": "calorie_protein_ratio",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -54,12 +54,12 @@
             "name": "protein_per_dollar",
             "aria-label": "",
             "type": "number",
-            "instructions": "",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -77,12 +77,12 @@
             "name": "total_carbohydrate",
             "aria-label": "",
             "type": "number",
-            "instructions": "Total Carbohydrate (g)",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -100,12 +100,12 @@
             "name": "total_fat",
             "aria-label": "",
             "type": "number",
-            "instructions": "Total Fat (g)",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -123,12 +123,12 @@
             "name": "cholesterol",
             "aria-label": "",
             "type": "number",
-            "instructions": "Cholesterol (mg)",
+            "instructions": "Automatically pulled from the variant",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
-                "class": "",
+                "class": "auto",
                 "id": ""
             },
             "default_value": "",
@@ -150,7 +150,7 @@
             }
         ]
     ],
-    "menu_order": 0,
+    "menu_order": 10,
     "position": "normal",
     "style": "default",
     "label_placement": "top",
@@ -159,5 +159,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1748349009
+    "modified": 1749661977
 }
