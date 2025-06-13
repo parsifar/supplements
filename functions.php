@@ -16,6 +16,10 @@ require_once 'shorcodes/top-supplements.php';
 require_once 'shorcodes/compare-shortcode.php';
 require_once 'shorcodes/similar-ingredients-shortcode.php';
 
+// REST API endpoint
+require_once 'rest-endpoints/top-supplements-endpoint.php';
+require_once 'rest-endpoints/proxy-image-endpoint.php';
+
 function pp( $data ) {
 	echo '<pre style="background: #f8f8f8; padding: 1em; border: 1px solid #ddd; font-family: monospace; font-size: 14px; overflow: auto;">';
 	print_r( $data );
