@@ -26,6 +26,20 @@ function pp( $data ) {
 	echo '</pre>';
 }
 
+// Favicons (generated with https://realfavicongenerator.net/).
+function supp_pick_custom_favicons() {
+	?>
+	<link rel="icon" type="image/png" href="<?php echo get_stylesheet_directory_uri(); ?>/src/images/favicons/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="<?php echo get_stylesheet_directory_uri(); ?>/src/images/favicons/favicon.svg" />
+	<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/src/images/favicons/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_stylesheet_directory_uri(); ?>/src/images/favicons/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="SuppPick" />
+	<link rel="manifest" href="<?php echo get_stylesheet_directory_uri(); ?>/src/images/favicons/site.webmanifest" />
+	<?php
+}
+add_action( 'wp_head', 'supp_pick_custom_favicons' );
+
+
 add_action( 'wp_enqueue_scripts', 'astra_child_enqueue_styles' );
 function astra_child_enqueue_styles() {
 	wp_enqueue_style( 'child-style', get_stylesheet_directory_uri() . '/dist/style.css', array(), false, 'all' );
