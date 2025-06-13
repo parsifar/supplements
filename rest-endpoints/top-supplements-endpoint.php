@@ -123,16 +123,17 @@ function get_top_supplements_data( $request ) {
 			}
 
 			$results[] = array(
-				'id'                => $post->ID,
-				'title'             => get_the_title( $post ),
-				'link'              => get_permalink( $post ),
-				'thumbnail'         => get_the_post_thumbnail_url( $post->ID, 'medium' ),
-				'primary'           => $primary_value,
-				'secondary'         => $secondary_value,
-				'rating'            => get_field( 'amazon_rating', $post->ID ),
-				'price'             => get_field( 'price', $post->ID ),
-				'price_per_serving' => get_field( 'price_per_serving', $post->ID ),
-				'affiliate_url'     => get_field( 'affiliate_url', $post->ID ),
+				'id'                     => $post->ID,
+				'title'                  => get_the_title( $post ),
+				'link'                   => get_permalink( $post ),
+				'thumbnail'              => get_the_post_thumbnail_url( $post->ID, 'medium' ),
+				'primary'                => $primary_value,
+				'secondary'              => $secondary_value,
+				'rating'                 => get_field( 'amazon_rating', $post->ID ),
+				'servings_per_container' => get_field( 'servings_per_container', $post->ID ),
+				'price'                  => get_field( 'price', $post->ID ),
+				'price_per_serving'      => get_field( 'price_per_serving', $post->ID ),
+				'affiliate_url'          => get_field( 'affiliate_url', $post->ID ),
 			);
 		}
 
