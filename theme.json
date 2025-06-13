@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "settings": {
+    "color": {
+      "palette": [
+        {
+          "name": "Primary",
+          "slug": "primary",
+          "color": "#2563eb"
+        },
+        {
+          "name": "Accent Blue",
+          "slug": "accent-blue",
+          "color": "#759cf0"
+        },
+        {
+          "name": "Light Blue",
+          "slug": "light-blue",
+          "color": "#d8e5ff"
+        },
+        {
+          "name": "Purple",
+          "slug": "purple",
+          "color": "#9c43dc"
+        },
+        {
+          "name": "Medium Purple",
+          "slug": "medium-purple",
+          "color": "#c891eb"
+        },
+        {
+          "name": "Light Purple",
+          "slug": "light-purple",
+          "color": "#dab7f1"
+        },
+        {
+          "name": "Lightest Purple",
+          "slug": "lightest-purple",
+          "color": "#e5d3f0"
+        },
+        {
+          "name": "Dark Grey",
+          "slug": "dark-grey",
+          "color": "#4b5563"
+        },
+        {
+          "name": "Medium Grey",
+          "slug": "medium-grey",
+          "color": "#6b7280"
+        },
+        {
+          "name": "Light Grey",
+          "slug": "light-grey",
+          "color": "#eaeaea"
+        },
+        {
+          "name": "Dark",
+          "slug": "dark",
+          "color": "#111827"
+        },
+        {
+          "name": "White",
+          "slug": "white",
+          "color": "#ffffff"
+        }
+      ]
+    }
+  }
+}
